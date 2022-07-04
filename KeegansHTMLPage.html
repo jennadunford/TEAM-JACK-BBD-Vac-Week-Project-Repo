@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Testing Page</title>        
+        <script src="https://kit.fontawesome.com/b1e940e056.js" crossorigin="anonymous"></script>
+    </head>
+
+    <div class="nav">
+        <a id="chat" class="active" href="chat.php">Chat</a>
+        <a id="login" href="login.php">Login</a>
+        <a id="logout" href="#" onclick="logout();return false;">Logout</a>
+        <!-- <img src="Images/BearNewsLogo.png" alt="logo" id="logo"> -->
+    </div>
+    <body>
+        <div class="register">
+            <h1>Login:</h1>
+            <p>If you do not have an account yet, please register first.</p>
+            <div class="field">Email: <input type="email" id="email" onblur="validateEmail(this)"></div>
+            <div class="field">Password: <input type="password" id="password" onblur="validatePassword(this)"></div> 
+            <input type="submit" value="Login" id="submit" onclick="login()">
+        </div>
+
+        <script src="BBDJavaScriptFile.js"></script>
+    </body>
+</html>
