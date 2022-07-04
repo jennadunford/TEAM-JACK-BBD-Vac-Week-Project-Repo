@@ -1,0 +1,35 @@
+.main {
+  text-align: center;
+  background-color: lavenderblush;
+  border-radius: 8px;
+  width: 50%;
+  margin: 0 auto;
+}
+
+.codeBox {
+  text-align: center;
+  background-color: lightgreen;
+  border-radius: 8px;
+  width: 30%;
+  margin: 0 auto;
+  font-size: 30px;
+  margin-top: 2%;
+}
+
+.addUser {
+  text-align: center;
+}
+
+.playerListHolder {
+  list-style-type: none;
+  font-size: 20px;
+  background-color: rgb(155, 153, 252);
+  border-radius: 8px;
+  width: 40%;
+  margin: 0 auto;
+  margin-top: 3%;
+}
+
+h3 {
+  text-align: center;
+}
