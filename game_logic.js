@@ -30,11 +30,11 @@ var numOfPlayers = 0;
     // timeRemaining: time remaining of current round. as time goes on, sensitivity sensitivity threshold increases
 //  
 var gamestate = {
-    leaderboard,
-    currentSong,
-    sensitivity,
-    currentRound,
-    timeRemaining
+    leaderboard:"",
+    currentSong:"",
+    sensitivity:"",
+    currentRound:"",
+    timeRemaining:""
 };
 
 function sortLeaderboard(playerList){
@@ -51,13 +51,28 @@ function sortLeaderboard(playerList){
     }
 }
 
+// returns index of player that was sent into the function and returns -1 for a player that is sent in with invalid ID
 function findPlayer(player){
     //return indexx of player in gamestate.playerlist
+    for (k=0;k<gamestate.leaderboard.length;k++){
+        if (player.id==gamestate.leaderboard[k].id){
+            return k;
+        }
+    }
+    return -1;
 }
 
 function resetRound(){
     //make all players playing
     //round++
+    gamestate.rounds++
+    for (k=0;k<gamestate.leaderboard.length;k++){
+        gamestate.leaderboard[k].playing=true;
+    }
+}
+
+function getTimeRemaining(){
+    return 10;
 }
 
 function playGame(player){
@@ -123,7 +138,7 @@ function getUserSensitityLevel(accReading){
 function start(){
     playerList = getPlayers(); //get players from server
     numOfPlayers = playerList.length;
-    sortLeaderboard(playerList);
+    // sortLeaderboard(playerList);
     gamestate.leaderboard = playerList;
     gamestate.sensitivityLevel = getSongSensitivity(); // get song song sensitivity from server
     gamestate.rounds = 0;
