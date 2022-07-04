@@ -37,7 +37,17 @@ var gamestate = {
 
 function sortLeaderboard(playerList){
     //sorts players according to score
+    let numPlayers = playerList.length;
+    for (let out=0;out<numPlayers;out++){
+        for (let inner = out+1; inner<numPlayers; inner++){
+            if (playerList[inner].score<playerList[outer].score){
+                var temp = playerList[inner];
+                playerList[inner] = playerList[outer];
+                playerList[outer] = temp
+            }
 
+        }
+    }
 }
 
 function getAcceleration(accReading){
