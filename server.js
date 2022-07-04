@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const http = require('http');
 const socketio = require('socket.io');
+const gameflow = require('./game_logic')
 
 const app = express();
 const server = http.createServer(app);
@@ -24,14 +25,18 @@ io.on('connection', (socket) => { //Evertything with socket
         }
 
         console.log(players);
-    })
-
-    socket.on('joinCode', (clientCode) => {
-        if(clientCode !== code){
-            socket.disconnect(true);
-            console.log("Connection closed");
-        }
     });
+
+    // socket.on('joinCode', (clientCode) => {
+    //     if(clientCode !== code){
+    //         socket.disconnect(true);
+    //         console.log("Connection closed");
+    //     }
+    // });
+
+    socket.on('ready', () => {
+        gameflow.start();
+    })
 
     socket.broadcast.emit('gameCode', code);
 });

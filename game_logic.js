@@ -1,3 +1,4 @@
+const server = require('./server.js')
 // The file that handles the game state during a round
 // gamestate object:
 // leaderboard
@@ -16,7 +17,7 @@
 // }
 
 // playerList consists of all players in the game. a list/array of player variables
-var playerList = {};
+var playerList = [];
 
 //hardcode for now, change once MVP is met
 var maxRounds = 3;
@@ -136,7 +137,9 @@ function getUserSensitityLevel(accReading){
 }
     
 function start(){
-    playerList = getPlayers(); //get players from server
+    console.log('game_logic start')
+    
+    playerList = server.getPlayers(); //get players from server
     numOfPlayers = playerList.length;
     // sortLeaderboard(playerList);
     gamestate.leaderboard = playerList;
@@ -146,3 +149,5 @@ function start(){
     gamestate.gameover = false;
     //broadcast starting sensitivity
 }
+
+module.exports = { start };
