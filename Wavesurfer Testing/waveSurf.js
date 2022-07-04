@@ -16,8 +16,29 @@ wavesurfer.microphone.on("deviceError", function (code) {
 
 // start the microphone
 wavesurfer.microphone.start();
+/*
+var audioContext = new window.AudioContext();
+audioContext = wavesurfer.audioContext;
+var audioCtx = new window.AudioContext(/*|| window.webkitAudioContext));
+const analyser = audioCtx.createAnalyser();
 
-var speedValueBox = document.getElementById("speed");
+analyser.fftSize = 256;
+var bufferLength = analyser.frequencyBinCount;
+console.log(bufferLength);
+const dataArray = new Uint8Array(bufferLength);
+
+analyser.getByteFrequencyData(dataArray);
+setInterval(function () {
+  for (let index = 0; index < dataArray.length; index++) {
+    const element = dataArray[index];
+    console.log(element);
+  }
+}, 1000);*/
+
+// setInterval(function () {
+//   console.log(bufferLength);
+//   //this code runs every second
+// }, 1000);
 
 // wavesurfer.on("volume", function () {
 //   speedValueBox.innerHTML = wavesurfer.getVolume();
