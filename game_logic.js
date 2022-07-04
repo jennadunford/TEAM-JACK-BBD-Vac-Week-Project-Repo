@@ -5,6 +5,7 @@
 // sensitivity
 // currentRound
 // timeRemaining
+// gameover
 
 //server would have supplied users at this point. Will be a list of objects:
 // var player = {
@@ -19,6 +20,7 @@ var playerList = {};
 
 //hardcode for now, change once MVP is met
 var maxRounds = 3;
+var numOfPlayers = 0;
 
 // state of current game. attributes described below:
     // leaderboard: sorted playerList. name is schanged for gamestate object. sorted in descending order
@@ -49,24 +51,58 @@ function sortLeaderboard(playerList){
     }
 }
 
+function findPlayer(player){
+    //return indexx of player in gamestate.playerlist
+}
+
+function resetRound(){
+    //make all players playing
+    //round++
+}
 
 function playGame(player){
     // game play logic
     //check if round is over
-    //work out their senslevel
-    //compare that to the song level in gamestate
-    //update leaderboard if end or kicked
+    if(getRoundOver()){ // get remaining time from server
+        for(let i = 0; i < gamestate.leaderboard.length; i++){
+            if(gamestate.leaderboard[i].playing){
+                gamestate.leaderboard[i].score++;
+            }
+        }
+        resetRound();
+        if(gamestate.rounds > maxRounds){
+            gamestate.gameover = true;
+            sortLeaderboard(gamestate.leaderboard)
+            //broadcast gameover
 
+        }
+    }else{
+        if(player.playing){
+            let userSensLevel = getUserSensitityLevel(player.accReading) //work out their senslevel
+            if(userSensLevel > gamestate.sensitivity){
+                gamestate.leaderboard[findPlayer(player)].playing = false;
+                numOfPlayers--;
+                //tell player to get fucked
+            }
 
-    //check if last player
-    //check if last round
-    // if not, increase round, reset all players, new song/sens
-    //broadcast
-    //update leaderboard
+            if(numOfPlayers == 1){
+                gamestate.leaderboard[findPlayer(player)].score += 1;
+                resetRound();
+                                
+                //front should display scoreboard
+            }
+            sortLeaderboard(gamestate.leaderboard)
+        }
+    }
 
-    //check time remaining
-    //update sens accordingly
-    //broadcast new sens
+    if(getTimeRemaining() < 10){ // 10 seconds left
+        gamestate.sensitivity += 3;
+    } else if(getTimeRemaining() < 20){
+        gamestate.sensitivity += 2;
+    } else if(getTimeRemaining() < 30){
+        gamestate.sensitivity += 1;
+    }
+    //broadcast gamestate
 }
 
 //Maps an accelerometer reading to a sensitivity level so it can be compared to
@@ -86,10 +122,12 @@ function getUserSensitityLevel(accReading){
     
 function start(){
     playerList = getPlayers(); //get players from server
+    numOfPlayers = playerList.length;
     sortLeaderboard(playerList);
     gamestate.leaderboard = playerList;
     gamestate.sensitivityLevel = getSongSensitivity(); // get song song sensitivity from server
-    //start playing song
-    //determine song sensitivity level
-    //broadcast song sensitivity level
+    gamestate.rounds = 0;
+    gamestate.timeRemaining = 60;
+    gamestate.gameover = false;
+    //broadcast starting sensitivity
 }
