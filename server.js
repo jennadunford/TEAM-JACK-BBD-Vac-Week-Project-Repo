@@ -12,7 +12,7 @@ io.on('connection', (socket) => { //Evertything with socket
 });
 
 
-app.use('clientWebPage.html');
+app.use(express.static(path.join(__dirname, 'Client')));
 
 server.listen(9000, () => { //Port server listen on
     console.log("Listening on 9000");
