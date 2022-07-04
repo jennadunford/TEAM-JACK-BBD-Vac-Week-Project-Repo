@@ -2,10 +2,14 @@
 console.log("start")
 const socket = new io("http://localhost:9000", {});
 
-socket.on("connect", function() 
+function sendUsername()
 {
     socket.emit("User", document.getElementById("username").value);
+}
+// socket.on("connect", function() 
+// {
+    
 
-})
+// })
 
 
