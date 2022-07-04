@@ -71,8 +71,9 @@ function resetRound(){
     }
 }
 
+// returns time remaining of the current round
 function getTimeRemaining(){
-    return 10;
+    return 100;
 }
 
 function playGame(player){
