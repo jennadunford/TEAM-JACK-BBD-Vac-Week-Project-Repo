@@ -11,8 +11,3 @@ Front end:
 Backend:
 Everyone else
 
-
-THIS IS KEEGAN'S BRANCH.
-
-
-added to my branch
