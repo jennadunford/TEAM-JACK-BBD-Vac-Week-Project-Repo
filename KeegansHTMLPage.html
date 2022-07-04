@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Testing Page</title>        
+        <title>Testing Page</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">        
         <script src="https://kit.fontawesome.com/b1e940e056.js" crossorigin="anonymous"></script>
     </head>
 
@@ -14,10 +17,9 @@
     <body>
         <div class="client">
             <h1>Client:</h1>
-            <p>We are working on socket communications (Keegan and Daniel). Keegan is client.</p>
-            <div id="temp" class="field">Email: <input type="email" id="email" onblur="validateEmail(this)"></div>
-            <div class="field">Password: <input type="password" id="password" onblur="validatePassword(this)"></div> 
-            <input type="submit" value="Login" id="submit" onclick="login()">
+            <p>We are working on socket communications (Keegan and Daniel). Keegan is client. I am sending the username to the server.</p>
+            <div id="temp" class="field">Username: <input type="username" id="username" onblur="sendUsername(this)"></div>
+            <input type="submit" value="Send" id="submit" onclick="send()">
         </div>
 
         <script src="BBDJavaScriptFile.js"></script>
