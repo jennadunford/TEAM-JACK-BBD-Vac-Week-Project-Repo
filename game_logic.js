@@ -28,6 +28,10 @@ function sortLeaderboard(playerList){
     //sorts players according to score
 }
 
+function getSensitity(accReading){
+    
+}
+
 function playGame(){
 
 }
