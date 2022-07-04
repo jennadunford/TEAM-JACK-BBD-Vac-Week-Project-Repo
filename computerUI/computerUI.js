@@ -19,3 +19,8 @@ function addPlayer(userName) {
   node.appendChild(textnode);
   document.getElementById("playerList").appendChild(node);
 }
+
+$("#startButton").click(function () {
+  $("#startGamePressed").fadeIn(500);
+  $("#startGamePressed").fadeOut(500);
+});

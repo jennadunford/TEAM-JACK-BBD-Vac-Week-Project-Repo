@@ -1,14 +1,22 @@
+body {
+  text-align: center;
+  background-color: black;
+  color: white;
+}
+
 .main {
   text-align: center;
-  background-color: lavenderblush;
+  background-color: rgb(222, 66, 120);
   border-radius: 8px;
   width: 50%;
   margin: 0 auto;
+  padding: 5px;
+  margin-top: 2%;
 }
 
 .codeBox {
   text-align: center;
-  background-color: lightgreen;
+  background-color: rgb(60, 85, 116);
   border-radius: 8px;
   width: 30%;
   margin: 0 auto;
@@ -17,19 +25,28 @@
 }
 
 .addUser {
+  margin-top: 2%;
   text-align: center;
 }
 
 .playerListHolder {
   list-style-type: none;
   font-size: 20px;
-  background-color: rgb(155, 153, 252);
+  background-color: rgb(69, 128, 94);
   border-radius: 8px;
   width: 40%;
   margin: 0 auto;
-  margin-top: 3%;
+  margin-top: 4%;
+}
+
+#playerList {
+  list-style-type: none;
 }
 
 h3 {
   text-align: center;
+}
+
+#startGamePressed {
+  display: none;
 }
