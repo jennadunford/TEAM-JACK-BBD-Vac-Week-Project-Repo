@@ -1,10 +1,17 @@
 const express = require('express');
 const path = require('path');
 const http = require('http');
+const https = require('https');
 const socketio = require('socket.io');
+const fs = require('fs');
 // const gameflow = require('./game_logic');
 
 const port = process.env.PORT || 9000;
+
+const options = {
+    key: fs.readFileSync('https/key.pem'),
+    cert: fs.readFileSync('https/cert.pem')
+  };
 
 //Open SSL stuff
 // const openssl = require('node-openssl-cert');
