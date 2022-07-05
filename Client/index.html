@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Testing Page</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">        
+        <!-- <script src="https://kit.fontawesome.com/b1e940e056.js" crossorigin="anonymous"></script> -->
+    </head>
+
+    <div class="nav">
+        <!-- <a id="chat" class="active" href="chat.php">Chat</a>
+        <a id="login" href="login.php">Login</a>
+        <a id="logout" href="#" onclick="logout();return false;">Logout</a>
+        <img src="Images/BearNewsLogo.png" alt="logo" id="logo"> -->
+    </div>
+    <body>
+        <div class="client">
+            <h1>Client:</h1>
+            <p>We are working on socket communications (Keegan and Daniel). Keegan is client. I am sending the username to the server.</p>
+            <div class="field">Username: <input type="userName" id="userName"></div>
+            <div class="field">Join Code: <input type="joinCode" id="joinCode"></div>
+            <input type="submit" value="Send" id="submit" onclick="sendUsername()">
+            <input type="submit" value="ready" id="ready" onclick="sayReady()">
+        </div>
+
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="./js/client.js"></script>
+    </body>
+</html>

@@ -14,7 +14,7 @@ const changeInFrequencyDisplay = document.querySelector("#changeInFreq");
 const track = audioCtx.createMediaElementSource(audioElement);
 
 function startPitchDetection() {
-  track.connect(audioContext.destination);
+  track.connect(audioCtx.destination);
   track.connect(analyserNode);
 
   audioData = new Float32Array(analyserNode.fftSize);
