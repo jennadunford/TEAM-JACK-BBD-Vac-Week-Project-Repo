@@ -59,9 +59,9 @@ function updateReadings() {
   let acl = new Accelerometer({ frequency: 60 });
   acl.addEventListener("reading", () => {
     //console.log("Acceleration along the X-axis " + acl.x);
-    xOutput.innerHTML = acl.x;
-    yOutput.innerHTML = acl.y;
-    zOutput.innerHTML = acl.z;
+    xOutput.innerHTML = acl.x.toFixed(2);
+    yOutput.innerHTML = acl.y.toFixed(2);
+    zOutput.innerHTML = acl.z.toFixed(2);
 
     // console.log("Acceleration along the Y-axis " + acl.y);
     // console.log("Acceleration along the Z-axis " + acl.z);
