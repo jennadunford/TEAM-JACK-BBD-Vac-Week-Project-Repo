@@ -1,12 +1,27 @@
 body {
   text-align: center;
+  background-color: rgb(107, 132, 253);
+  color: white;
+  font-family: "Bangers";
+  font-size: 20px;
+}
+
+h1 {
+  font-size: 80px;
+}
+
+button {
+  font-size: 25px;
+}
+
+button:hover {
   background-color: black;
   color: white;
 }
 
 .main {
   text-align: center;
-  background-color: rgb(222, 66, 120);
+
   border-radius: 8px;
   width: 50%;
   margin: 0 auto;
@@ -16,7 +31,8 @@ body {
 
 .codeBox {
   text-align: center;
-  background-color: rgb(60, 85, 116);
+  border-style: solid;
+  border-color: white;
   border-radius: 8px;
   width: 30%;
   margin: 0 auto;
@@ -32,11 +48,12 @@ body {
 .playerListHolder {
   list-style-type: none;
   font-size: 20px;
-  background-color: rgb(69, 128, 94);
+  background-color: rgb(222, 66, 120);
   border-radius: 8px;
   width: 40%;
   margin: 0 auto;
   margin-top: 4%;
+  font-size: 40px;
 }
 
 #playerList {
