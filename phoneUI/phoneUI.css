@@ -1,5 +1,29 @@
 body {
   text-align: center;
+  background-color: rgb(107, 132, 253);
+  color: white;
+  font-family: "Bangers";
+  font-size: 20px;
+}
+
+h1 {
+  font-size: 80px;
+}
+
+button {
+  font-size: 25px;
+}
+
+button:hover {
   background-color: black;
   color: white;
+}
+
+.infoHolder {
+  background-color: rgb(242, 97, 169);
+  border-radius: 8px;
+  width: 70%;
+  margin: 0 auto;
+  padding: 2px;
+  font-size: 30px;
 }
