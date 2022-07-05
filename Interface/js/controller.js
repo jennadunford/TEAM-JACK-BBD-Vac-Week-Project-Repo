@@ -1,3 +1,5 @@
+//const socket = new io("http://localhost:9000", {});
+const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
 var readyButton = document.getElementById("readyButton");
 var readyState = document.getElementById("state");
 var joinCode = document.querySelector("#joinCode");
@@ -9,6 +11,7 @@ var output;
 var xOutput = document.getElementById("xRead");
 var yOutput = document.getElementById("yRead");
 var zOutput = document.getElementById("zRead");
+
 
 $("#readyButton").click(function () {
   if (userName.value == "" || joinCode.value == "") {
@@ -22,6 +25,8 @@ $("#readyButton").click(function () {
       uName.innerHTML = output;
       output = joinCode.value;
       jCode.innerHTML = output;
+      socket.emit('User', userName.value);
+      socket.emit('joinCode', joinCode.value);
     } else {
       userReady = false;
       uName.innerHTML = "";
@@ -54,6 +59,21 @@ $("#readyButton").click(function () {
 // }
 
 //setInterval(alertFunc(), 10000); //for some reason, still constant, unstoppable updates...
+
+socket.on('invalidCode', () => {
+  alert('Client: invalid code')
+  console.log('Client: invalid code');
+  userReady = false;
+  jCode.innerHTML = "";
+  joinCode.value = "";
+  readyState.innerHTML = "Not ready";
+  readyButton.innerHTML = "Ready";
+});
+
+socket.on('validCode', () => {
+  alert('Client: Code was accepted')
+  console.log('Client: Code was accepted');
+});
 
 function updateReadings() {
   let acl = new Accelerometer({ frequency: 60 });
