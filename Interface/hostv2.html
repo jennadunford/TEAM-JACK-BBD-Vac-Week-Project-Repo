@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Bangers"
+    />
+    <link rel="stylesheet" href="css/host.css" />
+    <title>JS JOUST</title>
+  </head>
+  <body>
+    <div class="main">
+      <h1>JS JOUST</h1>
+      <h2>Generate Your 4 Character Join Code!</h2>
+      <button id="generateButton">GO!</button>
+    </div>
+    <div class="codeBox" id="joinCode">----</div>
+    <div class="dropdown">
+      <button
+        class="btn btn-secondary dropdown-toggle"
+        type="button"
+        id="dropdownMenuButton"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
+        data-toggle="dropdown"
+      >
+        Select Song
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" id="song1">Ride of the Valkyries</a>
+        <a class="dropdown-item" id="song2">Brandenburg Concerto No. 11</a>
+        <a class="dropdown-item" id="song3">Mario Kart Coconut Mall</a>
+        <a class="dropdown-item" id="song4">Best song you've ever heard</a>
+        <a class="dropdown-item" id="song5">The Fields of Ard Skellig</a>
+      </div>
+    </div>
+    <div><h2>SONG SELECTED:</h2></div>
+    <div><h2 id="showSong">...</h2></div>
+    <div class="playerListHolder">
+      <h4>PLAYER LIST</h4>
+      <ul id="playerList">
+        <li>Player 1</li>
+        <li>Player 2</li>
+      </ul>
+    </div>
+    <div><button id="startButton">START GAME</button></div>
+    <div id="startGamePressed" class="hidden">
+      <h2>Start Game Button Pressed</h2>
+    </div>
+    <div id="howMove" class="hidden"></div>
+    <div id="musicState" class="hidden"></div>
+    <div id="playButton" class="hidden"></div>
+  </body>
+  <script
+    type="text/javascript"
+    src="https://code.jquery.com/jquery-1.7.1.min.js"
+  ></script>
+  <script type="text/javascript" src="js/computerUI.js"></script>
+  <script
+    src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"
+  ></script>
+  <script
+    type="text/javascript"
+    src="https://code.jquery.com/jquery-1.7.1.min.js"
+  ></script>
+  <script type="text/javascript" src="js/music.js"></script>
+</html>

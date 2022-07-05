@@ -1,0 +1,71 @@
+body {
+  text-align: center;
+  background-color: rgb(107, 132, 253);
+  color: white;
+  font-family: "Bangers";
+  font-size: 20px;
+}
+
+button {
+  font-size: 25px;
+}
+
+button:hover {
+  background-color: black;
+  color: white;
+}
+
+.hidden {
+  display: none;
+}
+
+body {
+  text-align: center;
+  background-color: rgb(107, 132, 253);
+  color: white;
+  font-family: "Bangers";
+  font-size: 20px;
+}
+
+h1 {
+  font-size: 100px;
+  padding: 10px;
+}
+
+.dropdown-item {
+  font-size: 30px;
+}
+
+h3 {
+  font-size: 80px;
+}
+
+h4 {
+  font-size: 50px;
+}
+
+.codeBox {
+  text-align: center;
+  border-style: solid;
+  border-color: white;
+  border-radius: 8px;
+  width: 30%;
+  margin: 0 auto;
+  font-size: 30px;
+  margin-top: 2%;
+}
+
+.playerListHolder {
+  list-style-type: none;
+  font-size: 20px;
+  background-color: rgb(222, 66, 120);
+  border-radius: 8px;
+  width: 40%;
+  margin: 0 auto;
+  margin-top: 4%;
+  font-size: 20px;
+}
+
+#playerList {
+  list-style-type: none;
+}
