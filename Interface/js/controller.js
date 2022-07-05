@@ -1,3 +1,4 @@
+const socket = new io("http://localhost:9000", {});
 var readyButton = document.getElementById("readyButton");
 var readyState = document.getElementById("state");
 var joinCode = document.querySelector("#joinCode");
@@ -7,8 +8,6 @@ var jCode = document.getElementById("jCode");
 var userReady = false;
 var output;
 // const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
-const socket = new io("http://localhost:9000", {});
-
 
 $("#readyButton").click(function () {
   if (userName.value == "" || joinCode.value == "") {
@@ -36,29 +35,33 @@ $("#readyButton").click(function () {
   }
 });
 
-io.on('connection', (socket) => {
-    socket.on('invalidCode', () => {
-        alert('Client: invalid code')
-        console.log('Client: invalid code');
-        userReady = false;
-        jCode.innerHTML = "";
-        joinCode.value = "";
-        readyState.innerHTML = "Not ready";
-        readyButton.innerHTML = "Ready";
-    });
-    socket.on('validCode', () => {
-        alert('Client: Code was accepted')
-        console.log('Client: Code was accepted');
-    });
+// io.on('connection', (socket) => {
+
+// });
+
+socket.on('invalidCode', () => {
+  alert('Client: invalid code')
+  console.log('Client: invalid code');
+  userReady = false;
+  jCode.innerHTML = "";
+  joinCode.value = "";
+  readyState.innerHTML = "Not ready";
+  readyButton.innerHTML = "Ready";
 });
 
-let acl = new Accelerometer({frequency: 60});
-acl.addEventListener('reading', () => {
-  console.log("Acceleration along the X-axis " + acl.x);
-  console.log("Acceleration along the Y-axis " + acl.y);
-  console.log("Acceleration along the Z-axis " + acl.z);
-
-  alert("Acceleration along the X-axis " + acl.x + ", Y-axis: " + acl.y + ", Z-axis: " + acl.z);
+socket.on('validCode', () => {
+  alert('Client: Code was accepted')
+  console.log('Client: Code was accepted');
 });
 
-acl.start();
+
+// let acl = new Accelerometer({frequency: 60});
+// acl.addEventListener('reading', () => {
+//   console.log("Acceleration along the X-axis " + acl.x);
+//   console.log("Acceleration along the Y-axis " + acl.y);
+//   console.log("Acceleration along the Z-axis " + acl.z);
+
+//   alert("Acceleration along the X-axis " + acl.x + ", Y-axis: " + acl.y + ", Z-axis: " + acl.z);
+// });
+
+// acl.start();

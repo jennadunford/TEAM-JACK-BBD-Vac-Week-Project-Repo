@@ -22,16 +22,18 @@ io.on('connection', (socket) => { //Evertything with socket
 
     socket.on('User', (user) => { //Add the username to players
         players[playerCount++] = {
-            id: user,
-            playing: true,
-            score: 0,
-            acceleration: 0
+            "id": user,
+            "playing": true,
+            "score": 0,
+            "acceleration": 0
         }
         
         console.log(players);
         // if(playerCount == 1){
 
         // }
+        console.log(players[playerCount-1].id)
+        socket.broadcast.emit('userJoined', players[playerCount-1].id);
     });
 
     socket.on('joinCode', (clientCode) => {
@@ -52,7 +54,10 @@ io.on('connection', (socket) => { //Evertything with socket
     })
 
     socket.on('generateCode', () => {
+        code = genCode(4);  
+        console.log("Generate request");
         socket.emit('codeGenerated', code);
+        console.log("The code is: " + code);
     });
 
     //socket.broadcast.emit('gameCode', code);
@@ -62,7 +67,7 @@ app.use(express.static(path.join(__dirname, 'Interface')));
 
 server.listen(port, () => { //Port server listen on
     console.log("Listening on " + port);
-    console.log(code);
+    //console.log(code);
 });
 
 

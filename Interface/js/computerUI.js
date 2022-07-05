@@ -8,10 +8,12 @@ $("#generateButton").click(function () {
   socket.emit('generateCode');
 });
 
-io.on('connection', (socket) => {
-    socket.on('codeGenerated', (code) => {
-      joinCodeDisplay.innerHTML = code;
-  });
+// socket.on('connection', (socket) => {
+
+// });
+
+socket.on('codeGenerated', (code) => {
+  joinCodeDisplay.innerHTML = code;
 });
 
 $("#addPlayer").click(function () {
@@ -33,4 +35,10 @@ $("#startButton").click(function () {
   $("#startGamePressed").fadeIn(500);
   $("#startGamePressed").fadeOut(500);
   socket.emit('startGame');
+});
+
+
+socket.on('userJoined', (user) => {
+  console.log(user);
+  addPlayer(user);
 });
