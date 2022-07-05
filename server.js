@@ -1,4 +1,5 @@
 const express = require('express');
+var device = require('express-device');
 const path = require('path');
 const http = require('http');
 const socketio = require('socket.io');
@@ -8,6 +9,7 @@ const port = process.env.PORT || 9000;
 
 const app = express();
 const server = http.createServer(app);
+
 const io = socketio(server);
 
 let code = genCode(4);
@@ -17,7 +19,7 @@ let playerCount = 0;
 
 io.on('connection', (socket) => { //Evertything with socket
     console.log('Client connected');
-
+    // console.log(server);
     socket.on('User', (user) => {
         players[playerCount++] = {
             id: user,
@@ -25,8 +27,11 @@ io.on('connection', (socket) => { //Evertything with socket
             score: 0,
             acceleration: 0
         }
-
+        
         console.log(players);
+        if(playerCount == 1){
+
+        }
     });
 
     socket.on('joinCode', (clientCode) => {
@@ -43,13 +48,17 @@ io.on('connection', (socket) => { //Evertything with socket
     socket.broadcast.emit('gameCode', code);
 });
 
-
-app.use(express.static(path.join(__dirname, 'Client')));
+app.use(express.static(path.join(__dirname, 'Interface')));
 
 server.listen(port, () => { //Port server listen on
     console.log("Listening on " + port);
     console.log(code);
 });
+
+
+//MUSIC FROM HERE ---------------------------------------------------------------------------------
+// var audio;
+//GAME FLOW FROM HERE -----------------------------------------------------------------------------
 
 function genCode(length) {
     var result = '';
@@ -124,6 +133,9 @@ function startGame(){
     gamestate.rounds = 0;
     gamestate.timeRemaining = 60;
     gamestate.gameover = false;
+    // var audio = new Audio("Richard Wagner - Ride of The Valkyries.mp3");
+    // audio.play();
+    // startPitchDetection();
     //broadcast starting sensitivity
 }
 
