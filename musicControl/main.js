@@ -6,6 +6,7 @@ var showSong = document.getElementById("showSong");
 var change = false;
 
 const playButton = document.getElementById("playButton");
+const moveBox = document.getElementById("howMove");
 
 changeSpeeds();
 
@@ -70,14 +71,17 @@ function changeSpeeds() {
       case 1:
         audio.playbackRate = 1;
         speedCheck.innerHTML = "Playing at normal speed";
+        moveBox.innerHTML = "AT REGULAR SPEED!";
         break;
       case 2:
         audio.playbackRate = 5;
         speedCheck.innerHTML = "Playing 5 times faster";
+        moveBox.innerHTML = "FAST!";
         break;
       case 3:
         audio.playbackRate = 0.2;
         speedCheck.innerHTML = "Playing 0.2 times slower";
+        moveBox.innerHTML = "SLOWLY!";
         break;
     }
   }, 5000); //5 seconds
