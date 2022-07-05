@@ -49,6 +49,6 @@ function alertFunc()
   acl.start();
 }
 
-setInterval(alertFunc(),10000) //for some reason, still constant updates...
+setInterval(alertFunc(),10000) //for some reason, still constant, unstoppable updates...
 
 
