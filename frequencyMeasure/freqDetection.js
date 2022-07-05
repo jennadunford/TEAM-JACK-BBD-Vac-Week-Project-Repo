@@ -1,20 +1,20 @@
+let audioContext = new window.AudioContext();
+const audioElement = audio;
+const track = audioContext.createMediaElementSource(audioElement);
+let analyserNode = audioContext.createAnalyser();
+console.log(track);
+const frequencyDisplayElement = document.querySelector("#frequency");
+const changeInFrequencyDisplay = document.querySelector("#changeInFreq");
 var output = 0;
 var freq1Value = 0;
 var freq2Value = 0;
-let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-let microphoneStream = null;
-let analyserNode = audioCtx.createAnalyser();
-let audioData = new Float32Array(analyserNode.fftSize);
-let corrolatedSignal = new Float32Array(analyserNode.fftSize);
 let localMaxima = new Array(10);
 var maximaMean;
-const audioElement = document.querySelector("audio");
-const frequencyDisplayElement = document.querySelector("#frequency");
-const changeInFrequencyDisplay = document.querySelector("#changeInFreq");
-const track = audioCtx.createMediaElementSource(audioElement);
+let audioData = new Float32Array(analyserNode.fftSize);
+let corrolatedSignal = new Float32Array(analyserNode.fftSize);
 
 function startPitchDetection() {
-  track.connect(audioCtx.destination);
+  track.connect(audioContext.destination);
   track.connect(analyserNode);
 
   audioData = new Float32Array(analyserNode.fftSize);
@@ -26,7 +26,7 @@ function startPitchDetection() {
     let pitch = getAutocorrolatedPitch();
 
     frequencyDisplayElement.innerHTML = `${pitch}`;
-  }, 300);
+  }, 100);
 }
 
 function getAutocorrolatedPitch() {
@@ -61,17 +61,15 @@ function getAutocorrolatedPitch() {
   maximaMean /= maximaCount;
   // console.log(maximaMean);
 
-  return audioCtx.sampleRate / maximaMean;
+  return audioContext.sampleRate / maximaMean;
 }
 
 setInterval(() => {
   freq2Value = freq1Value;
-  console.log("frequency 2 value: " + freq2Value);
+  //   console.log("frequency 2 value: " + freq2Value);
   freq1Value = getAutocorrolatedPitch();
-  console.log("Frequency 1 value: " + freq1Value);
+  //   console.log("Frequency 1 value: " + freq1Value);
   // ouput = freq2Value - freq1Value;
   console.log(freq2Value - freq1Value);
   changeInFrequencyDisplay.innerHTML = `${freq2Value - freq1Value}`; //Show change in frequency over 1 second
-}, 1000);
-
-const playButton = document.querySelector("button");
+}, 500);
