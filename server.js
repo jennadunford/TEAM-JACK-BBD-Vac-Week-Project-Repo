@@ -19,55 +19,51 @@ let playerCount = 0;
 
 io.on('connection', (socket) => { //Evertything with socket
     console.log('Client connected');
-
-    socket.on('User', (user) => { //Add the username to players
+    socket.on('User', (user) => {
         players[playerCount++] = {
-            "id": user,
-            "playing": true,
-            "score": 0,
-            "acceleration": 0
+            id: user,
+            playing: true,
+            score: 0,
+            acceleration: 0
         }
         
         console.log(players);
-        // if(playerCount == 1){
+        if(playerCount == 1){
 
-        // }
-        console.log(players[playerCount-1].id)
-        socket.broadcast.emit('userJoined', players[playerCount-1].id);
+        }
     });
 
     socket.on('joinCode', (clientCode) => {
         if(clientCode !== code){
-            console.log('User tried to join with an invalid code');
-            socket.emit('invalidCode', 'Please use the correct join code');
-        }else{
-            console.log('User joined');
-            socket.emit('validCode', 'Joined');
+            socket.disconnect(true);
+            console.log("Client tried with invalid code.");
         }
     });
 
-    socket.on('startGame', () => {
-        console.log('Game started');
-        //startGame();
-
-        //round stuff
+    socket.on('ready', () => {
+        startGame();
     })
 
-    socket.on('generateCode', () => {
-        code = genCode(4);  
-        console.log("Generate request");
-        socket.emit('codeGenerated', code);
-        console.log("The code is: " + code);
-    });
+    socket.broadcast.emit('gameCode', code);
 
-    //socket.broadcast.emit('gameCode', code);
+    socket.on('disqualifyPlayer', (userName)=>{
+        //find player
+        var playerIndex = findPlayer(userName)
+        if (!(playerIndex==-1)){
+            gamestate.leaderboard[playerIndex].playing=false
+            sortLeaderboard(gamestate.leaderboard);
+            socket.broadcast.emit('updateGameState', gamestate);
+        }
+        //set playing to false
+        //update game state
+    })
 });
 
 app.use(express.static(path.join(__dirname, 'Interface')));
 
 server.listen(port, () => { //Port server listen on
     console.log("Listening on " + port);
-    //console.log(code);
+    console.log(code);
 });
 
 
@@ -97,7 +93,7 @@ var gamestate = {
 function findPlayer(player){
     //return indexx of player in gamestate.playerlist
     for (k=0;k<gamestate.leaderboard.length;k++){
-        if (player.id==gamestate.leaderboard[k].id){
+        if (player==gamestate.leaderboard[k].id){
             return k;
         }
     }
@@ -131,14 +127,14 @@ function getTimeRemaining(){
 }
 
 function getUserSensitityLevel(accReading){
-    let normalisedValue = (accReading.x + accReading.y + accReading.z)/3
-    if (normalisedValue < 1){
-        return 1;
-    } else if (normalisedValue < 2){
-        return 2
-    } else if (normalisedValue < 3){
-        return 3;
-    }
+    // let normalisedValue = (accReading.x + accReading.y + accReading.z)/3
+    // if (normalisedValue < 1){
+    //     return 1;
+    // } else if (normalisedValue < 2){
+    //     return 2
+    // } else if (normalisedValue < 3){
+    //     return 3;
+    // }
 }
 
 function startGame(){
@@ -177,13 +173,13 @@ function handlePlayerRequest(player){
         if(player.playing){
             let userSensLevel = getUserSensitityLevel(player.accReading) //work out their senslevel
             if(userSensLevel > gamestate.sensitivity){
-                gamestate.leaderboard[findPlayer(player)].playing = false;
+                gamestate.leaderboard[findPlayer(player.id)].playing = false;
                 numOfPlayers--;
                 //tell player they're out -> red screen?
             }
 
             if(numOfPlayers == 1){
-                gamestate.leaderboard[findPlayer(player)].score += 1;
+                gamestate.leaderboard[findPlayer(player.id)].score += 1;
                 resetRound();
                 //front should display scoreboard
             }
@@ -191,12 +187,13 @@ function handlePlayerRequest(player){
         }
     }
 
-    if(getTimeRemaining() < 10){ // 10 seconds left
-        gamestate.sensitivity += 3;
-    } else if(getTimeRemaining() < 20){
-        gamestate.sensitivity += 2;
-    } else if(getTimeRemaining() < 30){
-        gamestate.sensitivity += 1;
-    }
+    // if(getTimeRemaining() < 10){ // 10 seconds left
+    //     gamestate.sensitivity += 3;
+    // } else if(getTimeRemaining() < 20){
+    //     gamestate.sensitivity += 2;
+    // } else if(getTimeRemaining() < 30){
+    //     gamestate.sensitivity += 1;
+    // }
     //broadcast gamestate
+    socket.broadcast.emit('updateGameState', gamestate);
 }
