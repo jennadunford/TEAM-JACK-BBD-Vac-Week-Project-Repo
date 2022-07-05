@@ -11,6 +11,7 @@ var output;
 var xOutput = document.getElementById("xRead");
 var yOutput = document.getElementById("yRead");
 var zOutput = document.getElementById("zRead");
+var normOutput = document.getElementById("norm")
 
 
 $("#readyButton").click(function () {
@@ -82,6 +83,8 @@ function updateReadings() {
     xOutput.innerHTML = acl.x.toFixed(2);
     yOutput.innerHTML = acl.y.toFixed(2);
     zOutput.innerHTML = acl.z.toFixed(2);
+
+    normOutput = Math.sqrt((acl.x*acl.x) + (acl.y*acl.y) + (acl.z*acl.z) )
 
     // console.log("Acceleration along the Y-axis " + acl.y);
     // console.log("Acceleration along the Z-axis " + acl.z);
