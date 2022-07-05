@@ -33,7 +33,6 @@ io.on('connection', (socket) => { //Evertything with socket
 
         // }
         console.log(players[playerCount-1].id)
-        socket.broadcast.emit('userJoined', players[playerCount-1].id);
     });
 
     socket.on('joinCode', (clientCode) => {
@@ -43,6 +42,7 @@ io.on('connection', (socket) => { //Evertything with socket
         }else{
             console.log('User joined');
             socket.emit('validCode', 'Joined');
+            socket.broadcast.emit('userJoined', players[playerCount-1].id);
         }
     });
 
