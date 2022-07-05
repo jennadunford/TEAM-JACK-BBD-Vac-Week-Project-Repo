@@ -11,10 +11,14 @@
       crossorigin="anonymous"
     />
     <link rel="stylesheet" href="phoneUI.css" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Bangers"
+    />
     <title>JS JOUST</title>
   </head>
   <body>
-    <h1>JS JOUST PHONE INTERFACE SETUP</h1>
+    <h1>JS JOUST</h1>
     <div>
       <label for="joinCode">Enter the join code:</label>
       <input type="text" id="joinCode" name="joinCode" /><br /><br />
@@ -24,10 +28,12 @@
       <p>Current state:</p>
       <div id="state">Not ready</div>
     </div>
-    <p>Username:</p>
-    <div id="uName"></div>
-    <p>Join code:</p>
-    <div id="jCode"></div>
+    <div class="infoHolder">
+      <p>Username:</p>
+      <div id="uName"></div>
+      <p>Join code:</p>
+      <div id="jCode"></div>
+    </div>
   </body>
   <script
     type="text/javascript"
