@@ -1,4 +1,5 @@
-const socket = new io("http://localhost:9000", {});
+//const socket = new io("http://localhost:9000", {});
+const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
 var readyButton = document.getElementById("readyButton");
 var readyState = document.getElementById("state");
 var joinCode = document.querySelector("#joinCode");
@@ -7,7 +8,7 @@ var uName = document.getElementById("uName");
 var jCode = document.getElementById("jCode");
 var userReady = false;
 var output;
-// const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
+
 
 $("#readyButton").click(function () {
   if (userName.value == "" || joinCode.value == "") {
