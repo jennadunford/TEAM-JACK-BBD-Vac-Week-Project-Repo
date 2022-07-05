@@ -1,6 +1,6 @@
-var userName = document.querySelector("#userName");
-const socket = new io("http://localhost:9000", {});
-console.log('computer ui')
+// var userName = document.querySelector("#userName");
+// const socket = new io("http://localhost:9000", {});
+// console.log("computer ui");
 $("#generateButton").click(function () {
   var joinCodeDisplay = document.getElementById("joinCode");
   joinCodeDisplay.innerHTML = "ABCD";
