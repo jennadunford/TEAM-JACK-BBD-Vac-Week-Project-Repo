@@ -92,7 +92,7 @@ var gamestate = {
 // returns index of player that was sent into the function and returns -1 for a player that is sent in with invalid ID
 function findPlayer(player){
     //return indexx of player in gamestate.playerlist
-    for (k=0;k<gamestate.leaderboard.length;k++){
+    for (let k=0;k<=gamestate.leaderboard.length;k++){
         if (player==gamestate.leaderboard[k].id){
             return k;
         }

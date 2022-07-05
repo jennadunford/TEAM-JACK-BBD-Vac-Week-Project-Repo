@@ -100,4 +100,26 @@ function updateReadings() {
   });
   acl.start();
 }
+
+function alert_disqualify()
+{ 
+  let lacl = new LinearAccelerationSensor({frequency: 60});
+  lacl.addEventListener('reading', () => {
+    acc_magnitude = sqrt(lacl.x*lacl.x + lacl.y*lacl.y + lacl.z*lacl.z)
+    if (acc_magnitude>=upper_threshold || acc_magnitude<=lower_threshold){
+        // disqualify the player.
+        // tell server that player is disqualifyed
+    socket.emit('disqualifyPlayer', userName);
+            //on server:
+            //sort board
+            //gery them out
+    } else if (acc_magnitude>=upper_threshold*0.9){
+        //alert user that they are close to threshold
+    }
+    // alert("Acceleration along the X-axis " + acl.x + ", Y-axis: " + acl.y + ", Z-axis: " + acl.z);
+    
+  });
+  acl.start();
+}
+
 setInterval(updateReadings(), 500);
