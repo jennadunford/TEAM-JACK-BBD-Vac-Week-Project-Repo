@@ -77,7 +77,7 @@ socket.on('validCode', () => {
 });
 
 function updateReadings() {
-  let acl = new Accelerometer({ frequency: 60 });
+  let acl = new LinearAccelerationSensor({ frequency: 60 });
   acl.addEventListener("reading", () => {
     //console.log("Acceleration along the X-axis " + acl.x);
     xOutput.innerHTML = acl.x.toFixed(2);
