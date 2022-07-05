@@ -19,7 +19,6 @@ let playerCount = 0;
 
 io.on('connection', (socket) => { //Evertything with socket
     console.log('Client connected');
-    // console.log(server);
     socket.on('User', (user) => {
         players[playerCount++] = {
             id: user,

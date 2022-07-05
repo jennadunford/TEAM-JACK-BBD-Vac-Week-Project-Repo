@@ -6,6 +6,7 @@ var uName = document.getElementById("uName");
 var jCode = document.getElementById("jCode");
 var userReady = false;
 var output;
+const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
 
 $("#readyButton").click(function () {
   if (userName.value == "" || joinCode.value == "") {
@@ -19,6 +20,8 @@ $("#readyButton").click(function () {
       uName.innerHTML = output;
       output = joinCode.value;
       jCode.innerHTML = output;
+      socket.emit('User', userName.value);
+      socket.emit('joinCode', joinCode.value);
     } else {
       userReady = false;
       uName.innerHTML = "";
@@ -29,6 +32,22 @@ $("#readyButton").click(function () {
       readyButton.innerHTML = "Ready";
     }
   }
+});
+
+io.on('connection', (socket) => {
+    socket.on('invalidCode', () => {
+        alert('Client: invalid code')
+        console.log('Client: invalid code');
+        userReady = false;
+        jCode.innerHTML = "";
+        joinCode.value = "";
+        readyState.innerHTML = "Not ready";
+        readyButton.innerHTML = "Ready";
+    });
+    socket.on('validCode', () => {
+        alert('Client: Code was accepted')
+        console.log('Client: Code was accepted');
+    });
 });
 
 let acl = new Accelerometer({frequency: 60});

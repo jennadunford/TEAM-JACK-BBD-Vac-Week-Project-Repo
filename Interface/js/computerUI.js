@@ -1,9 +1,17 @@
 // var userName = document.querySelector("#userName");
 // const socket = new io("http://localhost:9000", {});
 // console.log("computer ui");
+const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
+
+var joinCodeDisplay = document.getElementById("joinCode");
 $("#generateButton").click(function () {
-  var joinCodeDisplay = document.getElementById("joinCode");
-  joinCodeDisplay.innerHTML = "ABCD";
+  socket.emit('generateCode');
+});
+
+io.on('connection', (socket) => {
+    socket.on('codeGenerated', (code) => {
+      joinCodeDisplay.innerHTML = code;
+  });
 });
 
 $("#addPlayer").click(function () {
@@ -24,4 +32,5 @@ function addPlayer(userName) {
 $("#startButton").click(function () {
   $("#startGamePressed").fadeIn(500);
   $("#startGamePressed").fadeOut(500);
+  socket.emit('startGame');
 });
