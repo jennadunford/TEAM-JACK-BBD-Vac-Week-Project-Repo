@@ -45,6 +45,6 @@ function alertFunc()
   });
 }
 
-setInterval(alertFunc(),5000)
+//setInterval(alertFunc(),5000)
 
 acl.start();
