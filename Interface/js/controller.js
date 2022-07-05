@@ -77,4 +77,4 @@ function updateReadings() {
   });
   acl.start();
 }
-setInterval(updateReadings(), 100);
+setInterval(updateReadings(), 500);
