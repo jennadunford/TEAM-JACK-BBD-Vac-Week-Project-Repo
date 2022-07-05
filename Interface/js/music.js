@@ -66,7 +66,7 @@ $(".dropdown-menu a").on("click", function () {
 function changeSpeeds() {
   setInterval(() => {
     var num = Math.floor(Math.random() * 3) + 1;
-    console.log("Random number generated: " + num);
+    //console.log("Random number generated: " + num);
     switch (num) {
       case 1:
         audio.playbackRate = 1;
