@@ -19,7 +19,8 @@ let playerCount = 0;
 
 io.on('connection', (socket) => { //Evertything with socket
     console.log('Client connected');
-    socket.on('User', (user) => {
+
+    socket.on('User', (user) => { //Add the username to players
         players[playerCount++] = {
             id: user,
             playing: true,
@@ -28,23 +29,33 @@ io.on('connection', (socket) => { //Evertything with socket
         }
         
         console.log(players);
-        if(playerCount == 1){
+        // if(playerCount == 1){
 
-        }
+        // }
     });
 
     socket.on('joinCode', (clientCode) => {
         if(clientCode !== code){
-            socket.disconnect(true);
-            console.log("Client tried with invalid code.");
+            console.log('User tried to join with an invalid code');
+            socket.emit('invalidCode', 'Please use the correct join code');
+        }else{
+            console.log('User joined');
+            socket.emit('validCode', 'Joined');
         }
     });
 
-    socket.on('ready', () => {
-        startGame();
+    socket.on('startGame', () => {
+        console.log('Game started');
+        //startGame();
+
+        //round stuff
     })
 
-    socket.broadcast.emit('gameCode', code);
+    socket.on('generateCode', () => {
+        socket.emit('codeGenerated', code);
+    });
+
+    //socket.broadcast.emit('gameCode', code);
 });
 
 app.use(express.static(path.join(__dirname, 'Interface')));
