@@ -1,0 +1,50 @@
+body {
+  text-align: center;
+  background-color: rgb(107, 132, 253);
+  color: white;
+  font-family: "Bangers";
+  font-size: 20px;
+}
+
+.pBox {
+  background-color: rgb(222, 66, 120);
+}
+
+.rightBox {
+  width: 30vw;
+  height: 100vh;
+}
+
+.leftBox {
+  width: 30vw;
+  height: 100vh;
+  padding: 1%;
+}
+
+.midBox {
+  width: 33vw;
+}
+
+h2 {
+  font-size: 90px;
+}
+
+h3 {
+  font-size: 70px;
+  padding: 50px;
+}
+.flexGameBox {
+  width: 90%;
+  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+  margin: auto 0;
+}
+
+.leaderBoard {
+  list-style-type: none;
+  font-size: 60px;
+  display: grid;
+  grid-template-columns: 15vw 15vw;
+  padding: 2px;
+}
