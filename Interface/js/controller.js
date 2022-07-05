@@ -8,6 +8,9 @@ var uName = document.getElementById("uName");
 var jCode = document.getElementById("jCode");
 var userReady = false;
 var output;
+var xOutput = document.getElementById("xRead");
+var yOutput = document.getElementById("yRead");
+var zOutput = document.getElementById("zRead");
 
 
 $("#readyButton").click(function () {
@@ -36,9 +39,26 @@ $("#readyButton").click(function () {
   }
 });
 
-// io.on('connection', (socket) => {
+// function alertFunc() {
+//   let acl = new Accelerometer({ frequency: 60 });
+//   acl.addEventListener("reading", () => {
+//     console.log("Acceleration along the X-axis " + acl.x);
+//     console.log("Acceleration along the Y-axis " + acl.y);
+//     console.log("Acceleration along the Z-axis " + acl.z);
 
-// });
+//     alert(
+//       "Acceleration along the X-axis " +
+//         acl.x +
+//         ", Y-axis: " +
+//         acl.y +
+//         ", Z-axis: " +
+//         acl.z
+//     );
+//   });
+//   acl.start();
+// }
+
+//setInterval(alertFunc(), 10000); //for some reason, still constant, unstoppable updates...
 
 socket.on('invalidCode', () => {
   alert('Client: invalid code')
@@ -55,14 +75,26 @@ socket.on('validCode', () => {
   console.log('Client: Code was accepted');
 });
 
+function updateReadings() {
+  let acl = new Accelerometer({ frequency: 60 });
+  acl.addEventListener("reading", () => {
+    //console.log("Acceleration along the X-axis " + acl.x);
+    xOutput.innerHTML = acl.x.toFixed(2);
+    yOutput.innerHTML = acl.y.toFixed(2);
+    zOutput.innerHTML = acl.z.toFixed(2);
 
-// let acl = new Accelerometer({frequency: 60});
-// acl.addEventListener('reading', () => {
-//   console.log("Acceleration along the X-axis " + acl.x);
-//   console.log("Acceleration along the Y-axis " + acl.y);
-//   console.log("Acceleration along the Z-axis " + acl.z);
+    // console.log("Acceleration along the Y-axis " + acl.y);
+    // console.log("Acceleration along the Z-axis " + acl.z);
 
-//   alert("Acceleration along the X-axis " + acl.x + ", Y-axis: " + acl.y + ", Z-axis: " + acl.z);
-// });
-
-// acl.start();
+    // alert(
+    //   "Acceleration along the X-axis " +
+    //     acl.x +
+    //     ", Y-axis: " +
+    //     acl.y +
+    //     ", Z-axis: " +
+    //     acl.z
+    // );
+  });
+  acl.start();
+}
+setInterval(updateReadings(), 500);
