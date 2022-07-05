@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Testing Page</title>
+        <title>Main page</title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">        
@@ -17,14 +17,14 @@
     <body>
         <div class="client">
             <h1>Client:</h1>
-            <p>We are working on socket communications (Keegan and Daniel). Keegan is client. I am sending the username to the server.</p>
-            <div class="field">Username: <input type="userName" id="userName"></div>
-            <div class="field">Join Code: <input type="joinCode" id="joinCode"></div>
-            <input type="submit" value="Send" id="submit" onclick="sendUsername()">
-            <input type="submit" value="ready" id="ready" onclick="sayReady()">
+            <p>Do you want to host or join a game?</p>
+            <!-- <div class="field">Username: <input type="userName" id="userName"></div>
+            <div class="field">Join Code: <input type="joinCode" id="joinCode"></div> -->
+            <input type="submit" value="HOST" id="submit" onclick="makeHost()">
+            <input type="submit" value="JOIN" id="ready" onclick="makeController()">
         </div>
 
         <script src="/socket.io/socket.io.js"></script>
-        <script src="./js/client.js"></script>
+        <script src="./js/main.js"></script>
     </body>
 </html>
