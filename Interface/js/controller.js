@@ -6,7 +6,9 @@ var uName = document.getElementById("uName");
 var jCode = document.getElementById("jCode");
 var userReady = false;
 var output;
-const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
+// const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
+const socket = new io("http://localhost:9000", {});
+
 
 $("#readyButton").click(function () {
   if (userName.value == "" || joinCode.value == "") {
