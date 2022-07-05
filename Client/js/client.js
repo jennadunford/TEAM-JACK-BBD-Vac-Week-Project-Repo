@@ -1,6 +1,6 @@
 // lets go
 console.log("start")
-const socket = new io("http://localhost:9000", {});
+const socket = new io("https://quiet-hamlet-04799.herokuapp.com/", {});
 
 function sendUsername()
 {
