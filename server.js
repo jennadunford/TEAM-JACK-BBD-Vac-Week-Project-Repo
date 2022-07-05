@@ -6,6 +6,20 @@ const socketio = require('socket.io');
 
 const port = process.env.PORT || 9000;
 
+//Open SSL stuff
+const openssl = require('node-openssl-cert');
+
+var options = {
+	binpath: 'D:/BBD/Vac Weeks/2022/OpenSSL-Win64/bin/openssl.exe'
+}
+
+const open = new openssl(options);
+
+open.generateRSAPrivateKey({}, function(err, key, cmd) {
+	console.log(cmd);
+	console.log(key);
+});
+
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);

@@ -2,6 +2,7 @@
   "dependencies": {
     "express": "^4.18.1",
     "http": "^0.0.1-security",
+    "node-openssl-cert": "^0.1.41",
     "path": "^0.12.7",
     "socket.io": "^4.5.1",
     "socket.io-client": "^4.5.1"
