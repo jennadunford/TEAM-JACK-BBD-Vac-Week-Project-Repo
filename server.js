@@ -2,7 +2,9 @@ const express = require('express');
 const path = require('path');
 const http = require('http');
 const socketio = require('socket.io');
-const gameflow = require('./game_logic')
+const gameflow = require('./game_logic');
+
+const port = process.env.PORT || 9000;
 
 const app = express();
 const server = http.createServer(app);
@@ -44,8 +46,8 @@ io.on('connection', (socket) => { //Evertything with socket
 
 app.use(express.static(path.join(__dirname, 'Client')));
 
-server.listen(9000, () => { //Port server listen on
-    console.log("Listening on 9000");
+server.listen(port, () => { //Port server listen on
+    console.log("Listening on " + port);
     console.log(code);
 });
 
