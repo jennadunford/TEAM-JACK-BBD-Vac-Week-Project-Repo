@@ -20,7 +20,7 @@ socket.on("gameCode", (code) => {
 
 //must visually indicate that the player was eliminated
 socket.on("strikePlayer", (userName) => {
-
+  console.log('comp: strike')
   strikeThrough(userName);
 });
 
@@ -28,6 +28,7 @@ function strikeThrough(userName) {
   let nodes = Array.from($("#playerList").children("li"));
   for (let count = 0; count < nodes.length; count++) {
     const element = nodes[count];
+    console.log(element.innerHTML)
     console.log(nodes[count].innerHTML);
     if (element.innerHTML == userName) {
       console.log('attempting to strike')
