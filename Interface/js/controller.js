@@ -125,7 +125,7 @@ function alert_disqualify()
     console.log('alter_disqualify')
   lacl = new LinearAccelerationSensor({frequency: 60});
   lacl.addEventListener('reading', () => {
-    acc_magnitude = sqrt(lacl.x*lacl.x + lacl.y*lacl.y + lacl.z*lacl.z)
+    acc_magnitude = Math.sqrt(lacl.x*lacl.x + lacl.y*lacl.y + lacl.z*lacl.z)
     if (acc_magnitude>=upper_threshold || acc_magnitude<=lower_threshold || acc_magnitude > hard_cap){
       // disqualify the player:
         // tell player that player is disqualified by making their screen red
