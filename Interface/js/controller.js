@@ -137,7 +137,7 @@ socket.on("restartGame", () => {
 socket.on("strikePlayer", (userName) => {
     socket.emit('controllerLog', 'controller strike ' + userName);
     console.log('controller: strike')
-    strikeThrough(userName);
+    this.strikeThrough(userName);
 });
 
 //must visually indicate that the player was eliminated
