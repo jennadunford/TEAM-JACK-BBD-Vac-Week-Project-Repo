@@ -127,6 +127,15 @@ socket.on("updateSensitivity", (songSensitivity) => {
   // TODO: check that song sensitivity makes sense for thresholds
 });
 
+socket.on('gameStarted', () =>{
+    //will start users accelerometer
+})
+
+socket.on('restartGame', () =>{
+    alert('Game was restarted by host')
+    window.location.href = "./controller.html";
+})
+
 function updateReadings() {
   let acl = new LinearAccelerationSensor({ frequency: 60 });
   acl.addEventListener("reading", () => {
