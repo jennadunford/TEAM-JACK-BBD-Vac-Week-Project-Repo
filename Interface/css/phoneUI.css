@@ -4,6 +4,7 @@ body {
   color: white;
   font-family: "Bangers";
   font-size: 20px;
+  transition: background 1.5s;
 }
 
 h1 {

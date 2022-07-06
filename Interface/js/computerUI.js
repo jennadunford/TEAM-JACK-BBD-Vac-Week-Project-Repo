@@ -158,21 +158,21 @@ function changeSpeeds() {
         audio.playbackRate = songSpeed;
         speedCheck.innerHTML = "Playing at normal speed";
         moveBox.innerHTML = "AT REGULAR SPEED!";
-        socket.emit('songSensitivity', songSpeed);
+        socket.emit("songSensitivity", songSpeed);
         break;
       case 2:
         var songSpeed = 1.2;
         audio.playbackRate = songSpeed;
         speedCheck.innerHTML = "Playing 1.2 times faster";
         moveBox.innerHTML = "FAST!";
-        socket.emit('songSensitivity', songSpeed);
+        socket.emit("songSensitivity", songSpeed);
         break;
       case 3:
         var songSpeed = 0.8;
         audio.playbackRate = songSpeed;
         speedCheck.innerHTML = "Playing 0.8 times slower";
         moveBox.innerHTML = "SLOWLY!";
-        socket.emit('songSensitivity', songSpeed);
+        socket.emit("songSensitivity", songSpeed);
         break;
     }
   }, 5000); //5 seconds
@@ -181,3 +181,10 @@ function changeSpeeds() {
 $("#reload").click(function () {
   location.reload();
 });
+
+function showRemovedPlayer(userName) {
+  var loseMessage = document.getElementById("loseMessage");
+  loseMessage.innerHTML = userName + " HAS LOST THE GAME";
+  $("#loseMessage").fadeIn(700);
+  $("#loseMessage").fadeOut(900);
+}

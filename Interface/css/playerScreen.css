@@ -1,0 +1,27 @@
+body {
+  transition: background 1.5s;
+}
+
+.screenPlayerListBox {
+  background-color: rgb(222, 66, 120);
+  border-radius: 8px;
+  width: 85%;
+  margin: 0 auto;
+}
+
+li {
+  font-size: 30px;
+}
+
+h2 {
+  font-size: 30px;
+}
+
+img.winImage {
+  width: 70%;
+  transition: 0.2s;
+}
+
+.hidden {
+  display: none;
+}
