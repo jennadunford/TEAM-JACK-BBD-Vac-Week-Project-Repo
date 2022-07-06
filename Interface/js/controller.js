@@ -154,6 +154,7 @@ function updateReadings() {
 }
 
 function alert_disqualify() {
+  console.log("alter_disqualify");
   lacl = new LinearAccelerationSensor({ frequency: 60 });
   lacl.addEventListener("reading", () => {
     acc_magnitude = sqrt(lacl.x * lacl.x + lacl.y * lacl.y + lacl.z * lacl.z);
@@ -168,7 +169,7 @@ function alert_disqualify() {
 
       // tell server that player is disqualifyed
       socket.emit("disqualifyPlayer", sessionStorage.getItem("userName"));
-      console.log(sessionStorage.getItem("userName") + " was disqualified");
+      alert(sessionStorage.getItem("userName") + " was disqualified");
       //on server:
       //sort board
       //grey them out on the scoreboard
