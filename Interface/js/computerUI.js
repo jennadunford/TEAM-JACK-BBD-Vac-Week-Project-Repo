@@ -1,7 +1,8 @@
 // var userName = document.querySelector("#userName");
 // const socket = new io("http://localhost:9000", {});
 // console.log("computer ui");
-const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
+const socket = new io("https://jack-joust.herokuapp.com/", {});
+// const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
 var musicfiles = ["Music Files/RideOfTheValkyries.mp3", "Music Files/BrandenburgConcertoNo11.mp3", "Music Files/CoconutMallMarioKart.mp3", "Music Files/NeverGonnaGiveYouUp.mp3", "Music Files/TheFieldsofArdSkellig.mp3", "Music Files/EpicSportClap.mp3", "Music Files/GroovyRock.mp3", "Music Files/Piano.mp3"]
 var musicnames = ["Ride Of The Valkyries", "Brandenburg Concerto No.11", "Coconut Mall Mario Kart", "Never Gonna Give You Up", "The Fields of Ard Skellig", "Epic Sport Clap", "Groovy Rock", "Piano"]
 var songSpeed = 1;
