@@ -148,7 +148,7 @@ function alert_disqualify()
     // alert("Acceleration along the X-axis " + acl.x + ", Y-axis: " + acl.y + ", Z-axis: " + acl.z);
     
   });
-  acl.start();
+  lacl.start();
 }
 
 setInterval(updateReadings(), 500);
