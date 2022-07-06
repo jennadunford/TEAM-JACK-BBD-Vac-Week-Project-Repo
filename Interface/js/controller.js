@@ -1,5 +1,5 @@
-// const socket = new io("http://localhost:9000", {});
-const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
+const socket = new io("http://localhost:9000", {});
+// const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
 var readyButton = document.getElementById("readyButton");
 var readyState = document.getElementById("state");
 var joinCode = document.querySelector("#joinCode");
@@ -65,23 +65,25 @@ function ready() {
     if (!userReady) {
       userReady = true;
       readyState.innerHTML = "Ready!";
-      readyButton.innerHTML = "Not Ready";
+      //readyButton.innerHTML = "Not Ready";
       output = userName.value;
       uName.innerHTML = output;
       output = joinCode.value;
       jCode.innerHTML = output;
-      socket.emit("User", userName.value);
-      socket.emit("joinCode", joinCode.value);
+      socket.emit("userJoin", userName.value, joinCode.value);
+      //socket.emit("joinCode", joinCode.value);
       sessionStorage.setItem("userName", userName.value);
-    } else {
-      userReady = false;
-      uName.innerHTML = "";
-      jCode.innerHTML = "";
-      userName.value = "";
-      joinCode.value = "";
-      readyState.innerHTML = "Not ready";
-      readyButton.innerHTML = "Ready";
     }
+    // } else {
+    //   userReady = false;
+    //   //socket.emit('notReady', sessionStorage.getItem('userName'));
+    //   // uName.innerHTML = "";
+    //   // jCode.innerHTML = "";
+    //   // userName.value = "";
+    //   // joinCode.value = "";
+    //   readyState.innerHTML = "Not ready";
+    //   readyButton.innerHTML = "Ready";
+    // }
   }
 }
 
@@ -131,6 +133,16 @@ socket.on("validCode", () => {
   console.log("Client: Code was accepted");
 });
 
+socket.on("takenName", (msg) => {
+  alert(msg);
+  userReady = false;
+  jCode.innerHTML = "";
+  joinCode.value = "";
+  readyState.innerHTML = "Not ready";
+  readyButton.innerHTML = "Ready";
+  console.log("accepted username");
+})
+
 socket.on("updateSensitivity", (songSensitivity) => {
   if (songSensitivity == 0.2) {
     // slow
@@ -153,21 +165,36 @@ function addPlayer(userName) {
   document.getElementById("playerList").appendChild(node);
 }
 
-socket.on("gameStarted", (players) => {
-  //will start users' accelerometer
-  console.log("start game");
-  window.location.href = "./playerScreen.html";
 
-  for (let i = 0; i < players.length; i++) {
-    sessionStorage.setItem(i + 1, players[i].id);
-  }
+socket.on('gameStarted', () =>{
+    //will start users' accelerometer
+    console.log('start game')
+    sessionStorage.setItem('Playing', true);
+    window.location.href = "./playerScreen.html";
   //start accelerometer
 });
 
-socket.on("restartGame", () => {
-  alert("Game was restarted by host");
-  window.location.href = "./controller.html";
-});
+
+    // for(let i = 0;i < players.length; i++){
+    //   sessionStorage.setItem(i + 1,players[i].id);
+    // }
+    //start accelerometer
+})
+
+socket.on('playerList', (players) => {
+  //Add playerlist
+  for (let i = 0; i < players.length; i++) {
+    addPlayer(players[i].id);
+  }
+})
+
+socket.on('restartGame', () =>{
+    sessionStorage.clear();
+    alert('Game was restarted by host')
+    window.location.href = "./controller.html";
+})
+
+
 
 function updateReadings() {
   let acl = new LinearAccelerationSensor({ frequency: 60 });
@@ -286,7 +313,10 @@ function getAccel() {
   }
 }
 
-setInterval(getAccel(), 500);
+if(sessionStorage.getItem('Playing')){
+  console.log('running');
+  setInterval(getAccel(), 500);
+}
 
 DeviceMotionEvent.requestPermission().then((response) => {
   if (response == "granted") {
