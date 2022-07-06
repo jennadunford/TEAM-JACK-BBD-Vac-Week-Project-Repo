@@ -9,13 +9,23 @@ $("#generateButton").click(function () {
   socket.emit("generateCode");
 });
 
-// socket.on('connection', (socket) => {
-
-// });
 
 socket.on("gameCode", (code) => {
   console.log('generated code on computer: ' + code);
   joinCodeDisplay.innerHTML = code;
+});
+
+//must visually indicate that the player was eliminated
+socket.on("disqualifyPlayer", (userName) =>{
+  let nodes = Array.from($("#playerList").children("li"));
+  for (let count = 0; count < nodes.length; count++) {
+    const element = nodes[count];
+    console.log(nodes[count].innerHTML);
+    if (element.innerHTML == userName) {
+      element.innerHTML.strike();
+      break;
+    }
+  }
 });
 
 $("#addPlayer").click(function () {

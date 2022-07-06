@@ -67,7 +67,7 @@ io.on('connection', (socket) => { //Evertything with socket
             socket.broadcast.emit('updateGameState', gamestate);
             
         }
-        socket.disconnect(true);
+        // socket.disconnect(true);
         console.log(userName + ' disqualified');
         //set playing to false
         //update game state
