@@ -172,6 +172,7 @@ function alert_disqualify(acc_magnitude){
     alert("Disqualified");
     // tell player that player is disqualified by making their screen red
     document.body.style.background = "red";
+    window.body.style.background = "red";
 
     // tell server that player is disqualifyed
     socket.emit("disqualifyPlayer", sessionStorage.getItem("userName"));
