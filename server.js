@@ -21,22 +21,12 @@ let playing = false;
 io.on('connection', (socket) => { //Evertything with socket
     console.log('Client connected');
     socket.on('User', (user) => {
-        let usernameTaken = checkUsername(user);
-        // userBool = usernameTaken
-        if(usernameTaken)
-        {
-            console.log("Username taken!")
-            
-            socket.emit('usernameTaken', 'This username is taken...');
+        players[playerCount++] = {
+            "id": user,
+            "playing": true,
+            "score": 0
         }
-        else
-        {
-            players[playerCount++] = {
-                "id": user,
-                "playing": true,
-                "score": 0
-            }
-        }
+        
         
         
         console.log(players);
