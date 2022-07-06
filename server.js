@@ -58,6 +58,7 @@ io.on('connection', (socket) => { //Evertything with socket
             gamestate.leaderboard[playerIndex].playing=false
             sortLeaderboard(gamestate.leaderboard);
             socket.broadcast.emit('updateGameState', gamestate);
+            socket.disconnect(true);
         }
         //set playing to false
         //update game state
