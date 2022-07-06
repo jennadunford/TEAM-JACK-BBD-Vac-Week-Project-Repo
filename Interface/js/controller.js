@@ -91,6 +91,20 @@ socket.on("updateSensitivity", (songSensitivity) => {
   // TODO: check that song sensitivity makes sense for thresholds
 });
 
+
+function strikeThrough(userName) {
+    socket.emit('controllerLog: '+ 'strike')
+    let nodes = Array.from($("#playerList").children("li"));
+    for (let count = 0; count < nodes.length; count++) {
+      const element = nodes[count];
+      console.log(nodes[count].innerHTML);
+      if (element.innerHTML == userName) {
+        element.innerHTML = element.innerHTML.strike();
+        break;
+      }
+    }
+  }
+
 function addPlayer(userName) {
   const node = document.createElement("li");
   const textnode = document.createTextNode(userName);
@@ -121,9 +135,9 @@ socket.on("restartGame", () => {
 
 //must visually indicate that the player was eliminated
 socket.on("strikePlayer", (userName) => {
-    socket.emit('controllerLog', 'controller strike');
+    socket.emit('controllerLog', 'controller strike ' + userName);
     console.log('controller: strike')
-  strikeThrough(userName);
+    strikeThrough(userName);
 });
 
 //must visually indicate that the player was eliminated
@@ -132,6 +146,8 @@ socket.on("disqualifyPlayer", (userName) => {
     console.log('controller: strike')
   strikeThrough(userName);
 });
+
+
 
 function updateReadings() {
   let acl = new LinearAccelerationSensor({ frequency: 60 });
