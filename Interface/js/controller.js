@@ -12,6 +12,7 @@ var xOutput = document.getElementById("xRead");
 var yOutput = document.getElementById("yRead");
 var zOutput = document.getElementById("zRead");
 var normOutput = document.getElementById("norm");
+
 var sensorAccelerationMagnitude = 0;
 
 var acc_magnitude = 0;
@@ -19,6 +20,7 @@ let lacl = new LinearAccelerationSensor({ frequency: 60 });
 var lower_threshold = 0;
 var upper_threshold = 30;
 var hard_cap = 50;
+
 
 // $("#readyButton").click(function () {
 //   console.log("ready button pressed");
@@ -110,6 +112,7 @@ socket.on("invalidCode", () => {
 socket.on("validCode", () => {
   alert("Client: Code was accepted");
   console.log("Client: Code was accepted");
+
 });
 
 socket.on("updateSensitivity", (songSensitivity) => {
@@ -125,6 +128,7 @@ socket.on("updateSensitivity", (songSensitivity) => {
   }
 
   // TODO: check that song sensitivity makes sense for thresholds
+
 });
 
 function updateReadings() {
@@ -154,6 +158,7 @@ function updateReadings() {
   acl.start();
 }
 
+
 function alert_disqualify()
 { 
     console.log('alter_disqualify')
@@ -161,13 +166,16 @@ function alert_disqualify()
   lacl.addEventListener('reading', () => {
     acc_magnitude = Math.sqrt(lacl.x*lacl.x + lacl.y*lacl.y + lacl.z*lacl.z)
     if (acc_magnitude>=upper_threshold || acc_magnitude > hard_cap){
+
       // disqualify the player:
       // tell player that player is disqualified by making their screen red
       document.body.style.background = "red";
 
       // tell server that player is disqualifyed
       socket.emit("disqualifyPlayer", sessionStorage.getItem("userName"));
+
     //   alert(sessionStorage.getItem("userName") + " was disqualified");
+
       //on server:
       //sort board
       //grey them out on the scoreboard
@@ -191,6 +199,7 @@ function alert_disqualify()
 setInterval(alert_disqualify(), 500);
 
 function getAccel() {
+
   console.log("permissions button pressed");
   if (typeof DeviceMotionEvent.requestPermission === "function") {
     DeviceMotionEvent.requestPermission()
@@ -221,3 +230,24 @@ function getAccel() {
 }
 
 setInterval(getAccel(), 500);
+
+  DeviceMotionEvent.requestPermission().then((response) => {
+    if (response == "granted") {
+      console.log("accelerometer permission granted");
+      // Do stuff here
+    }
+  });
+}
+
+function changeToBlue() {
+  document.body.style.background = "blue";
+}
+
+function changeToPink() {
+  document.body.style.background = "pink";
+}
+
+function changeToRed() {
+  document.body.style.background = "red";
+}
+
