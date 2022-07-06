@@ -52,7 +52,7 @@ io.on('connection', (socket) => { //Evertything with socket
 
     socket.on('generateCode', () => {
         code = genCode(4);
-        socket.emit('gameCode', code);
+        socket.broadcast.emit('gameCode', code);
     })
 
     socket.on('disqualifyPlayer', (userName)=>{ //Disable the player's playing attribute
