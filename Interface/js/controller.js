@@ -1,5 +1,5 @@
-// const socket = new io("http://localhost:9000", {});
-const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
+const socket = new io("http://localhost:9000", {});
+// const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
 var readyButton = document.getElementById("readyButton");
 var readyState = document.getElementById("state");
 var joinCode = document.querySelector("#joinCode");
@@ -133,6 +133,9 @@ socket.on("updateSensitivity", (songSensitivity) => {
 
 socket.on('gameStarted', () =>{
     //will start users' accelerometer
+    console.log('start game')
+    window.location.href = "./playerScreen.html";
+    //start accelerometer
 })
 
 socket.on('restartGame', () =>{

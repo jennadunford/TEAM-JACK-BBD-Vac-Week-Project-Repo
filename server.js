@@ -58,6 +58,7 @@ io.on('connection', (socket) => { //Evertything with socket
         socket.broadcast.emit('restartGame');
 
         players = [];
+        playerCount = 0;
     })
 
     socket.on('generateCode', () => {
@@ -115,13 +116,13 @@ function findPlayer(player){
     return -1;
 }
 
-// var gamestate = {
-//     leaderboard:"",
-//     currentSong:"",
-//     sensitivity:"",
-//     currentRound:"",
-//     timeRemaining:""
-// };
+var gamestate = {
+    leaderboard:"",
+    currentSong:"",
+    sensitivity:"",
+    currentRound:"",
+    timeRemaining:""
+};
 
 // returns index of player that was sent into the function and returns -1 for a player that is sent in with invalid ID
 
@@ -165,7 +166,6 @@ function findPlayer(player){
 function startGame(){
     numOfPlayers = players.length;
     gamestate.leaderboard = players;
-    gamestate.sensitivityLevel = getSongSensitivity(); // get song song sensitivity from server
     gamestate.rounds = 0;
     gamestate.timeRemaining = 60;
     gamestate.gameover = false;
