@@ -179,7 +179,7 @@ socket.on('gameStarted', () =>{
     //   sessionStorage.setItem(i + 1,players[i].id);
     // }
     //start accelerometer
-})
+//})
 
 socket.on('playerList', (players) => {
   //Add playerlist
