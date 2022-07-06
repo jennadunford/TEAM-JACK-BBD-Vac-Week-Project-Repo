@@ -148,7 +148,7 @@ function getAccel()
         {
             window.addEventListener('devicemotion', (e) => 
             {
-            // do something with e
+              setInterval(updateReadings(), 500);
             });
         }
       })
