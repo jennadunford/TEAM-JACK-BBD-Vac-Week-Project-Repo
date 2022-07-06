@@ -139,13 +139,11 @@ function updateReadings() {
     yOutput.innerHTML = acl.y.toFixed(2);
     zOutput.innerHTML = acl.z.toFixed(2);
 
-    
-    iOSSensorAccelerationMagnitude = Math.sqrt(
-      acl.x * acl.x + acl.y * acl.y + acl.z * acl.z
-    );
-    normOutput.innerHTML = iOSSensorAccelerationMagnitude.toFixed(2);
+    sensorAccelerationMagnitude = Math.sqrt(acl.x * acl.x + acl.y * acl.y + acl.z * acl.z);
 
-    return iOSSensorAccelerationMagnitude;
+    normOutput.innerHTML = sensorAccelerationMagnitude.toFixed(2);
+
+    
 
     // console.log("Acceleration along the Y-axis " + acl.y);
     // console.log("Acceleration along the Z-axis " + acl.z);
@@ -160,6 +158,7 @@ function updateReadings() {
     // );
   });
   acl.start();
+  return sensorAccelerationMagnitude;
 }
 
 function alert_disqualify(acc_magnitude)// gets acc_magnitude from iOS or android and disqualifies the player as it sees fit
@@ -211,16 +210,15 @@ function getAccel() {
             console.log("sensorAccelerationMagnitude: " + sensorAccelerationMagnitude);
 
             normOutput.innerHTML = sensorAccelerationMagnitude.toFixed(2);
-            
+            alert_disqualify(sensorAccelerationMagnitude)
           });
         }
       })
       .catch(console.error);
-      alert_disqualify(sensorAccelerationMagnitude)
-  } else {
-    
-    iOSAccMagnitude = updateReadings();
-    alert_disqualify(iOSAccMagnitude)
+      
+  } else 
+  {
+    alert_disqualify(updateReadings())
     // non iOS 13+
   }
   
