@@ -11,7 +11,7 @@ var output;
 var xOutput = document.getElementById("xRead");
 var yOutput = document.getElementById("yRead");
 var zOutput = document.getElementById("zRead");
-var normOutput = document.getElementById("norm")
+var normOutput = document.getElementById("norm");
 
 var acc_magnitude=0;
 let lacl = new LinearAccelerationSensor({frequency: 60});
@@ -164,13 +164,24 @@ function getAccel()
       {
         if (response == 'granted') 
         {
-          setInterval(updateReadings(), 500);          
+          window.addEventListener('devicemotion', (event) => 
+          {
+            // do something with event
+            xOutput.innerHTML = event.acceleration.x.toFixed(2)
+            yOutput.innerHTML =  event.acceleration.y.toFixed(2)
+            zOutput.innerHTML = event.acceleration.z.toFixed(2)
+            normOutput.innerHTML = Math.sqrt(( event.acceleration.x* event.acceleration.x) + ( event.acceleration.y* event.acceleration.y) + (event.acceleration.z*event.acceleration.z)).toFixed(2)
+
+          })          
         }
       })
       .catch(console.error)
   } else 
   {
+    updateReadings()
     // non iOS 13+
   }
   
 }
+
+setInterval(getAccel(), 500);
