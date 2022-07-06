@@ -46,8 +46,8 @@ io.on('connection', (socket) => { //Evertything with socket
     });
 
     socket.on('joinCode', (clientCode) => {
-        if(clientCode.toUpperCase() !== code){
-            console.log('User tried to join with an invalid code');
+        if(clientCode.toUpperCase() !== code || usernameTaken){
+            console.log('User tried to join with an invalid code or username taken');
             socket.emit('invalidCode', 'Please use the correct join code');
         }else{
             console.log('User joined');
