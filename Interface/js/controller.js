@@ -24,6 +24,8 @@ var lower_threshold = 0;
 var upper_threshold = 30;
 var hard_cap = 50;
 
+var updateState = document.getElementById("updateState");
+
 
 // $("#readyButton").click(function () {
 //   console.log("ready button pressed");
@@ -184,16 +186,17 @@ function alert_disqualify(acc_magnitude){
     //grey them out on the scoreboard
   } else if (acc_magnitude >= upper_threshold * 0.9) {
     //alert user that they are close to threshold by making their screen orange
-    alert("Close");
+    updateState.innerHTML = "Close";
     document.body.style.background = "orange";
   } else if (acc_magnitude >= upper_threshold * 0.75) {
-    alert("Approaching");
+    updateState.innerHTML = "Approaching";
     //alert user that they are approaching the threshold by making their screen yellow
     document.body.style.background = "yellow";
   } else {
     //ie: if acc_magnitude<upper_threshold*0.75 && acc_magnitude>lower_threshold
     //make their screen green
-    alert("Safe");
+   updateState.innerHTML = "Safe";
+
     document.body.style.background = "green";
   }
 }
