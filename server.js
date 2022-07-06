@@ -11,7 +11,7 @@ const app = express();
 const server = http.createServer(app);
 
 const io = socketio(server);
-
+var userBool;
 let code = genCode(4);
 
 let players = [];
@@ -22,6 +22,7 @@ io.on('connection', (socket) => { //Evertything with socket
     console.log('Client connected');
     socket.on('User', (user) => {
         let usernameTaken = checkUsername(user);
+        userBool = usernameTaken
         if(usernameTaken)
         {
             console.log("Username taken!")
@@ -46,7 +47,7 @@ io.on('connection', (socket) => { //Evertything with socket
     });
 
     socket.on('joinCode', (clientCode) => {
-        if(clientCode.toUpperCase() !== code || usernameTaken){
+        if(clientCode.toUpperCase() !== code || userBool){
             console.log('User tried to join with an invalid code or username taken');
             socket.emit('invalidCode', 'Please use the correct join code');
         }else{
