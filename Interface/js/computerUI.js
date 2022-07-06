@@ -5,6 +5,7 @@ const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
 
 var joinCodeDisplay = document.getElementById("joinCode");
 $("#generateButton").click(function () {
+  console.log('asked for code')
   socket.emit("generateCode");
 });
 
@@ -12,7 +13,8 @@ $("#generateButton").click(function () {
 
 // });
 
-socket.on("codeGenerated", (code) => {
+socket.on("gameCode", (code) => {
+  console.log('generated code on computer: ' + code);
   joinCodeDisplay.innerHTML = code;
 });
 
