@@ -30,6 +30,7 @@ $("#readyButton").click(function () {
       jCode.innerHTML = output;
       socket.emit('User', userName.value);
       socket.emit('joinCode', joinCode.value);
+      sessionStorage.setItem('userName', userName.value)
     } else {
       userReady = false;
       uName.innerHTML = "";
@@ -114,7 +115,7 @@ function alert_disqualify()
       document.body.style.background = "red";
 
       // tell server that player is disqualifyed
-      socket.emit('disqualifyPlayer', userName);
+      socket.emit('disqualifyPlayer', sessionStorage.getItem('userName'));
           //on server:
           //sort board
           //grey them out on the scoreboard
