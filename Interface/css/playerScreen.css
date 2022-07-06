@@ -16,3 +16,12 @@ li {
 h2 {
   font-size: 30px;
 }
+
+img.winImage {
+  width: 70%;
+  transition: 0.2s;
+}
+
+.hidden {
+  display: none;
+}

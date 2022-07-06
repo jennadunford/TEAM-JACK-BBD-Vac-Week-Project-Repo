@@ -28,3 +28,8 @@ function strikeThrough(userName) {
     }
   }
 }
+
+function showCrown() {
+  var crown = document.getElementById("winImage");
+  crown.classList.remove("hidden");
+}
