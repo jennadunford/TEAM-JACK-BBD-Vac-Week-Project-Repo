@@ -15,6 +15,9 @@ var normOutput = document.getElementById("norm");
 
 var sensorAccelerationMagnitude = 0;
 
+var iOSSensorAccelerationMagnitude = 0;
+var iOSAccMagnitude = 0;
+
 var acc_magnitude = 0;
 let lacl = new LinearAccelerationSensor({ frequency: 60 });
 var lower_threshold = 0;
@@ -136,9 +139,13 @@ function updateReadings() {
     yOutput.innerHTML = acl.y.toFixed(2);
     zOutput.innerHTML = acl.z.toFixed(2);
 
-    normOutput.innerHTML = Math.sqrt(
+    
+    iOSSensorAccelerationMagnitude = Math.sqrt(
       acl.x * acl.x + acl.y * acl.y + acl.z * acl.z
-    ).toFixed(2);
+    );
+    normOutput.innerHTML = iOSSensorAccelerationMagnitude.toFixed(2);
+
+    return iOSSensorAccelerationMagnitude;
 
     // console.log("Acceleration along the Y-axis " + acl.y);
     // console.log("Acceleration along the Z-axis " + acl.z);
@@ -201,17 +208,22 @@ function getAccel() {
                 event.acceleration.y * event.acceleration.y +
                 event.acceleration.z * event.acceleration.z
             );
+            console.log("sensorAccelerationMagnitude: " + sensorAccelerationMagnitude);
 
             normOutput.innerHTML = sensorAccelerationMagnitude.toFixed(2);
+            
           });
         }
       })
       .catch(console.error);
+      alert_disqualify(sensorAccelerationMagnitude)
   } else {
-    updateReadings();
+    
+    iOSAccMagnitude = updateReadings();
+    alert_disqualify(iOSAccMagnitude)
     // non iOS 13+
   }
-  alert_disqualify()
+  
 }
 
 setInterval(getAccel(), 500);
