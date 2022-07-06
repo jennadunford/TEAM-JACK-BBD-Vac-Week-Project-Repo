@@ -65,7 +65,7 @@ function ready() {
     if (!userReady) {
       userReady = true;
       readyState.innerHTML = "Ready!";
-      readyButton.innerHTML = "Not Ready";
+      //readyButton.innerHTML = "Not Ready";
       output = userName.value;
       uName.innerHTML = output;
       output = joinCode.value;
@@ -73,15 +73,17 @@ function ready() {
       socket.emit("User", userName.value);
       socket.emit("joinCode", joinCode.value);
       sessionStorage.setItem("userName", userName.value);
-    } else {
-      userReady = false;
-      uName.innerHTML = "";
-      jCode.innerHTML = "";
-      userName.value = "";
-      joinCode.value = "";
-      readyState.innerHTML = "Not ready";
-      readyButton.innerHTML = "Ready";
     }
+    // } else {
+    //   userReady = false;
+    //   //socket.emit('notReady', sessionStorage.getItem('userName'));
+    //   // uName.innerHTML = "";
+    //   // jCode.innerHTML = "";
+    //   // userName.value = "";
+    //   // joinCode.value = "";
+    //   readyState.innerHTML = "Not ready";
+    //   readyButton.innerHTML = "Ready";
+    // }
   }
 }
 
@@ -143,19 +145,28 @@ function addPlayer(userName) {
   document.getElementById("playerList").appendChild(node);
 }
 
-socket.on('gameStarted', (players) =>{
+socket.on('gameStarted', () =>{
     //will start users' accelerometer
     console.log('start game')
+    sessionStorage.setItem('Playing', true);
     window.location.href = "./playerScreen.html";
 
 
-    for(let i = 0;i < players.length; i++){
-      sessionStorage.setItem(i + 1,players[i].id);
-    }
+    // for(let i = 0;i < players.length; i++){
+    //   sessionStorage.setItem(i + 1,players[i].id);
+    // }
     //start accelerometer
 })
 
+socket.on('playerList', (players) => {
+  //Add playerlist
+  for (let i = 0; i < players.length; i++) {
+    addPlayer(players[i].id);
+  }
+})
+
 socket.on('restartGame', () =>{
+    sessionStorage.clear();
     alert('Game was restarted by host')
     window.location.href = "./controller.html";
 })
@@ -274,7 +285,10 @@ function getAccel() {
   }
 }
 
-setInterval(getAccel(), 500);
+if(sessionStorage.getItem('Playing')){
+  console.log('running');
+  setInterval(getAccel(), 500);
+}
 
 DeviceMotionEvent.requestPermission().then((response) => {
   if (response == "granted") {
