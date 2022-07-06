@@ -149,7 +149,7 @@ function alert_disqualify(acc_magnitude)
     {
       //ie: if acc_magnitude<upper_threshold*0.75 && acc_magnitude>lower_threshold
       //make their screen green
-      updateState.innerHTML = "Safe " + accelerationMagnitude.toFixed(2);
+      updateState.innerHTML = "Safe " + acc_magnitude.toFixed(2);
 
       document.body.style.background = "green";
       return;
