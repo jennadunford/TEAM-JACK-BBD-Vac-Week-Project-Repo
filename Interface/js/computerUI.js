@@ -19,8 +19,8 @@ socket.on("gameCode", (code) => {
 });
 
 //must visually indicate that the player was eliminated
-socket.on("disqualifyPlayer", (userName) => {
-  
+socket.on("strikePlayer", (userName) => {
+
   strikeThrough(userName);
 });
 
