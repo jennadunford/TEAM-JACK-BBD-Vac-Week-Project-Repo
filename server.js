@@ -47,6 +47,7 @@ io.on('connection', (socket) => { //Evertything with socket
 
     socket.on('ready', () => {
         startGame();
+        console.log('start game')
     })
 
     socket.broadcast.emit('gameCode', code);
@@ -67,6 +68,7 @@ io.on('connection', (socket) => { //Evertything with socket
 
     socket.on('songSensitivity', (sense) => { //Get song sense from musicplayer
         socket.broadcast.emit('updateSensitivity', sense);
+        console.log('sensor updated');
     });
 });
 
