@@ -32,3 +32,7 @@ button:hover {
 button.permissions {
   font-size: 10px;
 }
+
+.hidden {
+  display: none;
+}
