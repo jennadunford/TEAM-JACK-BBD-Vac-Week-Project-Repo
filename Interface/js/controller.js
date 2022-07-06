@@ -24,6 +24,7 @@ var lower_threshold = 0;
 var upper_threshold = 30;
 var hard_cap = 50;
 
+
 // $("#readyButton").click(function () {
 //   console.log("ready button pressed");
 //   if (userName.value == "" || joinCode.value == "") {
@@ -114,6 +115,7 @@ socket.on("invalidCode", () => {
 socket.on("validCode", () => {
   alert("Client: Code was accepted");
   console.log("Client: Code was accepted");
+
 });
 
 socket.on("updateSensitivity", (songSensitivity) => {
@@ -129,6 +131,7 @@ socket.on("updateSensitivity", (songSensitivity) => {
   }
 
   // TODO: check that song sensitivity makes sense for thresholds
+
 });
 
 function updateReadings() {
@@ -161,36 +164,48 @@ function updateReadings() {
   return sensorAccelerationMagnitude;
 }
 
-function alert_disqualify(acc_magnitude)// gets acc_magnitude from iOS or android and disqualifies the player as it sees fit
-{
-	if (acc_magnitude>=upper_threshold || acc_magnitude<=lower_threshold || acc_magnitude > hard_cap){
-	  // disqualify the player:
-		// tell player that player is disqualified by making their screen red
-	  document.body.style.background = "red";
 
-	  // tell server that player is disqualifyed
-	  socket.emit('disqualifyPlayer', sessionStorage.getItem('userName'));
-	  console.log(sessionStorage.getItem('userName') + ' was disqualified');
-		  //on server:
-		  //sort board
-		  //grey them out on the scoreboard
-	} else if (acc_magnitude>=upper_threshold * 0.9){
-	  //alert user that they are close to threshold by making their screen orange
-	  document.body.style.background = "orange";
-	}else if (acc_magnitude>=upper_threshold * 0.75){
-	  //alert user that they are approaching the threshold by making their screen yellow
-	  document.body.style.background = "yellow";
-	}else {//ie: if acc_magnitude<upper_threshold*0.75 && acc_magnitude>lower_threshold
-	  //make their screen green
-	  document.body.style.background = "green";
-	}
-	// alert("Acceleration along the X-axis " + acl.x + ", Y-axis: " + acl.y + ", Z-axis: " + acl.z);
+function alert_disqualify()
+{ 
+    console.log('alter_disqualify')
+  lacl = new LinearAccelerationSensor({frequency: 60});
+  lacl.addEventListener('reading', () => {
+    acc_magnitude = Math.sqrt(lacl.x*lacl.x + lacl.y*lacl.y + lacl.z*lacl.z)
+    if (acc_magnitude>=upper_threshold || acc_magnitude > hard_cap){
+
+      // disqualify the player:
+      // tell player that player is disqualified by making their screen red
+      document.body.style.background = "red";
+
+      // tell server that player is disqualifyed
+      socket.emit("disqualifyPlayer", sessionStorage.getItem("userName"));
+
+    //   alert(sessionStorage.getItem("userName") + " was disqualified");
+
+      //on server:
+      //sort board
+      //grey them out on the scoreboard
+    } else if (acc_magnitude >= upper_threshold * 0.9) {
+      //alert user that they are close to threshold by making their screen orange
+      document.body.style.background = "orange";
+    } else if (acc_magnitude >= upper_threshold * 0.75) {
+      //alert user that they are approaching the threshold by making their screen yellow
+      document.body.style.background = "yellow";
+    } else {
+      //ie: if acc_magnitude<upper_threshold*0.75 && acc_magnitude>lower_threshold
+      //make their screen green
+      document.body.style.background = "green";
+    }
+    // alert("Acceleration along the X-axis " + acl.x + ", Y-axis: " + acl.y + ", Z-axis: " + acl.z);
+  });
+  lacl.start();
 }
 
 //setInterval(updateReadings(), 500);
 // setInterval(alert_disqualify(), 500);
 
 function getAccel() {
+
   console.log("permissions button pressed");
   if (typeof DeviceMotionEvent.requestPermission === "function") {
     DeviceMotionEvent.requestPermission()
@@ -201,16 +216,14 @@ function getAccel() {
             xOutput.innerHTML = event.acceleration.x.toFixed(2);
             yOutput.innerHTML = event.acceleration.y.toFixed(2);
             zOutput.innerHTML = event.acceleration.z.toFixed(2);
+            
 
             sensorAccelerationMagnitude = Math.sqrt(
               event.acceleration.x * event.acceleration.x +
                 event.acceleration.y * event.acceleration.y +
-                event.acceleration.z * event.acceleration.z
-            );
-            console.log("sensorAccelerationMagnitude: " + sensorAccelerationMagnitude);
+                event.acceleration.z * event.acceleration.z)
 
-            normOutput.innerHTML = sensorAccelerationMagnitude.toFixed(2);
-            alert_disqualify(sensorAccelerationMagnitude)
+            normOutput.innerHTML = sensorAccelerationMagnitude.toFixed(2)
           });
         }
       })
@@ -226,12 +239,13 @@ function getAccel() {
 
 setInterval(getAccel(), 500);
 
-DeviceMotionEvent.requestPermission().then((response) => {
-  if (response == "granted") {
-    console.log("accelerometer permission granted");
-    // Do stuff here
-  }
-});
+  DeviceMotionEvent.requestPermission().then((response) => {
+    if (response == "granted") {
+      console.log("accelerometer permission granted");
+      // Do stuff here
+    }
+  });
+
 
 function changeToBlue() {
   document.body.style.background = "blue";
@@ -244,3 +258,4 @@ function changeToPink() {
 function changeToRed() {
   document.body.style.background = "red";
 }
+
