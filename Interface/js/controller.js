@@ -12,6 +12,7 @@ var xOutput = document.getElementById("xRead");
 var yOutput = document.getElementById("yRead");
 var zOutput = document.getElementById("zRead");
 var normOutput = document.getElementById("norm");
+var sensorAccelerationMagnitude = 0;
 
 var acc_magnitude = 0;
 let lacl = new LinearAccelerationSensor({ frequency: 60 });
@@ -186,8 +187,8 @@ function alert_disqualify()
   lacl.start();
 }
 
-setInterval(updateReadings(), 500);
-setInterval(alert_disqualify(), 500);
+//setInterval(updateReadings(), 500);
+//setInterval(, 500);
 
 function getAccel() {
   console.log("permissions button pressed");
@@ -200,11 +201,14 @@ function getAccel() {
             xOutput.innerHTML = event.acceleration.x.toFixed(2);
             yOutput.innerHTML = event.acceleration.y.toFixed(2);
             zOutput.innerHTML = event.acceleration.z.toFixed(2);
-            normOutput.innerHTML = Math.sqrt(
+            
+
+            sensorAccelerationMagnitude = Math.sqrt(
               event.acceleration.x * event.acceleration.x +
                 event.acceleration.y * event.acceleration.y +
-                event.acceleration.z * event.acceleration.z
-            ).toFixed(2);
+                event.acceleration.z * event.acceleration.z)
+
+            normOutput.innerHTML = sensorAccelerationMagnitude.toFixed(2)
           });
         }
       })
@@ -213,6 +217,7 @@ function getAccel() {
     updateReadings();
     // non iOS 13+
   }
+  alert_disqualify()
 }
 
 setInterval(getAccel(), 500);
