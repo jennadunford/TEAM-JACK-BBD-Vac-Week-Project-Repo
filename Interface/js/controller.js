@@ -13,6 +13,8 @@ var yOutput = document.getElementById("yRead");
 var zOutput = document.getElementById("zRead");
 var normOutput = document.getElementById("norm")
 
+var acc_magnitude=0;
+let lacl = new LinearAccelerationSensor({frequency: 60});
 
 $("#readyButton").click(function () {
   if (userName.value == "" || joinCode.value == "") {
@@ -100,4 +102,36 @@ function updateReadings() {
   });
   acl.start();
 }
+
+function alert_disqualify()
+{ 
+  lacl = new LinearAccelerationSensor({frequency: 60});
+  lacl.addEventListener('reading', () => {
+    acc_magnitude = sqrt(lacl.x*lacl.x + lacl.y*lacl.y + lacl.z*lacl.z)
+    if (acc_magnitude>=upper_threshold || acc_magnitude<=lower_threshold){
+      // disqualify the player:
+        // tell player that player is disqualified by making their screen red
+      document.body.style.background = "red";
+
+      // tell server that player is disqualifyed
+      socket.emit('disqualifyPlayer', userName);
+          //on server:
+          //sort board
+          //grey them out on the scoreboard
+    } else if (acc_magnitude>=upper_threshold*0.9){
+      //alert user that they are close to threshold by making their screen orange
+      document.body.style.background = "orange";
+    }else if (acc_magnitude>=upper_threshold*0.75){
+      //alert user that they are approaching the threshold by making their screen yellow
+      document.body.style.background = "yellow";
+    }else {//ie: if acc_magnitude<upper_threshold*0.75 && acc_magnitude>lower_threshold
+      //make their screen green
+      document.body.style.background = "green";
+    }
+    // alert("Acceleration along the X-axis " + acl.x + ", Y-axis: " + acl.y + ", Z-axis: " + acl.z);
+    
+  });
+  acl.start();
+}
+
 setInterval(updateReadings(), 500);
