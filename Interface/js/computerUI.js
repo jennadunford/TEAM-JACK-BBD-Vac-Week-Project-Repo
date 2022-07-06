@@ -19,10 +19,11 @@ socket.on("gameCode", (code) => {
 });
 
 //must visually indicate that the player was eliminated
-socket.on("strikePlayer", (userName) => {
-  console.log('comp: strike')
-  //TODO: merge with playerOut
-})
+// socket.on("strikePlayer", (userName) => {
+//   console.log('comp: strike');
+//   strikeThrough(userName);
+//   //TODO: merge with playerOut
+// })
 
 socket.on("playerOut", (userName) => {
   // alert(userName + " is out");
