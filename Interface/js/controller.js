@@ -119,6 +119,20 @@ socket.on("restartGame", () => {
   window.location.href = "./controller.html";
 });
 
+//must visually indicate that the player was eliminated
+socket.on("strikePlayer", (userName) => {
+    socket.emit('controllerLog', 'controller strike');
+    console.log('controller: strike')
+  strikeThrough(userName);
+});
+
+// //must visually indicate that the player was eliminated
+// socket.on("disqualifyPlayer", (userName) => {
+//     socket.emit('controllerLog', 'controller disqualifyPlayer');
+//     console.log('controller: strike')
+//   strikeThrough(userName);
+// });
+
 function updateReadings() {
   let acl = new LinearAccelerationSensor({ frequency: 60 });
   acl.addEventListener("reading", () => {
@@ -242,9 +256,4 @@ setInterval(function () {
   normOutput.innerHTML = acc_magnitude.toFixed(2);
 }, 100);
 
-//must visually indicate that the player was eliminated
-socket.on("strikePlayer", (userName) => {
-    socket.emit('controllerLog', 'controller strike');
-    console.log('controller: strike')
-  strikeThrough(userName);
-});
+
