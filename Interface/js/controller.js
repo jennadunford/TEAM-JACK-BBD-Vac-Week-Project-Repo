@@ -218,7 +218,7 @@ function getAccel() {
                 //process magnitude
                 
             alert_disqualify(sensorAccelerationMagnitude);
-            normOutput.innerHTML = sensorAccelerationMagnitude.toFixed(2)
+            normOutput.innerHTML = sensorAccelerationMagnitude.toFixed(4)
           });
         }
       })
