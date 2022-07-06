@@ -244,6 +244,7 @@ setInterval(function () {
 
 //must visually indicate that the player was eliminated
 socket.on("strikePlayer", (userName) => {
+    socket.emit('controllerLog', 'controller strike');
     console.log('controller: strike')
   strikeThrough(userName);
 });

@@ -108,6 +108,10 @@ io.on('connection', (socket) => { //Evertything with socket
         // console.log('server: players left')
         socket.emit('numPlayers', playerCount);
     });
+
+    socket.on('controllerLog', (msg)=>{
+        console.log('From controller: ' + msg);
+    });
 });
 
 app.use(express.static(path.join(__dirname, 'Interface')));
