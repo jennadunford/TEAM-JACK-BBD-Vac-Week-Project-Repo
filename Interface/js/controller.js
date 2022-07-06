@@ -15,6 +15,9 @@ var normOutput = document.getElementById("norm");
 
 var sensorAccelerationMagnitude = 0;
 
+var iOSSensorAccelerationMagnitude = 0;
+var iOSAccMagnitude = 0;
+
 var acc_magnitude = 0;
 let lacl = new LinearAccelerationSensor({ frequency: 60 });
 var lower_threshold = 0;
@@ -136,9 +139,13 @@ function updateReadings() {
     yOutput.innerHTML = acl.y.toFixed(2);
     zOutput.innerHTML = acl.z.toFixed(2);
 
-    normOutput.innerHTML = Math.sqrt(
+    
+    iOSSensorAccelerationMagnitude = Math.sqrt(
       acl.x * acl.x + acl.y * acl.y + acl.z * acl.z
-    ).toFixed(2);
+    );
+    normOutput.innerHTML = iOSSensorAccelerationMagnitude.toFixed(2);
+
+    return iOSSensorAccelerationMagnitude;
 
     // console.log("Acceleration along the Y-axis " + acl.y);
     // console.log("Acceleration along the Z-axis " + acl.z);
@@ -155,44 +162,34 @@ function updateReadings() {
   acl.start();
 }
 
-function alert_disqualify() {
-  console.log("alter_disqualify");
-  lacl = new LinearAccelerationSensor({ frequency: 60 });
-  lacl.addEventListener("reading", () => {
-    acc_magnitude = Math.sqrt(
-      lacl.x * lacl.x + lacl.y * lacl.y + lacl.z * lacl.z
-    );
-    if (acc_magnitude >= upper_threshold || acc_magnitude > hard_cap) {
-      // disqualify the player:
-      // tell player that player is disqualified by making their screen red
-      document.body.style.background = "red";
+function alert_disqualify(acc_magnitude)// gets acc_magnitude from iOS or android and disqualifies the player as it sees fit
+{
+	if (acc_magnitude>=upper_threshold || acc_magnitude<=lower_threshold || acc_magnitude > hard_cap){
+	  // disqualify the player:
+		// tell player that player is disqualified by making their screen red
+	  document.body.style.background = "red";
 
-      // tell server that player is disqualifyed
-      socket.emit("disqualifyPlayer", sessionStorage.getItem("userName"));
-
-      //   alert(sessionStorage.getItem("userName") + " was disqualified");
-
-      //on server:
-      //sort board
-      //grey them out on the scoreboard
-    } else if (acc_magnitude >= upper_threshold * 0.9) {
-      //alert user that they are close to threshold by making their screen orange
-      document.body.style.background = "orange";
-    } else if (acc_magnitude >= upper_threshold * 0.75) {
-      //alert user that they are approaching the threshold by making their screen yellow
-      document.body.style.background = "yellow";
-    } else {
-      //ie: if acc_magnitude<upper_threshold*0.75 && acc_magnitude>lower_threshold
-      //make their screen green
-      document.body.style.background = "green";
-    }
-    // alert("Acceleration along the X-axis " + acl.x + ", Y-axis: " + acl.y + ", Z-axis: " + acl.z);
-  });
-  lacl.start();
+	  // tell server that player is disqualifyed
+	  socket.emit('disqualifyPlayer', sessionStorage.getItem('userName'));
+	  console.log(sessionStorage.getItem('userName') + ' was disqualified');
+		  //on server:
+		  //sort board
+		  //grey them out on the scoreboard
+	} else if (acc_magnitude>=upper_threshold * 0.9){
+	  //alert user that they are close to threshold by making their screen orange
+	  document.body.style.background = "orange";
+	}else if (acc_magnitude>=upper_threshold * 0.75){
+	  //alert user that they are approaching the threshold by making their screen yellow
+	  document.body.style.background = "yellow";
+	}else {//ie: if acc_magnitude<upper_threshold*0.75 && acc_magnitude>lower_threshold
+	  //make their screen green
+	  document.body.style.background = "green";
+	}
+	// alert("Acceleration along the X-axis " + acl.x + ", Y-axis: " + acl.y + ", Z-axis: " + acl.z);
 }
 
 //setInterval(updateReadings(), 500);
-setInterval(alert_disqualify(), 500);
+// setInterval(alert_disqualify(), 500);
 
 function getAccel() {
   console.log("permissions button pressed");
@@ -211,17 +208,22 @@ function getAccel() {
                 event.acceleration.y * event.acceleration.y +
                 event.acceleration.z * event.acceleration.z
             );
+            console.log("sensorAccelerationMagnitude: " + sensorAccelerationMagnitude);
 
             normOutput.innerHTML = sensorAccelerationMagnitude.toFixed(2);
+            
           });
         }
       })
       .catch(console.error);
+      alert_disqualify(sensorAccelerationMagnitude)
   } else {
-    updateReadings();
+    
+    iOSAccMagnitude = updateReadings();
+    alert_disqualify(iOSAccMagnitude)
     // non iOS 13+
   }
-  //alert_disqualify()
+  
 }
 
 setInterval(getAccel(), 500);
