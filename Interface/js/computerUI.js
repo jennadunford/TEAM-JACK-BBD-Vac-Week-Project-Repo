@@ -1,5 +1,5 @@
-// var userName = document.querySelector("#userName");
-//const socket = new io("http://localhost:9000", {});
+var userName = document.querySelector("#userName");
+// const socket = new io("http://localhost:9000", {});
 // console.log("computer ui");
 
 const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
