@@ -13,13 +13,6 @@
 // var zOutput = document.getElementById("zRead");
 // var normOutput = document.getElementById("norm");
 
-var sensorAccelerationMagnitude = 0;
-
-var iOSSensorAccelerationMagnitude = 0;
-var iOSAccMagnitude = 0;
-
-var acc_magnitude = 0;
-let lacl = new LinearAccelerationSensor({ frequency: 60 });
 var lower_threshold = 0;
 var upper_threshold = 30;
 var hard_cap = 50;
@@ -50,35 +43,36 @@ function updateReadings() {
     return sensorAccelerationMagnitude;
   }
   
-  function alert_disqualify(acc_magnitude) {
-    if (acc_magnitude >= upper_threshold || acc_magnitude > hard_cap || dqFlag) {
-      // disqualify the player:
+function alert_disqualify(acc_magnitude) 
+{
+    if (acc_magnitude >= upper_threshold || acc_magnitude > hard_cap || dqFlag) // disqualify the player:
+    {
       // alert("Disqualified");
       // tell player that player is disqualified by making their screen red
-      // document.body.style.background = "red";
       document.body.style.background = "red";
       dqFlag = true;
-  
 
       // tell server that player is disqualifyed
       socket.emit("disqualifyPlayer", sessionStorage.getItem("userName"));
-      //alert(sessionStorage.getItem("userName") + " was disqualified");
       //on server:
       //sort board
       //grey them out on the scoreboard
       return;
-    } else if (acc_magnitude >= (upper_threshold * 2) / 3) {
+    } else if (acc_magnitude >= (upper_threshold * 2) / 3) 
+    {
       //alert user that they are close to threshold by making their screen orange
       updateState.innerHTML = "Close";
       document.body.style.background = "orange";
       return;
-    } else if (acc_magnitude >= (upper_threshold * 1) / 6) {
+    } else if (acc_magnitude >= (upper_threshold * 1) / 6) 
+    {
       updateState.innerHTML = "Far";
       //alert user that they are approaching the threshold by making their screen yellow
       document.body.style.background = "yellow";
       return;
 
-    } else {
+    } else 
+    {
       //ie: if acc_magnitude<upper_threshold*0.75 && acc_magnitude>lower_threshold
       //make their screen green
       updateState.innerHTML = "Safe " + acc_magnitude.toFixed(2);
@@ -87,73 +81,90 @@ function updateReadings() {
       return;
 
     }
-  }
+}
   
-  //setInterval(updateReadings(), 500);
-  // setInterval(alert_disqualify(), 500);
-  
-  function getAccel() {
+function getAccel() 
+{
     console.log("permissions button pressed");
-    if (typeof DeviceMotionEvent.requestPermission === "function") {
-      DeviceMotionEvent.requestPermission()
-        .then((response) => {
-          if (response == "granted") {
-            window.addEventListener("devicemotion", (event) => {
-              // do something with event
-              xOutput.innerHTML = event.acceleration.x.toFixed(2);
-              yOutput.innerHTML = event.acceleration.y.toFixed(2);
-              zOutput.innerHTML = event.acceleration.z.toFixed(2);
-              updateState.innerHTML = "Started motion sensing";
+    var accelX, accelY, accelZ;
+    var accelerationMagnitude;
+
+    if (typeof DeviceMotionEvent.requestPermission === "function") 
+    {
+        DeviceMotionEvent.requestPermission().then((response) => 
+        {
+            if (response == "granted") 
+            {
+                window.addEventListener("devicemotion", (event) => {
+                // do something with event
+                accelX = event.acceleration.x;
+                accelY = event.acceleration.y;
+                accelZ = event.acceleration.z;
+
+                // xOutput.innerHTML = event.acceleration.x.toFixed(2);
+                // yOutput.innerHTML = event.acceleration.y.toFixed(2);
+                // zOutput.innerHTML = event.acceleration.z.toFixed(2);
+                // updateState.innerHTML = "Started motion sensing";
   
-              acc_magnitude = Math.sqrt(
-                event.acceleration.x * event.acceleration.x +
-
-                event.acceleration.y * event.acceleration.y +
-                event.acceleration.z * event.acceleration.z
-              );
+                accelerationMagnitude = Math.sqrt( (accelX*accelX) + (accelY*accelY) + (accelZ*accelZ) );
+                
   
-              //process magnitude
+                //process magnitude
 
-              normOutput.innerHTML = Math.sqrt(
-                event.acceleration.x * event.acceleration.x +
-                  event.acceleration.y * event.acceleration.y +
-                  event.acceleration.z * event.acceleration.z
-              ).toFixed(2);
+                //   normOutput.innerHTML = Math.sqrt(
+                //     event.acceleration.x * event.acceleration.x +
+                //       event.acceleration.y * event.acceleration.y +
+                //       event.acceleration.z * event.acceleration.z
+                //   ).toFixed(2);
 
-              alert_disqualify(acc_magnitude);
-            });
-          }
-        })
-        .catch(console.error);
-      alert_disqualify(acc_magnitude);
-    } else {
-      // alert_disqualify(updateReadings())
-      // non iOS 13+
-      updateReadings();
-      console.log("alter_disqualify");
-      lacl = new LinearAccelerationSensor({ frequency: 60 });
-      lacl.addEventListener("reading", () => {
-        acc_magnitude = Math.sqrt(
-          lacl.x * lacl.x + lacl.y * lacl.y + lacl.z * lacl.z
-        );
-        // alert("Acceleration along the X-axis " + acl.x + ", Y-axis: " + acl.y + ", Z-axis: " + acl.z);
-        alert_disqualify(acc_magnitude);
-      });
-      lacl.start();
+                // alert_disqualify(acc_magnitude);
+                });
+            }
+        }).catch(console.error);
+    } else 
+    {
+        let acl = new LinearAccelerationSensor({ frequency: 60 });
+        console.log("alert_disqualify");
+        acl.addEventListener("reading", () => {
+            //console.log("Acceleration along the X-axis " + acl.x);
+            accelX = acl.x;
+            accelY = acl.y;
+            accelZ = acl.z;
+      
+            accelerationMagnitude = Math.sqrt( (accelX*accelX) + (accelY*accelY) + (accelZ*accelZ) );    
+        });
+        acl.start();
+        
+        // alert_disqualify(updateReadings())
+        // non iOS 13+
+        // updateReadings();
+      
+        //   lacl = new LinearAccelerationSensor({ frequency: 60 });
+        //   lacl.addEventListener("reading", () => {
+        //     acc_magnitude = Math.sqrt(
+        //       lacl.x * lacl.x + lacl.y * lacl.y + lacl.z * lacl.z
+        //     );
+        //     // alert("Acceleration along the X-axis " + acl.x + ", Y-axis: " + acl.y + ", Z-axis: " + acl.z);
+        //     alert_disqualify(acc_magnitude);
+        //   });
+        //   lacl.start();
     }
-  }
+    alert_disqualify(accelerationMagnitude);
+}
   
-
-  if (sessionStorage.getItem("Playing")) {
+if (sessionStorage.getItem("Playing")) 
+{
     console.log("running");
     setInterval(getAccel(), 500);
-  }
+}
 
-  DeviceMotionEvent.requestPermission().then((response) => {
-    if (response == "granted") {
-      console.log("accelerometer permission granted");
-      // Do stuff here
-    }
+// DeviceMotionEvent.requestPermission().then((response) => 
+// {
+//     if (response == "granted") 
+//     {
+//       console.log("accelerometer permission granted");
+//       // Do stuff here
+//     }
 
-  });
+// });
 
