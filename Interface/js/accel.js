@@ -82,8 +82,8 @@ function updateReadings() {
   
   function alert_disqualify(acc_magnitude) {
     // acc_magnitude = document.getElementById("customAcc").value;
-    socket.emit('controllerLog', 'test: ' + acc_magnitude);
-    console.log("before:" + acc_magnitude);
+    // socket.emit('controllerLog', 'test: ' + acc_magnitude);
+    // console.log("before:" + acc_magnitude);
     // acc_magnitude = getAccel();
     // socket.emit('controllerLog', 'after' + acc_magnitude);
     // console.log("after" + acc_magnitude);
