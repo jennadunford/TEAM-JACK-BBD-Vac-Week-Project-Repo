@@ -5,7 +5,7 @@ const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
 
 function makeHost() {
   console.log("MAKE HOST");
-  window.location.href = "./host.html";
+  window.location.href = "./hostv2.html";
 
   // socket.emit("User", document.getElementById("userName").value);
   // socket.emit("joinCode", document.getElementById("joinCode").value);
