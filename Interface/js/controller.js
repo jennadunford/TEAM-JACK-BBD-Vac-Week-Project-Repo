@@ -214,19 +214,20 @@ function getAccel() {
             zOutput.innerHTML = event.acceleration.z.toFixed(2);
             
 
-            acc_magnitude = Math.sqrt(
+            iOSAccMagnitude = Math.sqrt(
               event.acceleration.x * event.acceleration.x +
               event.acceleration.y * event.acceleration.y +
               event.acceleration.z * event.acceleration.z)
 
                 //process magnitude
                 
-            normOutput.innerHTML = acc_magnitude.toFixed(2)
-            alert_disqualify(acc_magnitude);
+            normOutput.innerHTML = iOSAccMagnitude.toFixed(2)
+            alert_disqualify(iOSAccMagnitude);
           });
         }
       })
       .catch(console.error);
+      alert_disqualify(iOSAccMagnitude);
   } else  {
     // alert_disqualify(updateReadings())
     // non iOS 13+
