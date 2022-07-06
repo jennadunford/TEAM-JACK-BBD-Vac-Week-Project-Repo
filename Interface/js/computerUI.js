@@ -2,7 +2,8 @@
 const socket = new io("http://localhost:9000", {});
 // console.log("computer ui");
 // const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
-var music = ["Music Files/RideOfTheValkyries.mp3", "Music Files/BrandenburgConcertoNo11.mp3", "Music Files/CoconutMallMarioKart.mp3", "Music Files/NeverGonnaGiveYouUp.mp3", "Music Files/TheFieldsofArdSkellig.mp3"]
+var musicfiles = ["Music Files/RideOfTheValkyries.mp3", "Music Files/BrandenburgConcertoNo11.mp3", "Music Files/CoconutMallMarioKart.mp3", "Music Files/NeverGonnaGiveYouUp.mp3", "Music Files/TheFieldsofArdSkellig.mp3", "Music Files/EpicSportClap.mp3", "Music Files/GroovyRock.mp3", "Music Files/Piano.mp3"]
+var musicnames = ["Ride Of The Valkyries", "Brandenburg Concerto No.11", "Coconut Mall Mario Kart", "Never Gonna Give You Up", "The Fields of Ard Skellig", "Epic Sport Clap", "Groovy Rock", "Piano"]
 var songSpeed = 1;
 var joinCodeDisplay = document.getElementById("joinCode");
 $("#generateButton").click(function () {
@@ -69,14 +70,13 @@ socket.on("userJoined", (user) => {
   addPlayer(user);
 });
 
-socket.on('playersLeft', (numPlayers) =>{
-  console.log('host: players left');
+socket.on('numPlayers', (numPlayers) =>{
+  // console.log('host: players left');
   if(numPlayers != 1){
-    let = temp_music = ["Music Files/EpicSportClap.mp3", "Music Files/GroovyRock.mp3", "Music Files/Piano.mp3"]
-    console.log('Selected a new song')
-    randomElement = temp_music[Math.floor(Math.random() * temp_music.length)];
+    randomIndex = Math.floor(Math.random() * musicfiles.length)
+    randomElement = musicfiles[randomIndex];
     audio = new Audio(randomElement);
-    showSong.innerHTML = randomElement.slice(12);
+    showSong.innerHTML = musicnames[randomIndex];
     audio.play();
   }
 });
@@ -162,12 +162,12 @@ function switchSong(songID) {
       break;
     case "song7":
       audio = new Audio("Music Files/EpicSportClap.mp3");
-      showSong.innerHTML = "Piano";
+      showSong.innerHTML = "EpicSportClap";
       audio.pause;
       break;
     case "song8":
       audio = new Audio("Music Files/GroovyRock.mp3");
-      showSong.innerHTML = "Piano";
+      showSong.innerHTML = "GroovyRock";
       audio.pause;
       break;
   }
@@ -221,11 +221,7 @@ function showRemovedPlayer(userName) {
 
 
 function checkTimeLeft(){
-  // console.log('Audio Duration: ' + audio.duration);
-  // console.log('Current Time: ' + audio.currentTime);
   setInterval(() => {
-    // console.log(audio.duration - audio.currentTime)
-    // console.log(1/songSpeed)
     if(audio.duration - audio.currentTime < 2/songSpeed){
       console.log('asking for players');
       socket.emit('playersLeft');

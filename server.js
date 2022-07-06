@@ -84,7 +84,7 @@ io.on('connection', (socket) => { //Evertything with socket
     });
 
     socket.on('playersLeft', ()=>{
-        console.log('server: players left')
+        // console.log('server: players left')
         socket.emit('numPlayers', playerCount);
     });
 });
