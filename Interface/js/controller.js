@@ -213,7 +213,7 @@ function getAccel() {
             zOutput.innerHTML = event.acceleration.z.toFixed(2);
             updateState.innerHTML = "Started motion sensing";
 
-            iOSAccMagnitude = Math.sqrt(
+            acc_magnitude = Math.sqrt(
               event.acceleration.x * event.acceleration.x +
                 event.acceleration.y * event.acceleration.y +
                 event.acceleration.z * event.acceleration.z
@@ -221,13 +221,13 @@ function getAccel() {
 
             //process magnitude
 
-            normOutput.innerHTML = iOSAccMagnitude.toFixed(2);
-            alert_disqualify(iOSAccMagnitude);
+            normOutput.innerHTML = acc_magnitude.toFixed(2);
+            alert_disqualify(acc_magnitude);
           });
         }
       })
       .catch(console.error);
-    alert_disqualify(iOSAccMagnitude);
+    alert_disqualify(acc_magnitude);
   } else {
     // alert_disqualify(updateReadings())
     // non iOS 13+
