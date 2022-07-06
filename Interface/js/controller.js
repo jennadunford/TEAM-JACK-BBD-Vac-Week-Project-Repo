@@ -144,5 +144,5 @@ function getAccel()
         console.log("accelerometer permission granted");
         // Do stuff here
     }
-});
+  });
 }
