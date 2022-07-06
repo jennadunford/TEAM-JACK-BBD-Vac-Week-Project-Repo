@@ -33,7 +33,6 @@ var dqFlag = false;
 
 function ready() {
   console.log("ready button pressed");
-  socket.emit('controllerLog', 'ready button pressed');
   if (userName.value == "" || joinCode.value == "") {
     alert("Please fill in all fields");
   } else {
