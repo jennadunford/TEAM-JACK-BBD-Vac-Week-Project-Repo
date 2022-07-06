@@ -169,7 +169,7 @@ function updateReadings() {
 function alert_disqualify(acc_magnitude) {
   if (acc_magnitude >= upper_threshold || acc_magnitude > hard_cap || dqFlag) {
     // disqualify the player:
-    alert("Disqualified");
+    // alert("Disqualified");
     // tell player that player is disqualified by making their screen red
     // document.body.style.background = "red";
     document.body.style.background = "red";
