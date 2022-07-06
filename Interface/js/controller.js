@@ -83,11 +83,11 @@ socket.on('validCode', () => {
 });
 
 socket.on('updateSensitivity', (songSensitivity) =>{
-    if(songSensitivity < 0){
+    if(songSensitivity == 0.2){ // slow
         upper_threshold = 0;
-    } else if(songSensitivity < 10){
+    } else if(songSensitivity == 1){ // normal
         upper_threshold = 10;
-    } else if(songSensitivity < 20){
+    } else if(songSensitivity == 1.2){ // fast
         upper_threshold = 20;
     }
     
