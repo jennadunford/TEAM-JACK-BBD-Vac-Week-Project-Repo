@@ -208,11 +208,11 @@ function alert_disqualify(acc_magnitude) {
     //on server:
     //sort board
     //grey them out on the scoreboard
-  } else if (acc_magnitude >= upper_threshold * 0.9) {
+  } else if (acc_magnitude >= upper_threshold * 2/3) {
     //alert user that they are close to threshold by making their screen orange
     updateState.innerHTML = "Close";
     document.body.style.background = "orange";
-  } else if (acc_magnitude >= upper_threshold * 0.75) {
+  } else if (acc_magnitude >= upper_threshold * 1/3) {
     updateState.innerHTML = "Approaching";
     //alert user that they are approaching the threshold by making their screen yellow
     document.body.style.background = "yellow";
