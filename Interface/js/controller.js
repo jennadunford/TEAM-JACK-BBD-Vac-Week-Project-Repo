@@ -142,7 +142,12 @@ function getAccel()
   DeviceMotionEvent.requestPermission().then(response => {
     if (response == 'granted') {
         console.log("accelerometer permission granted");
+        alert("accelerometer permission granted");
         // Do stuff here
+    }
+    else 
+    {
+      alert("Function bad bad");
     }
   });
 }
