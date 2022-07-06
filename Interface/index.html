@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Main page</title>
+    <title>Start page</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -31,12 +31,16 @@
   </div>
   <body>
     <div class="client">
-      <h1>Client:</h1>
+      <h1>JACKSCRIPT JOUST:</h1>
       <p>Do you want to host or join a game?</p>
       <!-- <div class="field">Username: <input type="userName" id="userName"></div>
             <div class="field">Join Code: <input type="joinCode" id="joinCode"></div> -->
       <input type="submit" value="HOST" id="submit" onclick="makeHost()" />
       <input type="submit" value="JOIN" id="ready" onclick="makeController()" />
+    </div>
+
+    <div>
+      <img class="QRCode" src="QRCode/qrJackScript.png">
     </div>
 
     <script src="/socket.io/socket.io.js"></script>

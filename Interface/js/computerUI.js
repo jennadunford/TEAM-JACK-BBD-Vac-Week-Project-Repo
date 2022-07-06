@@ -1,19 +1,31 @@
 // var userName = document.querySelector("#userName");
-// const socket = new io("http://localhost:9000", {});
+const socket = new io("http://localhost:9000", {});
 // console.log("computer ui");
-const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
-
+// const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
+var music = ["Music Files/RideOfTheValkyries.mp3", "Music Files/BrandenburgConcertoNo11.mp3", "Music Files/CoconutMallMarioKart.mp3", "Music Files/NeverGonnaGiveYouUp.mp3", "Music Files/TheFieldsofArdSkellig.mp3"]
 var joinCodeDisplay = document.getElementById("joinCode");
 $("#generateButton").click(function () {
+  console.log('asked for code')
   socket.emit("generateCode");
 });
 
-// socket.on('connection', (socket) => {
-
-// });
 
 socket.on("gameCode", (code) => {
+  console.log('generated code on computer: ' + code);
   joinCodeDisplay.innerHTML = code;
+});
+
+//must visually indicate that the player was eliminated
+socket.on("disqualifyPlayer", (userName) =>{
+  let nodes = Array.from($("#playerList").children("li"));
+  for (let count = 0; count < nodes.length; count++) {
+    const element = nodes[count];
+    console.log(nodes[count].innerHTML);
+    if (element.innerHTML == userName) {
+      element.innerHTML.strike();
+      break;
+    }
+  }
 });
 
 $("#addPlayer").click(function () {
@@ -23,6 +35,8 @@ $("#addPlayer").click(function () {
     addPlayer(userName.value);
   }
 });
+
+
 
 function addPlayer(userName) {
   const node = document.createElement("li");
@@ -37,13 +51,31 @@ $("#startButton").click(function () {
   socket.emit("ready");
   audio.play();
   changeSpeeds();
+  checkTimeLeft();
   // window.location.href = "./gameScreen.html";
+});
+
+$("#restartButton").click(function () {
+  alert("Game restarted");
+  socket.emit("restart");
+  audio.pause();
+  //Clear player list needs to be added
+  document.getElementById("playerList").innerHTML = "";
 });
 
 socket.on("userJoined", (user) => {
   console.log(user);
   addPlayer(user);
 });
+
+socket.on('numPlayers', (numPlayers) =>{
+  if(numPlayers != 1){
+    console.log('Selected a new song')
+    audio = new Audio(music[Math.floor(Math.random() * music.length)]);
+    audio.play();
+  }
+});
+
 $("#removePlayer").click(function () {
   removePlayer(userName.value);
 });
@@ -136,21 +168,21 @@ function changeSpeeds() {
         audio.playbackRate = songSpeed;
         speedCheck.innerHTML = "Playing at normal speed";
         moveBox.innerHTML = "AT REGULAR SPEED!";
-        socket.emit('songSensitivity', songSpeed);
+        socket.emit("songSensitivity", songSpeed);
         break;
       case 2:
         var songSpeed = 1.2;
         audio.playbackRate = songSpeed;
         speedCheck.innerHTML = "Playing 1.2 times faster";
         moveBox.innerHTML = "FAST!";
-        socket.emit('songSensitivity', songSpeed);
+        socket.emit("songSensitivity", songSpeed);
         break;
       case 3:
         var songSpeed = 0.8;
         audio.playbackRate = songSpeed;
         speedCheck.innerHTML = "Playing 0.8 times slower";
         moveBox.innerHTML = "SLOWLY!";
-        socket.emit('songSensitivity', songSpeed);
+        socket.emit("songSensitivity", songSpeed);
         break;
     }
   }, 5000); //5 seconds
@@ -159,3 +191,20 @@ function changeSpeeds() {
 $("#reload").click(function () {
   location.reload();
 });
+
+function showRemovedPlayer(userName) {
+  var loseMessage = document.getElementById("loseMessage");
+  loseMessage.innerHTML = userName + " HAS LOST THE GAME";
+  $("#loseMessage").fadeIn(700);
+  $("#loseMessage").fadeOut(900);
+}
+
+
+function checkTimeLeft(){
+  setInterval(() => {
+    if(audio.duration - audio.currentTime < 1/songSpeed){
+      socket.emit('playersLeft');
+    }
+  }, 800); //0.8 second checks slightly faster than the fastest playback speed
+}
+

@@ -69,3 +69,18 @@ h4 {
 #playerList {
   list-style-type: none;
 }
+
+.loseMessage {
+  background-color: red;
+  border-radius: 8px;
+  display: block;
+  width: 80%;
+  margin: 0 auto;
+  font-size: 80px;
+  position: relative;
+  margin-top: -25%;
+}
+
+.hide {
+  display: none;
+}

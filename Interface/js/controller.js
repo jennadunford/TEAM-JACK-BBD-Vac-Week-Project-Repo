@@ -1,5 +1,5 @@
-// const socket = new io("http://localhost:9000", {});
-const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
+const socket = new io("http://localhost:9000", {});
+// const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
 var readyButton = document.getElementById("readyButton");
 var readyState = document.getElementById("state");
 var joinCode = document.querySelector("#joinCode");
@@ -135,6 +135,30 @@ socket.on("updateSensitivity", (songSensitivity) => {
 
   // TODO: check that song sensitivity makes sense for thresholds
 });
+
+function addPlayer(userName) {
+  const node = document.createElement("li");
+  const textnode = document.createTextNode(userName);
+  node.appendChild(textnode);
+  document.getElementById("playerList").appendChild(node);
+}
+
+socket.on('gameStarted', (players) =>{
+    //will start users' accelerometer
+    console.log('start game')
+    window.location.href = "./playerScreen.html";
+
+
+    for(let i = 0;i < players.length; i++){
+      sessionStorage.setItem(i + 1,players[i].id);
+    }
+    //start accelerometer
+})
+
+socket.on('restartGame', () =>{
+    alert('Game was restarted by host')
+    window.location.href = "./controller.html";
+})
 
 function updateReadings() {
   let acl = new LinearAccelerationSensor({ frequency: 60 });
