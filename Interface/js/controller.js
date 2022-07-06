@@ -1,5 +1,5 @@
-// const socket = new io("http://localhost:9000", {});
-const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
+const socket = new io("http://localhost:9000", {});
+// const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
 var readyButton = document.getElementById("readyButton");
 var readyState = document.getElementById("state");
 var joinCode = document.querySelector("#joinCode");
@@ -70,8 +70,8 @@ function ready() {
       uName.innerHTML = output;
       output = joinCode.value;
       jCode.innerHTML = output;
-      socket.emit("User", userName.value);
-      socket.emit("joinCode", joinCode.value);
+      socket.emit("userJoin", userName.value, joinCode.value);
+      //socket.emit("joinCode", joinCode.value);
       sessionStorage.setItem("userName", userName.value);
     }
     // } else {
@@ -122,6 +122,16 @@ socket.on("validCode", () => {
   alert("Client: Code was accepted");
   console.log("Client: Code was accepted");
 });
+
+socket.on("takenName", (msg) => {
+  alert(msg);
+  userReady = false;
+  jCode.innerHTML = "";
+  joinCode.value = "";
+  readyState.innerHTML = "Not ready";
+  readyButton.innerHTML = "Ready";
+  console.log("accepted username");
+})
 
 socket.on("updateSensitivity", (songSensitivity) => {
   if (songSensitivity == 0.2) {

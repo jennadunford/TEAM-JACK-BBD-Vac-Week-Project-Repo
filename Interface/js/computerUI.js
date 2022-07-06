@@ -1,7 +1,7 @@
 // var userName = document.querySelector("#userName");
-// const socket = new io("http://localhost:9000", {});
+const socket = new io("http://localhost:9000", {});
 // console.log("computer ui");
-const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
+// const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
 var music = ["Music Files/RideOfTheValkyries.mp3", "Music Files/BrandenburgConcertoNo11.mp3", "Music Files/CoconutMallMarioKart.mp3", "Music Files/NeverGonnaGiveYouUp.mp3", "Music Files/TheFieldsofArdSkellig.mp3"]
 var joinCodeDisplay = document.getElementById("joinCode");
 $("#generateButton").click(function () {
