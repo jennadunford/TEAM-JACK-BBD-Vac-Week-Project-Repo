@@ -24,6 +24,11 @@ var lower_threshold = 0;
 var upper_threshold = 30;
 var hard_cap = 50;
 
+var updateState = document.getElementById("updateState");
+var updateMag = document.getElementById("updateMag");
+
+var dqFlag = false;
+
 // $("#readyButton").click(function () {
 //   console.log("ready button pressed");
 //   if (userName.value == "" || joinCode.value == "") {
@@ -101,6 +106,16 @@ function ready() {
 
 //setInterval(alertFunc(), 10000); //for some reason, still constant, unstoppable updates...
 
+socket.on("usernameTaken", (message) => {
+  alert(message)
+  console.log("Client: username taken")
+  userReady = false;
+  jCode.innerHTML = "";
+  joinCode.value = "";
+  readyState.innerHTML = "Not ready";
+  readyButton.innerHTML = "Ready";
+});
+
 socket.on("invalidCode", () => {
   alert("Client: invalid code");
   console.log("Client: invalid code");
@@ -131,6 +146,29 @@ socket.on("updateSensitivity", (songSensitivity) => {
   // TODO: check that song sensitivity makes sense for thresholds
 });
 
+function addPlayer(userName) {
+  const node = document.createElement("li");
+  const textnode = document.createTextNode(userName);
+  node.appendChild(textnode);
+  document.getElementById("playerList").appendChild(node);
+}
+
+socket.on("gameStarted", (players) => {
+  //will start users' accelerometer
+  console.log("start game");
+  window.location.href = "./playerScreen.html";
+
+  for (let i = 0; i < players.length; i++) {
+    sessionStorage.setItem(i + 1, players[i].id);
+  }
+  //start accelerometer
+});
+
+socket.on("restartGame", () => {
+  alert("Game was restarted by host");
+  window.location.href = "./controller.html";
+});
+
 function updateReadings() {
   let acl = new LinearAccelerationSensor({ frequency: 60 });
   acl.addEventListener("reading", () => {
@@ -139,13 +177,11 @@ function updateReadings() {
     yOutput.innerHTML = acl.y.toFixed(2);
     zOutput.innerHTML = acl.z.toFixed(2);
 
-    
-    iOSSensorAccelerationMagnitude = Math.sqrt(
+    sensorAccelerationMagnitude = Math.sqrt(
       acl.x * acl.x + acl.y * acl.y + acl.z * acl.z
     );
-    normOutput.innerHTML = iOSSensorAccelerationMagnitude.toFixed(2);
 
-    return iOSSensorAccelerationMagnitude;
+    normOutput.innerHTML = sensorAccelerationMagnitude.toFixed(2);
 
     // console.log("Acceleration along the Y-axis " + acl.y);
     // console.log("Acceleration along the Z-axis " + acl.z);
@@ -160,32 +196,42 @@ function updateReadings() {
     // );
   });
   acl.start();
+  return sensorAccelerationMagnitude;
 }
 
-function alert_disqualify(acc_magnitude)// gets acc_magnitude from iOS or android and disqualifies the player as it sees fit
-{
-	if (acc_magnitude>=upper_threshold || acc_magnitude<=lower_threshold || acc_magnitude > hard_cap){
-	  // disqualify the player:
-		// tell player that player is disqualified by making their screen red
-	  document.body.style.background = "red";
+function alert_disqualify(acc_magnitude) {
+  if (acc_magnitude >= upper_threshold || acc_magnitude > hard_cap || dqFlag) {
+    // disqualify the player:
+    // alert("Disqualified");
+    // tell player that player is disqualified by making their screen red
+    // document.body.style.background = "red";
+    document.body.style.background = "red";
+    dqFlag = true;
 
-	  // tell server that player is disqualifyed
-	  socket.emit('disqualifyPlayer', sessionStorage.getItem('userName'));
-	  console.log(sessionStorage.getItem('userName') + ' was disqualified');
-		  //on server:
-		  //sort board
-		  //grey them out on the scoreboard
-	} else if (acc_magnitude>=upper_threshold * 0.9){
-	  //alert user that they are close to threshold by making their screen orange
-	  document.body.style.background = "orange";
-	}else if (acc_magnitude>=upper_threshold * 0.75){
-	  //alert user that they are approaching the threshold by making their screen yellow
-	  document.body.style.background = "yellow";
-	}else {//ie: if acc_magnitude<upper_threshold*0.75 && acc_magnitude>lower_threshold
-	  //make their screen green
-	  document.body.style.background = "green";
-	}
-	// alert("Acceleration along the X-axis " + acl.x + ", Y-axis: " + acl.y + ", Z-axis: " + acl.z);
+    // tell server that player is disqualifyed
+    socket.emit("disqualifyPlayer", sessionStorage.getItem("userName"));
+    //alert(sessionStorage.getItem("userName") + " was disqualified");
+    //on server:
+    //sort board
+    //grey them out on the scoreboard
+    return;
+  } else if (acc_magnitude >= upper_threshold * 2/3) {
+    //alert user that they are close to threshold by making their screen orange
+    updateState.innerHTML = "Close";
+    document.body.style.background = "orange";
+    return;
+  } else if (acc_magnitude >= upper_threshold * 1/6) {
+    updateState.innerHTML = "Far";
+    //alert user that they are approaching the threshold by making their screen yellow
+    document.body.style.background = "yellow";
+    return;
+  } else {
+    //ie: if acc_magnitude<upper_threshold*0.75 && acc_magnitude>lower_threshold
+    //make their screen green
+    updateState.innerHTML = "Safe " + acc_magnitude.toFixed(2);
+    document.body.style.background = "green";
+    return;
+  }
 }
 
 //setInterval(updateReadings(), 500);
@@ -202,28 +248,42 @@ function getAccel() {
             xOutput.innerHTML = event.acceleration.x.toFixed(2);
             yOutput.innerHTML = event.acceleration.y.toFixed(2);
             zOutput.innerHTML = event.acceleration.z.toFixed(2);
+            updateState.innerHTML = "Started motion sensing";
 
-            sensorAccelerationMagnitude = Math.sqrt(
+            acc_magnitude = Math.sqrt(
               event.acceleration.x * event.acceleration.x +
                 event.acceleration.y * event.acceleration.y +
                 event.acceleration.z * event.acceleration.z
             );
-            console.log("sensorAccelerationMagnitude: " + sensorAccelerationMagnitude);
 
-            normOutput.innerHTML = sensorAccelerationMagnitude.toFixed(2);
-            
+            //process magnitude
+
+            normOutput.innerHTML = Math.sqrt(
+              event.acceleration.x * event.acceleration.x +
+                event.acceleration.y * event.acceleration.y +
+                event.acceleration.z * event.acceleration.z
+            ).toFixed(2);
+            alert_disqualify(acc_magnitude);
           });
         }
       })
       .catch(console.error);
-      alert_disqualify(sensorAccelerationMagnitude)
+    alert_disqualify(acc_magnitude);
   } else {
-    
-    iOSAccMagnitude = updateReadings();
-    alert_disqualify(iOSAccMagnitude)
+    // alert_disqualify(updateReadings())
     // non iOS 13+
+    updateReadings();
+    console.log("alter_disqualify");
+    lacl = new LinearAccelerationSensor({ frequency: 60 });
+    lacl.addEventListener("reading", () => {
+      acc_magnitude = Math.sqrt(
+        lacl.x * lacl.x + lacl.y * lacl.y + lacl.z * lacl.z
+      );
+      // alert("Acceleration along the X-axis " + acl.x + ", Y-axis: " + acl.y + ", Z-axis: " + acl.z);
+      alert_disqualify(acc_magnitude);
+    });
+    lacl.start();
   }
-  
 }
 
 setInterval(getAccel(), 500);
@@ -246,3 +306,14 @@ function changeToPink() {
 function changeToRed() {
   document.body.style.background = "red";
 }
+
+setInterval(function () {
+  updateMag.innerHTML = acc_magnitude.toFixed(2);
+  console.log(acc_magnitude);
+  normOutput.innerHTML = acc_magnitude.toFixed(2);
+}, 100);
+
+//must visually indicate that the player was eliminated
+socket.on("disqualifyPlayer", (userName) => {
+  strikeThrough(userName);
+});

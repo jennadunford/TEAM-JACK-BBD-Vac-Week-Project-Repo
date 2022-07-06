@@ -86,3 +86,30 @@ input:hover {
   color: white;
   cursor: pointer;
 }
+
+.QRCode {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1%;
+  padding: 5px;
+  border-style: double;
+  border-width: 2px;
+  border-color: black;
+  border-radius: 25%;
+}
+
+#submit,
+#ready {
+  width: 30%;
+  font-size: 50px;
+}
+
+.gameButtons {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.h4 {
+  font-size: 40px;
+}

@@ -33,3 +33,8 @@ function showCrown() {
   var crown = document.getElementById("winImage");
   crown.classList.remove("hidden");
 }
+
+//Add playerlist
+for (let i = 1; i < sessionStorage.length; i++) {
+  addPlayer(sessionStorage.getItem(i));
+}
