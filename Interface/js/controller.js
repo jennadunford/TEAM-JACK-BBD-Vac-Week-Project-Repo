@@ -143,22 +143,21 @@ function addPlayer(userName) {
   document.getElementById("playerList").appendChild(node);
 }
 
-socket.on('gameStarted', (players) =>{
-    //will start users' accelerometer
-    console.log('start game')
-    window.location.href = "./playerScreen.html";
+socket.on("gameStarted", (players) => {
+  //will start users' accelerometer
+  console.log("start game");
+  window.location.href = "./playerScreen.html";
 
+  for (let i = 0; i < players.length; i++) {
+    sessionStorage.setItem(i + 1, players[i].id);
+  }
+  //start accelerometer
+});
 
-    for(let i = 0;i < players.length; i++){
-      sessionStorage.setItem(i + 1,players[i].id);
-    }
-    //start accelerometer
-})
-
-socket.on('restartGame', () =>{
-    alert('Game was restarted by host')
-    window.location.href = "./controller.html";
-})
+socket.on("restartGame", () => {
+  alert("Game was restarted by host");
+  window.location.href = "./controller.html";
+});
 
 function updateReadings() {
   let acl = new LinearAccelerationSensor({ frequency: 60 });
@@ -198,7 +197,6 @@ function alert_disqualify(acc_magnitude) {
     // document.body.style.background = "red";
     document.body.style.background = "red";
     dqFlag = true;
-
 
     // tell server that player is disqualifyed
     socket.emit("disqualifyPlayer", sessionStorage.getItem("userName"));
@@ -243,14 +241,17 @@ function getAccel() {
 
             acc_magnitude = Math.sqrt(
               event.acceleration.x * event.acceleration.x +
-              event.acceleration.y * event.acceleration.y +
-              event.acceleration.z * event.acceleration.z
+                event.acceleration.y * event.acceleration.y +
+                event.acceleration.z * event.acceleration.z
             );
 
             //process magnitude
 
-            normOutput.innerHTML = Math.sqrt( (event.acceleration.x * event.acceleration.x) + (event.acceleration.y * event.acceleration.y) +
-              (event.acceleration.z * event.acceleration.z)).toFixed(2);
+            normOutput.innerHTML = Math.sqrt(
+              event.acceleration.x * event.acceleration.x +
+                event.acceleration.y * event.acceleration.y +
+                event.acceleration.z * event.acceleration.z
+            ).toFixed(2);
             alert_disqualify(acc_magnitude);
           });
         }
@@ -301,4 +302,7 @@ setInterval(function () {
   normOutput.innerHTML = acc_magnitude.toFixed(2);
 }, 100);
 
-
+//must visually indicate that the player was eliminated
+socket.on("disqualifyPlayer", (userName) => {
+  strikeThrough(userName);
+});

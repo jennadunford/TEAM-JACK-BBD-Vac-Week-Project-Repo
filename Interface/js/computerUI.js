@@ -2,21 +2,30 @@
 // const socket = new io("http://localhost:9000", {});
 // console.log("computer ui");
 const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
-var music = ["Music Files/RideOfTheValkyries.mp3", "Music Files/BrandenburgConcertoNo11.mp3", "Music Files/CoconutMallMarioKart.mp3", "Music Files/NeverGonnaGiveYouUp.mp3", "Music Files/TheFieldsofArdSkellig.mp3"]
+var music = [
+  "Music Files/RideOfTheValkyries.mp3",
+  "Music Files/BrandenburgConcertoNo11.mp3",
+  "Music Files/CoconutMallMarioKart.mp3",
+  "Music Files/NeverGonnaGiveYouUp.mp3",
+  "Music Files/TheFieldsofArdSkellig.mp3",
+];
 var joinCodeDisplay = document.getElementById("joinCode");
 $("#generateButton").click(function () {
-  console.log('asked for code')
+  console.log("asked for code");
   socket.emit("generateCode");
 });
 
-
 socket.on("gameCode", (code) => {
-  console.log('generated code on computer: ' + code);
+  console.log("generated code on computer: " + code);
   joinCodeDisplay.innerHTML = code;
 });
 
 //must visually indicate that the player was eliminated
-socket.on("disqualifyPlayer", (userName) =>{
+socket.on("disqualifyPlayer", (userName) => {
+  strikeThrough(userName);
+});
+
+function strikeThrough(userName) {
   let nodes = Array.from($("#playerList").children("li"));
   for (let count = 0; count < nodes.length; count++) {
     const element = nodes[count];
@@ -26,8 +35,7 @@ socket.on("disqualifyPlayer", (userName) =>{
       break;
     }
   }
-});
-
+}
 $("#addPlayer").click(function () {
   if (userName.value == "") {
     alert("Please enter a username");
@@ -35,8 +43,6 @@ $("#addPlayer").click(function () {
     addPlayer(userName.value);
   }
 });
-
-
 
 function addPlayer(userName) {
   const node = document.createElement("li");
@@ -68,9 +74,9 @@ socket.on("userJoined", (user) => {
   addPlayer(user);
 });
 
-socket.on('numPlayers', (numPlayers) =>{
-  if(numPlayers != 1){
-    console.log('Selected a new song')
+socket.on("numPlayers", (numPlayers) => {
+  if (numPlayers != 1) {
+    console.log("Selected a new song");
     audio = new Audio(music[Math.floor(Math.random() * music.length)]);
     audio.play();
   }
@@ -199,12 +205,10 @@ function showRemovedPlayer(userName) {
   $("#loseMessage").fadeOut(900);
 }
 
-
-function checkTimeLeft(){
+function checkTimeLeft() {
   setInterval(() => {
-    if(audio.duration - audio.currentTime < 1/songSpeed){
-      socket.emit('playersLeft');
+    if (audio.duration - audio.currentTime < 1 / songSpeed) {
+      socket.emit("playersLeft");
     }
   }, 800); //0.8 second checks slightly faster than the fastest playback speed
 }
-
