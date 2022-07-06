@@ -21,8 +21,17 @@ socket.on("gameCode", (code) => {
 //must visually indicate that the player was eliminated
 socket.on("strikePlayer", (userName) => {
   console.log('comp: strike')
+  //TODO: merge with playerOut
+})
+
+socket.on("playerOut", (userName) => {
+  // alert(userName + " is out");
+  //strikeThrough(userName);
+  showRemovedPlayer(userName);
   strikeThrough(userName);
 });
+
+
 
 function strikeThrough(userName) {
   let nodes = Array.from($("#playerList").children("li"));
@@ -35,6 +44,7 @@ function strikeThrough(userName) {
     }
   }
 }
+
 $("#addPlayer").click(function () {
   if (userName.value == "") {
     alert("Please enter a username");
@@ -61,7 +71,7 @@ $("#startButton").click(function () {
 });
 
 $("#restartButton").click(function () {
-  alert("Game restarted");
+  alert("Game stopped");
   socket.emit("restart");
   audio.pause();
   //Clear player list needs to be added
@@ -82,6 +92,11 @@ socket.on('numPlayers', (numPlayers) =>{
     showSong.innerHTML = musicnames[randomIndex];
     audio.play();
   }
+});
+
+socket.on('gameOver', (players) => {
+  showWinner(players[0].id);
+  audio.pause();
 });
 
 $("#removePlayer").click(function () {
@@ -219,9 +234,16 @@ $("#reload").click(function () {
 
 function showRemovedPlayer(userName) {
   var loseMessage = document.getElementById("loseMessage");
-  loseMessage.innerHTML = userName + " HAS LOST THE GAME";
-  $("#loseMessage").fadeIn(700);
-  $("#loseMessage").fadeOut(900);
+  loseMessage.innerHTML = userName + " IS OUT THE GAME";
+  $("#loseMessage").fadeIn(600);
+  $("#loseMessage").fadeOut(2000);
+}
+
+function showWinner(userName){
+  var winMessage = document.getElementById("winMessage");
+  winMessage.style.display = "block";
+  winMessage.innerHTML = userName + " WON THE GAME";
+  $("#loseMessage").fadeIn(1000);
 }
 
 function checkTimeLeft() {
