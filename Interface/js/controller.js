@@ -146,10 +146,7 @@ function getAccel()
       {
         if (response == 'granted') 
         {
-            window.addEventListener('devicemotion', (e) => 
-            {
-              setInterval(updateReadings(), 500);
-            });
+          setInterval(updateReadings(), 500);          
         }
       })
       .catch(console.error)
