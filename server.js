@@ -55,6 +55,7 @@ io.on('connection', (socket) => { //Evertything with socket
         socket.broadcast.emit('gameCode', code);
     })
 
+    
     socket.on('disqualifyPlayer', (userName)=>{ //Disable the player's playing attribute
         //find player
         var playerIndex = findPlayer(userName)
