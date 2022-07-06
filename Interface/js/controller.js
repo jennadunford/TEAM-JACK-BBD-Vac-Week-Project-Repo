@@ -139,15 +139,22 @@ setInterval(updateReadings(), 500);
 
 function getAccel()
 {
-  Notification.requestPermission().then(response => {
-    if (response == 'granted') {
-        console.log("accelerometer permission granted");
-        alert("accelerometer permission granted");
-        // Do stuff here
-    }
-    else 
-    {
-      alert("Function bad bad");
-    }
-  });
+  if (typeof DeviceMotionEvent.requestPermission === 'function') 
+  {
+    DeviceMotionEvent.requestPermission().then(response => 
+      {
+        if (response == 'granted') 
+        {
+            window.addEventListener('devicemotion', (e) => 
+            {
+            // do something with e
+            });
+        }
+      })
+      .catch(console.error)
+  } else 
+  {
+    // non iOS 13+
+  }
+  
 }
