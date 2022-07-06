@@ -24,7 +24,7 @@ var lower_threshold = 0;
 var upper_threshold = 30;
 var hard_cap = 50;
 
-var updateState = document.getElementById("updateState");
+var updateState = window.getElementById("updateState");
 
 
 // $("#readyButton").click(function () {
