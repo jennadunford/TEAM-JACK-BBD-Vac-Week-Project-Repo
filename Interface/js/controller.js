@@ -217,7 +217,7 @@ function getAccel() {
     updateReadings();
     // non iOS 13+
   }
-  alert_disqualify()
+  //alert_disqualify()
 }
 
 setInterval(getAccel(), 500);
