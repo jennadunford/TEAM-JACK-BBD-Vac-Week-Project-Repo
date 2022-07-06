@@ -226,7 +226,8 @@ function getAccel() {
           });
         }
       })
-      .catch(console.error);
+    .catch(console.error);
+    normOutput.innerHTML = iOSAccMagnitude.toFixed(2);
     alert_disqualify(iOSAccMagnitude);
   } else {
     // alert_disqualify(updateReadings())
@@ -268,4 +269,7 @@ function changeToRed() {
 
 setInterval(function () {
   updateMag.innerHTML = acc_magnitude.toFixed(2);
+  console.log(acc_magnitude);
 }, 100);
+
+
