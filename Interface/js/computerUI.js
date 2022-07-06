@@ -71,7 +71,9 @@ socket.on("userJoined", (user) => {
 socket.on('numPlayers', (numPlayers) =>{
   if(numPlayers != 1){
     console.log('Selected a new song')
-    audio = new Audio(music[Math.floor(Math.random() * music.length)]);
+    randomElement = music[Math.floor(Math.random() * music.length)];
+    audio = new Audio(randomElement);
+    showSong.innerHTML = randomElement.slice(0, 12);
     audio.play();
   }
 });
