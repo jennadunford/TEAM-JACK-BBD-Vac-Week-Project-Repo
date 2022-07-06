@@ -183,6 +183,8 @@ function updateReadings() {
 
   setInterval(() => {
     // acc_magnitude = document.getElementById("customAcc").value;
+    socket.emit('controllerLog', 'before: ' + acc_mag);
+    console.log("before:" + acc_magnitude);
     acc_magnitude = getAccel();
     socket.emit('controllerLog', 'in interval: ' + acc_mag);
     console.log("M:" + acc_magnitude);
