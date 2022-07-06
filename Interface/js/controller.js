@@ -234,18 +234,18 @@ function setAccelInterval()
 
 
 
-DeviceMotionEvent.requestPermission().then((response) => {
-  if (response == "granted") {
-    console.log("accelerometer permission granted");
-    // Do stuff here
-  }
-});
+// DeviceMotionEvent.requestPermission().then((response) => {
+//   if (response == "granted") {
+//     console.log("accelerometer permission granted");
+//     // Do stuff here
+//   }
+// });
 
-setInterval(function () {
-  updateMag.innerHTML = acc_magnitude.toFixed(2);
-  console.log(acc_magnitude);
-  normOutput.innerHTML = acc_magnitude.toFixed(2);
-}, 100);
+// setInterval(function () {
+//   updateMag.innerHTML = acc_magnitude.toFixed(2);
+//   console.log(acc_magnitude);
+//   normOutput.innerHTML = acc_magnitude.toFixed(2);
+// }, 100);
 
 //must visually indicate that the player was eliminated
 socket.on("disqualifyPlayer", (userName) => {
