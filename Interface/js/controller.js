@@ -170,7 +170,7 @@ function alert_disqualify(acc_magnitude) {
     alert("Disqualified");
     // tell player that player is disqualified by making their screen red
     // document.body.style.background = "red";
-    window.body.style.background = "red";
+    document.body.style.background = "red";
 
     // tell server that player is disqualifyed
     socket.emit("disqualifyPlayer", sessionStorage.getItem("userName"));
@@ -183,17 +183,17 @@ function alert_disqualify(acc_magnitude) {
   } else if (acc_magnitude >= upper_threshold * 0.9) {
     //alert user that they are close to threshold by making their screen orange
     updateState.innerHTML = "Close";
-    window.body.style.background = "orange";
+    document.body.style.background = "orange";
   } else if (acc_magnitude >= upper_threshold * 0.75) {
     updateState.innerHTML = "Approaching";
     //alert user that they are approaching the threshold by making their screen yellow
-    window.body.style.background = "yellow";
+    document.body.style.background = "yellow";
   } else {
     //ie: if acc_magnitude<upper_threshold*0.75 && acc_magnitude>lower_threshold
     //make their screen green
-    updateState.innerHTML = "Safe" + acc_magnitude.toFixed(2);
+    updateState.innerHTML = "Safe " + acc_magnitude.toFixed(2);
 
-   window.body.style.background = "green";
+   document.body.style.background = "green";
   }
 }
 
