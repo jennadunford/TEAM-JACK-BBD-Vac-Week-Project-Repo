@@ -128,7 +128,7 @@ socket.on("updateSensitivity", (songSensitivity) => {
 });
 
 socket.on('gameStarted', () =>{
-    //will start users accelerometer
+    //will start users' accelerometer
 })
 
 socket.on('restartGame', () =>{
