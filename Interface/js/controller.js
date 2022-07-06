@@ -21,7 +21,6 @@ var lower_threshold = 0;
 var upper_threshold = 30;
 var hard_cap = 50;
 
-
 // $("#readyButton").click(function () {
 //   console.log("ready button pressed");
 //   if (userName.value == "" || joinCode.value == "") {
@@ -112,7 +111,6 @@ socket.on("invalidCode", () => {
 socket.on("validCode", () => {
   alert("Client: Code was accepted");
   console.log("Client: Code was accepted");
-
 });
 
 socket.on("updateSensitivity", (songSensitivity) => {
@@ -128,7 +126,6 @@ socket.on("updateSensitivity", (songSensitivity) => {
   }
 
   // TODO: check that song sensitivity makes sense for thresholds
-
 });
 
 function updateReadings() {
@@ -158,15 +155,14 @@ function updateReadings() {
   acl.start();
 }
 
-
-function alert_disqualify()
-{ 
-    console.log('alter_disqualify')
-  lacl = new LinearAccelerationSensor({frequency: 60});
-  lacl.addEventListener('reading', () => {
-    acc_magnitude = Math.sqrt(lacl.x*lacl.x + lacl.y*lacl.y + lacl.z*lacl.z)
-    if (acc_magnitude>=upper_threshold || acc_magnitude > hard_cap){
-
+function alert_disqualify() {
+  console.log("alter_disqualify");
+  lacl = new LinearAccelerationSensor({ frequency: 60 });
+  lacl.addEventListener("reading", () => {
+    acc_magnitude = Math.sqrt(
+      lacl.x * lacl.x + lacl.y * lacl.y + lacl.z * lacl.z
+    );
+    if (acc_magnitude >= upper_threshold || acc_magnitude > hard_cap) {
       // disqualify the player:
       // tell player that player is disqualified by making their screen red
       document.body.style.background = "red";
@@ -174,7 +170,7 @@ function alert_disqualify()
       // tell server that player is disqualifyed
       socket.emit("disqualifyPlayer", sessionStorage.getItem("userName"));
 
-    //   alert(sessionStorage.getItem("userName") + " was disqualified");
+      //   alert(sessionStorage.getItem("userName") + " was disqualified");
 
       //on server:
       //sort board
@@ -199,7 +195,6 @@ function alert_disqualify()
 setInterval(alert_disqualify(), 500);
 
 function getAccel() {
-
   console.log("permissions button pressed");
   if (typeof DeviceMotionEvent.requestPermission === "function") {
     DeviceMotionEvent.requestPermission()
@@ -210,14 +205,14 @@ function getAccel() {
             xOutput.innerHTML = event.acceleration.x.toFixed(2);
             yOutput.innerHTML = event.acceleration.y.toFixed(2);
             zOutput.innerHTML = event.acceleration.z.toFixed(2);
-            
 
             sensorAccelerationMagnitude = Math.sqrt(
               event.acceleration.x * event.acceleration.x +
                 event.acceleration.y * event.acceleration.y +
-                event.acceleration.z * event.acceleration.z)
+                event.acceleration.z * event.acceleration.z
+            );
 
-            normOutput.innerHTML = sensorAccelerationMagnitude.toFixed(2)
+            normOutput.innerHTML = sensorAccelerationMagnitude.toFixed(2);
           });
         }
       })
@@ -231,13 +226,12 @@ function getAccel() {
 
 setInterval(getAccel(), 500);
 
-  DeviceMotionEvent.requestPermission().then((response) => {
-    if (response == "granted") {
-      console.log("accelerometer permission granted");
-      // Do stuff here
-    }
-  });
-}
+DeviceMotionEvent.requestPermission().then((response) => {
+  if (response == "granted") {
+    console.log("accelerometer permission granted");
+    // Do stuff here
+  }
+});
 
 function changeToBlue() {
   document.body.style.background = "blue";
@@ -250,4 +244,3 @@ function changeToPink() {
 function changeToRed() {
   document.body.style.background = "red";
 }
-
