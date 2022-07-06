@@ -5,14 +5,14 @@ const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
 
 var joinCodeDisplay = document.getElementById("joinCode");
 $("#generateButton").click(function () {
-  socket.emit('generateCode');
+  socket.emit("generateCode");
 });
 
 // socket.on('connection', (socket) => {
 
 // });
 
-socket.on('codeGenerated', (code) => {
+socket.on("codeGenerated", (code) => {
   joinCodeDisplay.innerHTML = code;
 });
 
@@ -34,11 +34,24 @@ function addPlayer(userName) {
 $("#startButton").click(function () {
   $("#startGamePressed").fadeIn(500);
   $("#startGamePressed").fadeOut(500);
-  socket.emit('startGame');
+  socket.emit("startGame");
 });
 
-
-socket.on('userJoined', (user) => {
+socket.on("userJoined", (user) => {
   console.log(user);
   addPlayer(user);
 });
+$("#removePlayer").click(function () {
+  removePlayer(userName.value);
+});
+function removePlayer(userName) {
+  let nodes = Array.from($("#playerList").children("li"));
+  for (let count = 0; count < nodes.length; count++) {
+    const element = nodes[count];
+    console.log(nodes[count].innerHTML);
+    if (element.innerHTML == userName) {
+      element.parentNode.removeChild(element);
+      break;
+    }
+  }
+}

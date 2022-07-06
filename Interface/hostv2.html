@@ -48,11 +48,9 @@
     <div><h2 id="showSong">...</h2></div>
     <div class="playerListHolder">
       <h4>PLAYER LIST</h4>
-      <ul id="playerList">
-        <li>Player 1</li>
-        <li>Player 2</li>
-      </ul>
+      <ul id="playerList"></ul>
     </div>
+
     <div><button id="startButton">START GAME</button></div>
     <div id="startGamePressed" class="hidden">
       <h2>Start Game Button Pressed</h2>
@@ -65,7 +63,6 @@
     type="text/javascript"
     src="https://code.jquery.com/jquery-1.7.1.min.js"
   ></script>
-  <script type="text/javascript" src="js/computerUI.js"></script>
   <script
     src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
     integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -86,4 +83,6 @@
     src="https://code.jquery.com/jquery-1.7.1.min.js"
   ></script>
   <script type="text/javascript" src="js/music.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="text/javascript" src="js/computerUI.js"></script>
 </html>
