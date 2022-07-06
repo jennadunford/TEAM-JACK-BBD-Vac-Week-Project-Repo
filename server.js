@@ -79,12 +79,13 @@ io.on('connection', (socket) => { //Evertything with socket
     socket.on('songSensitivity', (sense) => { //Get song sense from musicplayer
         if(playing){
             socket.broadcast.emit('updateSensitivity', sense);     
-            console.log('sensitivity updated');       
+            // console.log('sensitivity updated');       
         }
     });
 
     socket.on('playersLeft', ()=>{
-        socket.broadcast.emit('numPlayers', playerCount);
+        console.log('server: players left')
+        socket.emit('numPlayers', playerCount);
     });
 });
 

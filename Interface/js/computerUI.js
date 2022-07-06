@@ -3,6 +3,7 @@ const socket = new io("http://localhost:9000", {});
 // console.log("computer ui");
 // const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
 var music = ["Music Files/RideOfTheValkyries.mp3", "Music Files/BrandenburgConcertoNo11.mp3", "Music Files/CoconutMallMarioKart.mp3", "Music Files/NeverGonnaGiveYouUp.mp3", "Music Files/TheFieldsofArdSkellig.mp3"]
+var songSpeed = 1;
 var joinCodeDisplay = document.getElementById("joinCode");
 $("#generateButton").click(function () {
   console.log('asked for code')
@@ -68,10 +69,12 @@ socket.on("userJoined", (user) => {
   addPlayer(user);
 });
 
-socket.on('numPlayers', (numPlayers) =>{
+socket.on('playersLeft', (numPlayers) =>{
+  console.log('host: players left');
   if(numPlayers != 1){
+    let = temp_music = ["Music Files/EpicSportClap.mp3", "Music Files/GroovyRock.mp3", "Music Files/Piano.mp3"]
     console.log('Selected a new song')
-    randomElement = music[Math.floor(Math.random() * music.length)];
+    randomElement = temp_music[Math.floor(Math.random() * temp_music.length)];
     audio = new Audio(randomElement);
     showSong.innerHTML = randomElement.slice(12);
     audio.play();
@@ -152,6 +155,21 @@ function switchSong(songID) {
       showSong.innerHTML = "The Fields of Ard Skellig";
       audio.pause();
       break;
+    case "song6":
+      audio = new Audio("Music Files/Piano.mp3");
+      showSong.innerHTML = "Piano";
+      audio.pause;
+      break;
+    case "song7":
+      audio = new Audio("Music Files/EpicSportClap.mp3");
+      showSong.innerHTML = "Piano";
+      audio.pause;
+      break;
+    case "song8":
+      audio = new Audio("Music Files/GroovyRock.mp3");
+      showSong.innerHTML = "Piano";
+      audio.pause;
+      break;
   }
 }
 
@@ -166,21 +184,21 @@ function changeSpeeds() {
     //console.log("Random number generated: " + num);
     switch (num) {
       case 1:
-        var songSpeed = 1;
+        songSpeed = 1;
         audio.playbackRate = songSpeed;
         speedCheck.innerHTML = "Playing at normal speed";
         moveBox.innerHTML = "AT REGULAR SPEED!";
         socket.emit("songSensitivity", songSpeed);
         break;
       case 2:
-        var songSpeed = 1.2;
+        songSpeed = 1.2;
         audio.playbackRate = songSpeed;
         speedCheck.innerHTML = "Playing 1.2 times faster";
         moveBox.innerHTML = "FAST!";
         socket.emit("songSensitivity", songSpeed);
         break;
       case 3:
-        var songSpeed = 0.8;
+        songSpeed = 0.8;
         audio.playbackRate = songSpeed;
         speedCheck.innerHTML = "Playing 0.8 times slower";
         moveBox.innerHTML = "SLOWLY!";
@@ -203,8 +221,13 @@ function showRemovedPlayer(userName) {
 
 
 function checkTimeLeft(){
+  // console.log('Audio Duration: ' + audio.duration);
+  // console.log('Current Time: ' + audio.currentTime);
   setInterval(() => {
-    if(audio.duration - audio.currentTime < 1/songSpeed){
+    // console.log(audio.duration - audio.currentTime)
+    // console.log(1/songSpeed)
+    if(audio.duration - audio.currentTime < 2/songSpeed){
+      console.log('asking for players');
       socket.emit('playersLeft');
     }
   }, 800); //0.8 second checks slightly faster than the fastest playback speed
