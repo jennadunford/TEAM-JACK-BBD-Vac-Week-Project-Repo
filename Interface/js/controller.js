@@ -139,6 +139,7 @@ setInterval(updateReadings(), 500);
 
 function getAccel()
 {
+  console.log("permissions button pressed")
   if (typeof DeviceMotionEvent.requestPermission === 'function') 
   {
     DeviceMotionEvent.requestPermission().then(response => 
