@@ -183,10 +183,10 @@ function updateReadings() {
 
   setInterval(() => {
     // acc_magnitude = document.getElementById("customAcc").value;
-    socket.emit('controllerLog', 'before: ' + acc_mag);
+    socket.emit('controllerLog', 'before: ' + acc_magnitude);
     console.log("before:" + acc_magnitude);
     acc_magnitude = getAccel();
-    socket.emit('controllerLog', 'in interval: ' + acc_mag);
+    socket.emit('controllerLog', 'in interval: ' + acc_magnitude);
     console.log("M:" + acc_magnitude);
     // console.log("T:" + upper_threshold);
     if(dqFlag){
