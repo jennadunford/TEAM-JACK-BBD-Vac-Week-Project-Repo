@@ -27,6 +27,8 @@ var hard_cap = 50;
 var updateState = document.getElementById("updateState");
 var updateMag = document.getElementById("updateMag");
 
+var dqFlag = false;
+
 // $("#readyButton").click(function () {
 //   console.log("ready button pressed");
 //   if (userName.value == "" || joinCode.value == "") {
@@ -171,6 +173,8 @@ function alert_disqualify(acc_magnitude) {
     // tell player that player is disqualified by making their screen red
     // document.body.style.background = "red";
     document.body.style.background = "red";
+    dqFlag = true;
+
 
     // tell server that player is disqualifyed
     socket.emit("disqualifyPlayer", sessionStorage.getItem("userName"));
