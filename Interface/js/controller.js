@@ -20,6 +20,7 @@ var upper_threshold = 30;
 var hard_cap = 50;
 
 $("#readyButton").click(function () {
+  console.log("ready button pressed");
   if (userName.value == "" || joinCode.value == "") {
     alert("Please fill in all fields");
   } else {
