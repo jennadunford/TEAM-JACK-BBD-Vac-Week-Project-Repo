@@ -21,11 +21,22 @@ let playing = false;
 io.on('connection', (socket) => { //Evertything with socket
     console.log('Client connected');
     socket.on('User', (user) => {
-        players[playerCount++] = {
-            "id": user,
-            "playing": true,
-            "score": 0
+        let usernameTaken = checkUsername(user);
+        if(usernameTaken)
+        {
+            console.log("Username taken!")
+            
+            socket.emit('usernameTaken', 'This username is taken...');
         }
+        else
+        {
+            players[playerCount++] = {
+                "id": user,
+                "playing": true,
+                "score": 0
+            }
+        }
+        
         
         console.log(players);
         // if(playerCount == 1){
@@ -95,6 +106,17 @@ server.listen(port, () => { //Port server listen on
     console.log(code);
 });
 
+function checkUsername(thisUsername)
+{
+    for(var i = 0; i < playerCount; i++)
+    {
+        if(players[i].id == thisUsername)
+        {
+            return true;
+        }
+    }
+    return false;
+}
 
 //MUSIC FROM HERE ---------------------------------------------------------------------------------
 // var audio;
