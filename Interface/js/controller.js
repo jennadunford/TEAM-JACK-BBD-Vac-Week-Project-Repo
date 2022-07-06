@@ -131,10 +131,22 @@ socket.on("updateSensitivity", (songSensitivity) => {
   // TODO: check that song sensitivity makes sense for thresholds
 });
 
-socket.on('gameStarted', () =>{
+function addPlayer(userName) {
+  const node = document.createElement("li");
+  const textnode = document.createTextNode(userName);
+  node.appendChild(textnode);
+  document.getElementById("playerList").appendChild(node);
+}
+
+socket.on('gameStarted', (players) =>{
     //will start users' accelerometer
     console.log('start game')
     window.location.href = "./playerScreen.html";
+
+
+    for(let i = 0;i < players.length; i++){
+      sessionStorage.setItem(i + 1,players[i].id);
+    }
     //start accelerometer
 })
 

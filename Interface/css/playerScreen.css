@@ -25,3 +25,7 @@ img.winImage {
 .hidden {
   display: none;
 }
+
+#playerList{
+  list-style-type: none;
+}
