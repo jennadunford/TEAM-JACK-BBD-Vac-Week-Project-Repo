@@ -89,7 +89,7 @@ io.on('connection', (socket) => { //Evertything with socket
         var playerIndex = findPlayer(userName)
         if (!(playerIndex==-1)){
             console.log(userName + ' disqualified');
-            socket.emit('strikePlayer', (userName));
+            socket.broadcast.emit('strikePlayer', (userName));
         }else{
             console.log("Player not found");
         }
