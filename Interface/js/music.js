@@ -69,18 +69,21 @@ function changeSpeeds() {
     //console.log("Random number generated: " + num);
     switch (num) {
       case 1:
-        audio.playbackRate = 1;
+        var songSpeed = 1;
+        audio.playbackRate = songSpeed;
         speedCheck.innerHTML = "Playing at normal speed";
         moveBox.innerHTML = "AT REGULAR SPEED!";
         break;
       case 2:
-        audio.playbackRate = 5;
-        speedCheck.innerHTML = "Playing 5 times faster";
+        var songSpeed = 1.2;
+        audio.playbackRate = songSpeed;
+        speedCheck.innerHTML = "Playing 1.2 times faster";
         moveBox.innerHTML = "FAST!";
         break;
       case 3:
-        audio.playbackRate = 0.2;
-        speedCheck.innerHTML = "Playing 0.2 times slower";
+        var songSpeed = 0.8;
+        audio.playbackRate = songSpeed;
+        speedCheck.innerHTML = "Playing 0.8 times slower";
         moveBox.innerHTML = "SLOWLY!";
         break;
     }
