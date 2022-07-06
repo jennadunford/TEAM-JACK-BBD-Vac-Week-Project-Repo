@@ -169,6 +169,7 @@ function alert_disqualify(acc_magnitude){
   if (acc_magnitude>=upper_threshold || acc_magnitude > hard_cap){
   
     // disqualify the player:
+    alert("Disqualified");
     // tell player that player is disqualified by making their screen red
     document.body.style.background = "red";
 
@@ -182,13 +183,16 @@ function alert_disqualify(acc_magnitude){
     //grey them out on the scoreboard
   } else if (acc_magnitude >= upper_threshold * 0.9) {
     //alert user that they are close to threshold by making their screen orange
+    alert("Close");
     document.body.style.background = "orange";
   } else if (acc_magnitude >= upper_threshold * 0.75) {
+    alert("Approaching");
     //alert user that they are approaching the threshold by making their screen yellow
     document.body.style.background = "yellow";
   } else {
     //ie: if acc_magnitude<upper_threshold*0.75 && acc_magnitude>lower_threshold
     //make their screen green
+    alert("Safe");
     document.body.style.background = "green";
   }
 }
@@ -197,7 +201,6 @@ function alert_disqualify(acc_magnitude){
 // setInterval(alert_disqualify(), 500);
 
 function getAccel() {
-
   console.log("permissions button pressed");
   if (typeof DeviceMotionEvent.requestPermission === "function") {
     DeviceMotionEvent.requestPermission()
@@ -212,8 +215,8 @@ function getAccel() {
 
             acc_magnitude = Math.sqrt(
               event.acceleration.x * event.acceleration.x +
-                event.acceleration.y * event.acceleration.y +
-                event.acceleration.z * event.acceleration.z)
+              event.acceleration.y * event.acceleration.y +
+              event.acceleration.z * event.acceleration.z)
 
                 //process magnitude
                 
