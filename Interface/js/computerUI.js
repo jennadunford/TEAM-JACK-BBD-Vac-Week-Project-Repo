@@ -73,7 +73,7 @@ socket.on('numPlayers', (numPlayers) =>{
     console.log('Selected a new song')
     randomElement = music[Math.floor(Math.random() * music.length)];
     audio = new Audio(randomElement);
-    showSong.innerHTML = randomElement.slice(0, 12);
+    showSong.innerHTML = randomElement.slice(12);
     audio.play();
   }
 });
