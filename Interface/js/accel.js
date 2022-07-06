@@ -1,3 +1,35 @@
+// const socket = new io("http://localhost:9000", {});
+// const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
+// var readyButton = document.getElementById("readyButton");
+// var readyState = document.getElementById("state");
+// var joinCode = document.querySelector("#joinCode");
+// var userName = document.querySelector("#userName");
+// var uName = document.getElementById("uName");
+// var jCode = document.getElementById("jCode");
+// var userReady = false;
+// var output;
+// var xOutput = document.getElementById("xRead");
+// var yOutput = document.getElementById("yRead");
+// var zOutput = document.getElementById("zRead");
+// var normOutput = document.getElementById("norm");
+
+var sensorAccelerationMagnitude = 0;
+
+var iOSSensorAccelerationMagnitude = 0;
+var iOSAccMagnitude = 0;
+
+var acc_magnitude = 0;
+let lacl = new LinearAccelerationSensor({ frequency: 60 });
+var lower_threshold = 0;
+var upper_threshold = 30;
+var hard_cap = 50;
+
+var updateState = document.getElementById("updateState");
+var updateMag = document.getElementById("updateMag");
+
+var dqFlag = false;
+
+
 
 function updateReadings() {
     let acl = new LinearAccelerationSensor({ frequency: 60 });
@@ -12,6 +44,7 @@ function updateReadings() {
       );
   
       normOutput.innerHTML = sensorAccelerationMagnitude.toFixed(2);
+
     });
     acl.start();
     return sensorAccelerationMagnitude;
@@ -26,6 +59,7 @@ function updateReadings() {
       document.body.style.background = "red";
       dqFlag = true;
   
+
       // tell server that player is disqualifyed
       socket.emit("disqualifyPlayer", sessionStorage.getItem("userName"));
       //alert(sessionStorage.getItem("userName") + " was disqualified");
@@ -43,12 +77,15 @@ function updateReadings() {
       //alert user that they are approaching the threshold by making their screen yellow
       document.body.style.background = "yellow";
       return;
+
     } else {
       //ie: if acc_magnitude<upper_threshold*0.75 && acc_magnitude>lower_threshold
       //make their screen green
       updateState.innerHTML = "Safe " + acc_magnitude.toFixed(2);
+
       document.body.style.background = "green";
       return;
+
     }
   }
   
@@ -70,17 +107,19 @@ function updateReadings() {
   
               acc_magnitude = Math.sqrt(
                 event.acceleration.x * event.acceleration.x +
-                  event.acceleration.y * event.acceleration.y +
-                  event.acceleration.z * event.acceleration.z
+
+                event.acceleration.y * event.acceleration.y +
+                event.acceleration.z * event.acceleration.z
               );
   
               //process magnitude
-  
+
               normOutput.innerHTML = Math.sqrt(
                 event.acceleration.x * event.acceleration.x +
                   event.acceleration.y * event.acceleration.y +
                   event.acceleration.z * event.acceleration.z
               ).toFixed(2);
+
               alert_disqualify(acc_magnitude);
             });
           }
@@ -104,14 +143,17 @@ function updateReadings() {
     }
   }
   
+
   if (sessionStorage.getItem("Playing")) {
     console.log("running");
     setInterval(getAccel(), 500);
   }
-  
+
   DeviceMotionEvent.requestPermission().then((response) => {
     if (response == "granted") {
       console.log("accelerometer permission granted");
       // Do stuff here
     }
+
   });
+
