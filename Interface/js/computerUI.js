@@ -28,10 +28,8 @@ function strikeThrough(userName) {
   let nodes = Array.from($("#playerList").children("li"));
   for (let count = 0; count < nodes.length; count++) {
     const element = nodes[count];
-    console.log(element.innerHTML)
     console.log(nodes[count].innerHTML);
     if (element.innerHTML == userName) {
-      console.log('attempting to strike')
       element.innerHTML = element.innerHTML.strike();
       break;
     }
