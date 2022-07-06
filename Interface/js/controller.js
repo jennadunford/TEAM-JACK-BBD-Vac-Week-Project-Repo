@@ -29,34 +29,6 @@ var updateMag = document.getElementById("updateMag");
 
 var dqFlag = false;
 
-// $("#readyButton").click(function () {
-//   console.log("ready button pressed");
-//   if (userName.value == "" || joinCode.value == "") {
-//     alert("Please fill in all fields");
-//   } else {
-//     if (!userReady) {
-//       userReady = true;
-//       readyState.innerHTML = "Ready!";
-//       readyButton.innerHTML = "Not Ready";
-//       output = userName.value;
-//       uName.innerHTML = output;
-//       output = joinCode.value;
-//       jCode.innerHTML = output;
-//       socket.emit("User", userName.value);
-//       socket.emit("joinCode", joinCode.value);
-//       sessionStorage.setItem("userName", userName.value);
-//     } else {
-//       userReady = false;
-//       uName.innerHTML = "";
-//       jCode.innerHTML = "";
-//       userName.value = "";
-//       joinCode.value = "";
-//       readyState.innerHTML = "Not ready";
-//       readyButton.innerHTML = "Ready";
-//     }
-//   }
-// });
-
 function ready() {
   console.log("ready button pressed");
   if (userName.value == "" || joinCode.value == "") {
@@ -74,49 +46,8 @@ function ready() {
       //socket.emit("joinCode", joinCode.value);
       sessionStorage.setItem("userName", userName.value);
     }
-    // } else {
-    //   userReady = false;
-    //   //socket.emit('notReady', sessionStorage.getItem('userName'));
-    //   // uName.innerHTML = "";
-    //   // jCode.innerHTML = "";
-    //   // userName.value = "";
-    //   // joinCode.value = "";
-    //   readyState.innerHTML = "Not ready";
-    //   readyButton.innerHTML = "Ready";
-    // }
   }
 }
-
-// function alertFunc() {
-//   let acl = new Accelerometer({ frequency: 60 });
-//   acl.addEventListener("reading", () => {
-//     console.log("Acceleration along the X-axis " + acl.x);
-//     console.log("Acceleration along the Y-axis " + acl.y);
-//     console.log("Acceleration along the Z-axis " + acl.z);
-
-//     alert(
-//       "Acceleration along the X-axis " +
-//         acl.x +
-//         ", Y-axis: " +
-//         acl.y +
-//         ", Z-axis: " +
-//         acl.z
-//     );
-//   });
-//   acl.start();
-// }
-
-//setInterval(alertFunc(), 10000); //for some reason, still constant, unstoppable updates...
-
-// socket.on("usernameTaken", (message) => {
-//   alert(message)
-//   console.log("Client: username taken")
-//   userReady = false;
-//   jCode.innerHTML = "";
-//   joinCode.value = "";
-//   readyState.innerHTML = "Not ready";
-//   readyButton.innerHTML = "Ready";
-// });
 
 socket.on("invalidCode", () => {
   alert("Client: invalid code");
@@ -141,7 +72,7 @@ socket.on("takenName", (msg) => {
   readyState.innerHTML = "Not ready";
   readyButton.innerHTML = "Ready";
   console.log("accepted username");
-})
+});
 
 socket.on("updateSensitivity", (songSensitivity) => {
   if (songSensitivity == 0.2) {
@@ -165,36 +96,26 @@ function addPlayer(userName) {
   document.getElementById("playerList").appendChild(node);
 }
 
-
-socket.on('gameStarted', () =>{
-    //will start users' accelerometer
-    console.log('start game')
-    sessionStorage.setItem('Playing', true);
-    window.location.href = "./playerScreen.html";
+socket.on("gameStarted", () => {
+  //will start users' accelerometer
+  console.log("start game");
+  sessionStorage.setItem("Playing", true);
+  window.location.href = "./playerScreen.html";
   //start accelerometer
 });
 
-
-    // for(let i = 0;i < players.length; i++){
-    //   sessionStorage.setItem(i + 1,players[i].id);
-    // }
-    //start accelerometer
-
-
-socket.on('playerList', (players) => {
+socket.on("playerList", (players) => {
   //Add playerlist
   for (let i = 0; i < players.length; i++) {
     addPlayer(players[i].id);
   }
-})
+});
 
-socket.on('restartGame', () =>{
-    sessionStorage.clear();
-    alert('Game was restarted by host')
-    window.location.href = "./controller.html";
-})
-
-
+socket.on("restartGame", () => {
+  sessionStorage.clear();
+  alert("Game was restarted by host");
+  window.location.href = "./controller.html";
+});
 
 function updateReadings() {
   let acl = new LinearAccelerationSensor({ frequency: 60 });
@@ -209,18 +130,6 @@ function updateReadings() {
     );
 
     normOutput.innerHTML = sensorAccelerationMagnitude.toFixed(2);
-
-    // console.log("Acceleration along the Y-axis " + acl.y);
-    // console.log("Acceleration along the Z-axis " + acl.z);
-
-    // alert(
-    //   "Acceleration along the X-axis " +
-    //     acl.x +
-    //     ", Y-axis: " +
-    //     acl.y +
-    //     ", Z-axis: " +
-    //     acl.z
-    // );
   });
   acl.start();
   return sensorAccelerationMagnitude;
@@ -242,12 +151,12 @@ function alert_disqualify(acc_magnitude) {
     //sort board
     //grey them out on the scoreboard
     return;
-  } else if (acc_magnitude >= upper_threshold * 2/3) {
+  } else if (acc_magnitude >= (upper_threshold * 2) / 3) {
     //alert user that they are close to threshold by making their screen orange
     updateState.innerHTML = "Close";
     document.body.style.background = "orange";
     return;
-  } else if (acc_magnitude >= upper_threshold * 1/6) {
+  } else if (acc_magnitude >= (upper_threshold * 1) / 6) {
     updateState.innerHTML = "Far";
     //alert user that they are approaching the threshold by making their screen yellow
     document.body.style.background = "yellow";
@@ -313,8 +222,8 @@ function getAccel() {
   }
 }
 
-if(sessionStorage.getItem('Playing')){
-  console.log('running');
+if (sessionStorage.getItem("Playing")) {
+  console.log("running");
   setInterval(getAccel(), 500);
 }
 
@@ -324,18 +233,6 @@ DeviceMotionEvent.requestPermission().then((response) => {
     // Do stuff here
   }
 });
-
-function changeToBlue() {
-  document.body.style.background = "blue";
-}
-
-function changeToPink() {
-  document.body.style.background = "pink";
-}
-
-function changeToRed() {
-  document.body.style.background = "red";
-}
 
 setInterval(function () {
   updateMag.innerHTML = acc_magnitude.toFixed(2);
