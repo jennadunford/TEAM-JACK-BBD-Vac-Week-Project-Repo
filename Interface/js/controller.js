@@ -152,6 +152,8 @@ function alert_disqualify()
 }
 
 setInterval(updateReadings(), 500);
+setInterval(alert_disqualify(), 500);
+
 
 function getAccel()
 {
