@@ -108,6 +108,7 @@ input:hover {
 .gameButtons {
   margin-top: 5px;
   margin-bottom: 5px;
+  position: fixed;
 }
 
 .h4 {
