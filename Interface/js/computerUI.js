@@ -12,7 +12,7 @@ $("#generateButton").click(function () {
 
 // });
 
-socket.on("codeGenerated", (code) => {
+socket.on("gameCode", (code) => {
   joinCodeDisplay.innerHTML = code;
 });
 

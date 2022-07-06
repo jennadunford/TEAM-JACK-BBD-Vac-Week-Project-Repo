@@ -50,7 +50,11 @@ io.on('connection', (socket) => { //Evertything with socket
         console.log('start game')
     })
 
-    socket.broadcast.emit('gameCode', code);
+    socket.on('generateCode', () => {
+        code = genCode(4);
+        socket.emit('gameCode', code);
+    })
+    
 
     socket.on('disqualifyPlayer', (userName)=>{ //Disable the player's playing attribute
         //find player
