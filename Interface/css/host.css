@@ -85,8 +85,16 @@ h4 {
   display: none;
 }
 
+<<<<<<< Updated upstream
 /* body {
   background-image: url(../Images/crown.png);
+=======
+.gameButtons {
+  margin-top: 20%;
+  margin-left: 40%;
+  position: fixed;
+}
+>>>>>>> Stashed changes
 
   background-size: 100px;
 } */
