@@ -35,7 +35,7 @@ io.on('connection', (socket) => { //Evertything with socket
     });
 
     socket.on('joinCode', (clientCode) => {
-        if(clientCode !== code){
+        if(clientCode.toUpperCase() !== code){
             console.log('User tried to join with an invalid code');
             socket.emit('invalidCode', 'Please use the correct join code');
         }else{
@@ -47,21 +47,29 @@ io.on('connection', (socket) => { //Evertything with socket
 
     socket.on('ready', () => {
         startGame();
+        console.log('start game')
     })
 
     socket.broadcast.emit('gameCode', code);
 
-    socket.on('disqualifyPlayer', (userName)=>{
+    socket.on('disqualifyPlayer', (userName)=>{ //Disable the player's playing attribute
         //find player
         var playerIndex = findPlayer(userName)
         if (!(playerIndex==-1)){
             gamestate.leaderboard[playerIndex].playing=false
             sortLeaderboard(gamestate.leaderboard);
             socket.broadcast.emit('updateGameState', gamestate);
+            
         }
+        socket.disconnect(true);
         //set playing to false
         //update game state
     })
+
+    socket.on('songSensitivity', (sense) => { //Get song sense from musicplayer
+        socket.broadcast.emit('updateSensitivity', sense);
+        console.log('sensor updated');
+    });
 });
 
 app.use(express.static(path.join(__dirname, 'Interface')));

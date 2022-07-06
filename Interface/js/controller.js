@@ -1,5 +1,5 @@
-//const socket = new io("http://localhost:9000", {});
-const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
+const socket = new io("http://localhost:9000", {});
+// const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
 var readyButton = document.getElementById("readyButton");
 var readyState = document.getElementById("state");
 var joinCode = document.querySelector("#joinCode");
@@ -15,6 +15,9 @@ var normOutput = document.getElementById("norm")
 
 var acc_magnitude=0;
 let lacl = new LinearAccelerationSensor({frequency: 60});
+var lower_threshold = 0;
+var upper_threshold = 30;
+var hard_cap = 50;
 
 $("#readyButton").click(function () {
   if (userName.value == "" || joinCode.value == "") {
@@ -79,6 +82,18 @@ socket.on('validCode', () => {
   console.log('Client: Code was accepted');
 });
 
+socket.on('updateSensitivity', (songSensitivity) =>{
+    if(songSensitivity == 0.2){ // slow
+        upper_threshold = 0;
+    } else if(songSensitivity == 1){ // normal
+        upper_threshold = 10;
+    } else if(songSensitivity == 1.2){ // fast
+        upper_threshold = 20;
+    }
+    
+    // TODO: check that song sensitivity makes sense for thresholds
+})
+
 function updateReadings() {
   let acl = new LinearAccelerationSensor({ frequency: 60 });
   acl.addEventListener("reading", () => {
@@ -109,20 +124,21 @@ function alert_disqualify()
   lacl = new LinearAccelerationSensor({frequency: 60});
   lacl.addEventListener('reading', () => {
     acc_magnitude = sqrt(lacl.x*lacl.x + lacl.y*lacl.y + lacl.z*lacl.z)
-    if (acc_magnitude>=upper_threshold || acc_magnitude<=lower_threshold){
+    if (acc_magnitude>=upper_threshold || acc_magnitude<=lower_threshold || acc_magnitude > hard_cap){
       // disqualify the player:
         // tell player that player is disqualified by making their screen red
       document.body.style.background = "red";
 
       // tell server that player is disqualifyed
       socket.emit('disqualifyPlayer', sessionStorage.getItem('userName'));
+      console.log(sessionStorage.getItem('userName') + ' was disqualified');
           //on server:
           //sort board
           //grey them out on the scoreboard
-    } else if (acc_magnitude>=upper_threshold*0.9){
+    } else if (acc_magnitude>=upper_threshold * 0.9){
       //alert user that they are close to threshold by making their screen orange
       document.body.style.background = "orange";
-    }else if (acc_magnitude>=upper_threshold*0.75){
+    }else if (acc_magnitude>=upper_threshold * 0.75){
       //alert user that they are approaching the threshold by making their screen yellow
       document.body.style.background = "yellow";
     }else {//ie: if acc_magnitude<upper_threshold*0.75 && acc_magnitude>lower_threshold
