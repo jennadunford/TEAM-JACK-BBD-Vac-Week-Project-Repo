@@ -198,7 +198,7 @@ function alert_disqualify(acc_magnitude) {
     // document.body.style.background = "red";
     document.body.style.background = "red";
     dqFlag = true;
-    
+
     // tell server that player is disqualifyed
     socket.emit("disqualifyPlayer", sessionStorage.getItem("userName"));
     //alert(sessionStorage.getItem("userName") + " was disqualified");
