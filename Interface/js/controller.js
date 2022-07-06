@@ -225,12 +225,14 @@ function getAccel()
     }
     alert_disqualify(accelerationMagnitude);
 }
-  
-if (sessionStorage.getItem("Playing")) 
+
+function setAccelInterval()
 {
-    console.log("running");
-    setInterval(getAccel(), 500);
+  setInterval(getAccel(), 500);
 }
+
+
+
 
 DeviceMotionEvent.requestPermission().then((response) => {
   if (response == "granted") {
