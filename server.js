@@ -53,14 +53,11 @@ io.on('connection', (socket) => { //Evertything with socket
 
     socket.on('generateCode', () => {
         code = genCode(4);
-<<<<<<< HEAD
         socket.broadcast.emit('gameCode', code);
     })
-=======
         socket.emit('gameCode', code);
     })
     
->>>>>>> main
 
     
     socket.on('disqualifyPlayer', (userName)=>{ //Disable the player's playing attribute
