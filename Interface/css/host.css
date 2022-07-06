@@ -82,6 +82,17 @@ h4 {
   margin-top: -25%;
 }
 
+.winMessage {
+  background-color: rgb(22, 164, 22);
+  border-radius: 8px;
+  display: block;
+  width: 80%;
+  margin: 0 auto;
+  font-size: 80px;
+  position: relative;
+  margin-top: -25%;
+}
+
 .hide {
   display: none;
 }

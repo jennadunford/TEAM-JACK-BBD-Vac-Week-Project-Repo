@@ -88,6 +88,16 @@ io.on('connection', (socket) => { //Evertything with socket
         //find player
         var playerIndex = findPlayer(userName)
         if (!(playerIndex==-1)){
+            playerCount--;
+            let removed = players.splice(playerIndex, 1);
+            if(playerCount == 1){
+                //game should stop
+                console.log(players);
+                socket.broadcast.emit('gameOver', players);
+            }else{
+                socket.broadcast.emit('playerOut', userName);
+            }
+            
             console.log(userName + ' disqualified');
         }else{
             console.log("Player not found");
@@ -97,7 +107,7 @@ io.on('connection', (socket) => { //Evertything with socket
     socket.on('songSensitivity', (sense) => { //Get song sense from musicplayer
         if(playing){
             socket.broadcast.emit('updateSensitivity', sense);     
-            // console.log('sensitivity updated');       
+            //console.log('sensitivity updated');       
         }
     });
 

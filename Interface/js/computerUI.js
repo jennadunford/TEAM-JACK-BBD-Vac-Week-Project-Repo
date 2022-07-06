@@ -1,8 +1,8 @@
 // var userName = document.querySelector("#userName");
-//const socket = new io("http://localhost:9000", {});
+const socket = new io("http://localhost:9000", {});
 // console.log("computer ui");
 
-const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
+// const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
 var musicfiles = ["Music Files/RideOfTheValkyries.mp3", "Music Files/BrandenburgConcertoNo11.mp3", "Music Files/CoconutMallMarioKart.mp3", "Music Files/NeverGonnaGiveYouUp.mp3", "Music Files/TheFieldsofArdSkellig.mp3", "Music Files/EpicSportClap.mp3", "Music Files/GroovyRock.mp3", "Music Files/Piano.mp3"]
 var musicnames = ["Ride Of The Valkyries", "Brandenburg Concerto No.11", "Coconut Mall Mario Kart", "Never Gonna Give You Up", "The Fields of Ard Skellig", "Epic Sport Clap", "Groovy Rock", "Piano"]
 var songSpeed = 1;
@@ -19,8 +19,10 @@ socket.on("gameCode", (code) => {
 });
 
 //must visually indicate that the player was eliminated
-socket.on("disqualifyPlayer", (userName) => {
-  strikeThrough(userName);
+socket.on("playerOut", (userName) => {
+  // alert(userName + " is out");
+  //strikeThrough(userName);
+  showRemovedPlayer(userName);
 });
 
 function strikeThrough(userName) {
@@ -60,7 +62,7 @@ $("#startButton").click(function () {
 });
 
 $("#restartButton").click(function () {
-  alert("Game restarted");
+  alert("Game stopped");
   socket.emit("restart");
   audio.pause();
   //Clear player list needs to be added
@@ -81,6 +83,11 @@ socket.on('numPlayers', (numPlayers) =>{
     showSong.innerHTML = musicnames[randomIndex];
     audio.play();
   }
+});
+
+socket.on('gameOver', (players) => {
+  showWinner(players[0].id);
+  audio.pause();
 });
 
 $("#removePlayer").click(function () {
@@ -218,9 +225,16 @@ $("#reload").click(function () {
 
 function showRemovedPlayer(userName) {
   var loseMessage = document.getElementById("loseMessage");
-  loseMessage.innerHTML = userName + " HAS LOST THE GAME";
-  $("#loseMessage").fadeIn(700);
-  $("#loseMessage").fadeOut(900);
+  loseMessage.innerHTML = userName + " IS OUT THE GAME";
+  $("#loseMessage").fadeIn(600);
+  $("#loseMessage").fadeOut(2000);
+}
+
+function showWinner(userName){
+  var winMessage = document.getElementById("winMessage");
+  winMessage.style.display = "block";
+  winMessage.innerHTML = userName + " WON THE GAME";
+  $("#loseMessage").fadeIn(1000);
 }
 
 function checkTimeLeft() {
