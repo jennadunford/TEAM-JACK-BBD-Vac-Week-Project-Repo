@@ -160,17 +160,17 @@ function switchSong(songID) {
     case "song6":
       audio = new Audio("Music Files/Piano.mp3");
       showSong.innerHTML = "Piano";
-      audio.pause;
+      audio.pause();
       break;
     case "song7":
       audio = new Audio("Music Files/EpicSportClap.mp3");
       showSong.innerHTML = "EpicSportClap";
-      audio.pause;
+      audio.pause();
       break;
     case "song8":
       audio = new Audio("Music Files/GroovyRock.mp3");
       showSong.innerHTML = "GroovyRock";
-      audio.pause;
+      audio.pause();
       break;
   }
 }
