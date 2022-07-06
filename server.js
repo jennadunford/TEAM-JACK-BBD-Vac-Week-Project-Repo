@@ -20,39 +20,55 @@ let playing = false;
 
 io.on('connection', (socket) => { //Evertything with socket
     console.log('Client connected');
-    socket.on('User', (user) => {
-        players[playerCount++] = {
-            "id": user,
-            "playing": true,
-            "score": 0
+    socket.on('userJoin', (user, clientCode) => {
+        if(clientCode.toUpperCase() !== code){
+            console.log('User tried to join with an invalid code or username taken');
+            socket.emit('invalidCode', 'Please use the correct join code');
+        }else if(checkUsername(user)){
+            console.log('Username taken');
+            socket.emit('takenName', 'Username taken. Please change it.');
+        }else{
+            console.log('User joined');
+            players[playerCount++] = {
+                "id": user,
+                "playing": true,
+                "score": 0
+            }
+
+            socket.emit('validCode', 'Joined');
+            socket.broadcast.emit('userJoined', players[playerCount-1].id);
+            
         }
-        
-        
         
         console.log(players);
         // if(playerCount == 1){
             
         // }
-        console.log(players[playerCount-1].id)
+        // console.log(players[playerCount-1].id)
+        // console.log(players);
     });
 
-    socket.on('joinCode', (clientCode) => {
-        if(clientCode.toUpperCase() !== code){
-            console.log('User tried to join with an invalid code or username taken');
-            socket.emit('invalidCode', 'Please use the correct join code');
-        }else{
-            console.log('User joined');
-            socket.emit('validCode', 'Joined');
-            socket.broadcast.emit('userJoined', players[playerCount-1].id);
-        }
-    });
+    // socket.on('joinCode', (clientCode) => {
+    //     if(clientCode.toUpperCase() !== code){
+    //         console.log('User tried to join with an invalid code');
+    //         socket.emit('invalidCode', 'Please use the correct join code');
+    //     }else{
+    //         console.log('User joined');
+    //         socket.emit('validCode', 'Joined');
+    //         socket.broadcast.emit('userJoined', players[playerCount-1].id);
+    //     }
+    // });
 
     socket.on('ready', () => {
         playing = true;
         startGame();
         console.log('start game')
-        socket.broadcast.emit('gameStarted', players);
+        socket.broadcast.emit('gameStarted');
     })
+
+    if(playing){
+        socket.emit('playerList', players);
+    }
 
     socket.on('restart', () => {
         playing = false;
@@ -109,6 +125,7 @@ function checkUsername(thisUsername)
     }
     return false;
 }
+
 
 //MUSIC FROM HERE ---------------------------------------------------------------------------------
 // var audio;
