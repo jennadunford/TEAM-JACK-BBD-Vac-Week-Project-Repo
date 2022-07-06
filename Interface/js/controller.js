@@ -106,15 +106,15 @@ function ready() {
 
 //setInterval(alertFunc(), 10000); //for some reason, still constant, unstoppable updates...
 
-socket.on("usernameTaken", (message) => {
-  alert(message)
-  console.log("Client: username taken")
-  userReady = false;
-  jCode.innerHTML = "";
-  joinCode.value = "";
-  readyState.innerHTML = "Not ready";
-  readyButton.innerHTML = "Ready";
-});
+// socket.on("usernameTaken", (message) => {
+//   alert(message)
+//   console.log("Client: username taken")
+//   userReady = false;
+//   jCode.innerHTML = "";
+//   joinCode.value = "";
+//   readyState.innerHTML = "Not ready";
+//   readyButton.innerHTML = "Ready";
+// });
 
 socket.on("invalidCode", () => {
   alert("Client: invalid code");

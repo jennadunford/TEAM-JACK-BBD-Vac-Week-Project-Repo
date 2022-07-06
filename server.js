@@ -22,7 +22,7 @@ io.on('connection', (socket) => { //Evertything with socket
     console.log('Client connected');
     socket.on('User', (user) => {
         let usernameTaken = checkUsername(user);
-        userBool = usernameTaken
+        // userBool = usernameTaken
         if(usernameTaken)
         {
             console.log("Username taken!")
@@ -47,7 +47,7 @@ io.on('connection', (socket) => { //Evertything with socket
     });
 
     socket.on('joinCode', (clientCode) => {
-        if(clientCode.toUpperCase() !== code || userBool){
+        if(clientCode.toUpperCase() !== code){
             console.log('User tried to join with an invalid code or username taken');
             socket.emit('invalidCode', 'Please use the correct join code');
         }else{
