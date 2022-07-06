@@ -139,7 +139,7 @@ setInterval(updateReadings(), 500);
 
 function getAccel()
 {
-  DeviceMotionEvent.requestPermission().then(response => {
+  Notification.requestPermission().then(response => {
     if (response == 'granted') {
         console.log("accelerometer permission granted");
         alert("accelerometer permission granted");
