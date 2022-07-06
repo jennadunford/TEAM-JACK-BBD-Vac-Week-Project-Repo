@@ -29,14 +29,20 @@ io.on('connection', (socket) => { //Evertything with socket
         
         console.log(players);
         if(playerCount == 1){
-
+            
         }
+        console.log(players[playerCount-1].id)
     });
 
     socket.on('joinCode', (clientCode) => {
         if(clientCode !== code){
-            socket.disconnect(true);
-            console.log("Client tried with invalid code.");
+            console.log('User tried to join with an invalid code');
+            socket.emit('invalidCode', 'Please use the correct join code');
+        }else{
+            console.log('User joined');
+            socket.emit('validCode', 'Joined');
+            socket.broadcast.emit('userJoined', players[playerCount-1].id);
+
         }
     });
 
