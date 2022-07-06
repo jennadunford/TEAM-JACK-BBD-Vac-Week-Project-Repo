@@ -36,6 +36,8 @@ $("#addPlayer").click(function () {
   }
 });
 
+
+
 function addPlayer(userName) {
   const node = document.createElement("li");
   const textnode = document.createTextNode(userName);
@@ -50,6 +52,14 @@ $("#startButton").click(function () {
   audio.play();
   changeSpeeds();
   // window.location.href = "./gameScreen.html";
+});
+
+$("#restartButton").click(function () {
+  alert("Game restarted");
+  socket.emit("restart");
+  audio.pause();
+  //Clear player list needs to be added
+  document.getElementById("playerList").innerHTML = "";
 });
 
 socket.on("userJoined", (user) => {
