@@ -215,6 +215,7 @@ function getAccel() {
             xOutput.innerHTML = event.acceleration.x.toFixed(2);
             yOutput.innerHTML = event.acceleration.y.toFixed(2);
             zOutput.innerHTML = event.acceleration.z.toFixed(2);
+            updateState.innerHTML = "Started motion sensing";
             
 
             iOSAccMagnitude = Math.sqrt(
