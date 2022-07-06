@@ -118,8 +118,9 @@ function getAccel()
     setInterval(getAccel(), 500);
   }
   
-DeviceMotionEvent.requestPermission().then((response) => {
+  DeviceMotionEvent.requestPermission().then((response) => {
     if (response == "granted") {
       console.log("accelerometer permission granted");
       // Do stuff here
-    }});
+    }
+  });
