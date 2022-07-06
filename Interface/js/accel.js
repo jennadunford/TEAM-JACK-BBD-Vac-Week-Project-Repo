@@ -71,9 +71,9 @@ function getAccel()
                 accelY = event.acceleration.y;
                 accelZ = event.acceleration.z;
 
-                // xOutput.innerHTML = event.acceleration.x.toFixed(2);
-                // yOutput.innerHTML = event.acceleration.y.toFixed(2);
-                // zOutput.innerHTML = event.acceleration.z.toFixed(2);
+                xOutput.innerHTML = accelX;
+                yOutput.innerHTML = accelY;
+                zOutput.innerHTML = accelZ;
                 // updateState.innerHTML = "Started motion sensing";
   
               acc_magnitude = Math.sqrt(
