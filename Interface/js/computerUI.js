@@ -1,22 +1,29 @@
 // var userName = document.querySelector("#userName");
-const socket = new io("http://localhost:9000", {});
+//const socket = new io("http://localhost:9000", {});
 // console.log("computer ui");
-// const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
-var music = ["Music Files/RideOfTheValkyries.mp3", "Music Files/BrandenburgConcertoNo11.mp3", "Music Files/CoconutMallMarioKart.mp3", "Music Files/NeverGonnaGiveYouUp.mp3", "Music Files/TheFieldsofArdSkellig.mp3"]
+
+const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
+var musicfiles = ["Music Files/RideOfTheValkyries.mp3", "Music Files/BrandenburgConcertoNo11.mp3", "Music Files/CoconutMallMarioKart.mp3", "Music Files/NeverGonnaGiveYouUp.mp3", "Music Files/TheFieldsofArdSkellig.mp3", "Music Files/EpicSportClap.mp3", "Music Files/GroovyRock.mp3", "Music Files/Piano.mp3"]
+var musicnames = ["Ride Of The Valkyries", "Brandenburg Concerto No.11", "Coconut Mall Mario Kart", "Never Gonna Give You Up", "The Fields of Ard Skellig", "Epic Sport Clap", "Groovy Rock", "Piano"]
+var songSpeed = 1;
+
 var joinCodeDisplay = document.getElementById("joinCode");
 $("#generateButton").click(function () {
-  console.log('asked for code')
+  console.log("asked for code");
   socket.emit("generateCode");
 });
 
-
 socket.on("gameCode", (code) => {
-  console.log('generated code on computer: ' + code);
+  console.log("generated code on computer: " + code);
   joinCodeDisplay.innerHTML = code;
 });
 
 //must visually indicate that the player was eliminated
-socket.on("disqualifyPlayer", (userName) =>{
+socket.on("disqualifyPlayer", (userName) => {
+  strikeThrough(userName);
+});
+
+function strikeThrough(userName) {
   let nodes = Array.from($("#playerList").children("li"));
   for (let count = 0; count < nodes.length; count++) {
     const element = nodes[count];
@@ -26,8 +33,7 @@ socket.on("disqualifyPlayer", (userName) =>{
       break;
     }
   }
-});
-
+}
 $("#addPlayer").click(function () {
   if (userName.value == "") {
     alert("Please enter a username");
@@ -35,8 +41,6 @@ $("#addPlayer").click(function () {
     addPlayer(userName.value);
   }
 });
-
-
 
 function addPlayer(userName) {
   const node = document.createElement("li");
@@ -69,9 +73,12 @@ socket.on("userJoined", (user) => {
 });
 
 socket.on('numPlayers', (numPlayers) =>{
+  // console.log('host: players left');
   if(numPlayers != 1){
-    console.log('Selected a new song')
-    audio = new Audio(music[Math.floor(Math.random() * music.length)]);
+    randomIndex = Math.floor(Math.random() * musicfiles.length)
+    randomElement = musicfiles[randomIndex];
+    audio = new Audio(randomElement);
+    showSong.innerHTML = musicnames[randomIndex];
     audio.play();
   }
 });
@@ -110,11 +117,12 @@ $("#playButton").click(function () {
   if (audio.paused) {
     audio.play();
     speedCheck.classList.remove("hidden");
-
+    moveBox.classList.remove("hidden");
     playButton.innerHTML = "Pause";
   } else {
     audio.pause();
     speedCheck.classList.add("hidden");
+    moveBox.classList.add("hidden");
     playButton.innerHTML = "Play";
   }
 });
@@ -123,6 +131,7 @@ function switchSong(songID) {
   change = true;
   audio.pause();
   speedCheck.classList.add("hidden");
+  moveBox.classList.remove("hidden");
   playButton.innerHTML = "Play";
   switch (songID) {
     case "song1":
@@ -150,6 +159,21 @@ function switchSong(songID) {
       showSong.innerHTML = "The Fields of Ard Skellig";
       audio.pause();
       break;
+    case "song6":
+      audio = new Audio("Music Files/Piano.mp3");
+      showSong.innerHTML = "Piano";
+      audio.pause();
+      break;
+    case "song7":
+      audio = new Audio("Music Files/EpicSportClap.mp3");
+      showSong.innerHTML = "EpicSportClap";
+      audio.pause();
+      break;
+    case "song8":
+      audio = new Audio("Music Files/GroovyRock.mp3");
+      showSong.innerHTML = "GroovyRock";
+      audio.pause();
+      break;
   }
 }
 
@@ -164,21 +188,21 @@ function changeSpeeds() {
     //console.log("Random number generated: " + num);
     switch (num) {
       case 1:
-        var songSpeed = 1;
+        songSpeed = 1;
         audio.playbackRate = songSpeed;
         speedCheck.innerHTML = "Playing at normal speed";
         moveBox.innerHTML = "AT REGULAR SPEED!";
         socket.emit("songSensitivity", songSpeed);
         break;
       case 2:
-        var songSpeed = 1.2;
+        songSpeed = 1.2;
         audio.playbackRate = songSpeed;
         speedCheck.innerHTML = "Playing 1.2 times faster";
         moveBox.innerHTML = "FAST!";
         socket.emit("songSensitivity", songSpeed);
         break;
       case 3:
-        var songSpeed = 0.8;
+        songSpeed = 0.8;
         audio.playbackRate = songSpeed;
         speedCheck.innerHTML = "Playing 0.8 times slower";
         moveBox.innerHTML = "SLOWLY!";
@@ -199,12 +223,11 @@ function showRemovedPlayer(userName) {
   $("#loseMessage").fadeOut(900);
 }
 
-
-function checkTimeLeft(){
+function checkTimeLeft() {
   setInterval(() => {
-    if(audio.duration - audio.currentTime < 1/songSpeed){
+    if(audio.duration - audio.currentTime < 2/songSpeed){
+      console.log('asking for players');
       socket.emit('playersLeft');
     }
   }, 800); //0.8 second checks slightly faster than the fastest playback speed
 }
-

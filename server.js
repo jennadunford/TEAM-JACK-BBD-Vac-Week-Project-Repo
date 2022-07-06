@@ -11,7 +11,7 @@ const app = express();
 const server = http.createServer(app);
 
 const io = socketio(server);
-
+var userBool;
 let code = genCode(4);
 
 let players = [];
@@ -22,7 +22,7 @@ io.on('connection', (socket) => { //Evertything with socket
     console.log('Client connected');
     socket.on('userJoin', (user, clientCode) => {
         if(clientCode.toUpperCase() !== code){
-            console.log('User tried to join with an invalid code');
+            console.log('User tried to join with an invalid code or username taken');
             socket.emit('invalidCode', 'Please use the correct join code');
         }else if(checkUsername(user)){
             console.log('Username taken');
@@ -97,12 +97,13 @@ io.on('connection', (socket) => { //Evertything with socket
     socket.on('songSensitivity', (sense) => { //Get song sense from musicplayer
         if(playing){
             socket.broadcast.emit('updateSensitivity', sense);     
-            console.log('sensitivity updated');       
+            // console.log('sensitivity updated');       
         }
     });
 
     socket.on('playersLeft', ()=>{
-        socket.broadcast.emit('numPlayers', playerCount);
+        // console.log('server: players left')
+        socket.emit('numPlayers', playerCount);
     });
 });
 

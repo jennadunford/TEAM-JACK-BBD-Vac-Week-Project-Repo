@@ -108,6 +108,16 @@ function ready() {
 
 //setInterval(alertFunc(), 10000); //for some reason, still constant, unstoppable updates...
 
+// socket.on("usernameTaken", (message) => {
+//   alert(message)
+//   console.log("Client: username taken")
+//   userReady = false;
+//   jCode.innerHTML = "";
+//   joinCode.value = "";
+//   readyState.innerHTML = "Not ready";
+//   readyButton.innerHTML = "Ready";
+// });
+
 socket.on("invalidCode", () => {
   alert("Client: invalid code");
   console.log("Client: invalid code");
@@ -155,11 +165,14 @@ function addPlayer(userName) {
   document.getElementById("playerList").appendChild(node);
 }
 
+
 socket.on('gameStarted', () =>{
     //will start users' accelerometer
     console.log('start game')
     sessionStorage.setItem('Playing', true);
     window.location.href = "./playerScreen.html";
+  //start accelerometer
+});
 
 
     // for(let i = 0;i < players.length; i++){
@@ -180,6 +193,8 @@ socket.on('restartGame', () =>{
     alert('Game was restarted by host')
     window.location.href = "./controller.html";
 })
+
+
 
 function updateReadings() {
   let acl = new LinearAccelerationSensor({ frequency: 60 });
@@ -220,29 +235,29 @@ function alert_disqualify(acc_magnitude) {
     document.body.style.background = "red";
     dqFlag = true;
 
-
     // tell server that player is disqualifyed
     socket.emit("disqualifyPlayer", sessionStorage.getItem("userName"));
-
     //alert(sessionStorage.getItem("userName") + " was disqualified");
-
     //on server:
     //sort board
     //grey them out on the scoreboard
-  } else if (acc_magnitude >= upper_threshold * 0.9) {
+    return;
+  } else if (acc_magnitude >= upper_threshold * 2/3) {
     //alert user that they are close to threshold by making their screen orange
     updateState.innerHTML = "Close";
     document.body.style.background = "orange";
-  } else if (acc_magnitude >= upper_threshold * 0.75) {
-    updateState.innerHTML = "Approaching";
+    return;
+  } else if (acc_magnitude >= upper_threshold * 1/6) {
+    updateState.innerHTML = "Far";
     //alert user that they are approaching the threshold by making their screen yellow
     document.body.style.background = "yellow";
+    return;
   } else {
     //ie: if acc_magnitude<upper_threshold*0.75 && acc_magnitude>lower_threshold
     //make their screen green
     updateState.innerHTML = "Safe " + acc_magnitude.toFixed(2);
-
     document.body.style.background = "green";
+    return;
   }
 }
 
@@ -264,14 +279,17 @@ function getAccel() {
 
             acc_magnitude = Math.sqrt(
               event.acceleration.x * event.acceleration.x +
-              event.acceleration.y * event.acceleration.y +
-              event.acceleration.z * event.acceleration.z
+                event.acceleration.y * event.acceleration.y +
+                event.acceleration.z * event.acceleration.z
             );
 
             //process magnitude
 
-            normOutput.innerHTML = Math.sqrt( (event.acceleration.x * event.acceleration.x) + (event.acceleration.y * event.acceleration.y) +
-              (event.acceleration.z * event.acceleration.z)).toFixed(2);
+            normOutput.innerHTML = Math.sqrt(
+              event.acceleration.x * event.acceleration.x +
+                event.acceleration.y * event.acceleration.y +
+                event.acceleration.z * event.acceleration.z
+            ).toFixed(2);
             alert_disqualify(acc_magnitude);
           });
         }
@@ -325,4 +343,7 @@ setInterval(function () {
   normOutput.innerHTML = acc_magnitude.toFixed(2);
 }, 100);
 
-
+//must visually indicate that the player was eliminated
+socket.on("disqualifyPlayer", (userName) => {
+  strikeThrough(userName);
+});
