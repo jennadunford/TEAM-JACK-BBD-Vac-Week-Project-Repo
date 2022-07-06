@@ -49,7 +49,7 @@ io.on('connection', (socket) => { //Evertything with socket
         playing = true;
         startGame();
         console.log('start game')
-        socket.broadcast.emit('gameStarted');
+        socket.broadcast.emit('gameStarted', players);
     })
 
     socket.on('restart', () => {
