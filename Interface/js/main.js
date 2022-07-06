@@ -1,7 +1,7 @@
 // lets go
 console.log("MAIN JS");
-//const socket = new io("http://localhost:9000", {});
-const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
+// const socket = new io("http://localhost:9000", {});
+// const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
 
 function makeHost() {
   console.log("MAKE HOST");
