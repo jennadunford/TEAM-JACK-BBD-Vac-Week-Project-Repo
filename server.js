@@ -11,7 +11,7 @@ const app = express();
 const server = http.createServer(app);
 
 const io = socketio(server);
-
+var userBool;
 let code = genCode(4);
 
 let players = [];
@@ -20,48 +20,55 @@ let playing = false;
 
 io.on('connection', (socket) => { //Evertything with socket
     console.log('Client connected');
-    socket.on('User', (user) => {
-        let usernameTaken = checkUsername(user);
-        if(usernameTaken)
-        {
-            console.log("Username taken!")
-            
-            socket.emit('usernameTaken', 'This username is taken...');
-        }
-        else
-        {
+    socket.on('userJoin', (user, clientCode) => {
+        if(clientCode.toUpperCase() !== code){
+            console.log('User tried to join with an invalid code or username taken');
+            socket.emit('invalidCode', 'Please use the correct join code');
+        }else if(checkUsername(user)){
+            console.log('Username taken');
+            socket.emit('takenName', 'Username taken. Please change it.');
+        }else{
+            console.log('User joined');
             players[playerCount++] = {
                 "id": user,
                 "playing": true,
                 "score": 0
             }
+
+            socket.emit('validCode', 'Joined');
+            socket.broadcast.emit('userJoined', players[playerCount-1].id);
+            
         }
-        
         
         console.log(players);
         // if(playerCount == 1){
             
         // }
-        console.log(players[playerCount-1].id)
+        // console.log(players[playerCount-1].id)
+        // console.log(players);
     });
 
-    socket.on('joinCode', (clientCode) => {
-        if(clientCode.toUpperCase() !== code){
-            console.log('User tried to join with an invalid code');
-            socket.emit('invalidCode', 'Please use the correct join code');
-        }else{
-            console.log('User joined');
-            socket.emit('validCode', 'Joined');
-            socket.broadcast.emit('userJoined', players[playerCount-1].id);
-        }
-    });
+    // socket.on('joinCode', (clientCode) => {
+    //     if(clientCode.toUpperCase() !== code){
+    //         console.log('User tried to join with an invalid code');
+    //         socket.emit('invalidCode', 'Please use the correct join code');
+    //     }else{
+    //         console.log('User joined');
+    //         socket.emit('validCode', 'Joined');
+    //         socket.broadcast.emit('userJoined', players[playerCount-1].id);
+    //     }
+    // });
 
     socket.on('ready', () => {
         playing = true;
         startGame();
         console.log('start game')
-        socket.broadcast.emit('gameStarted', players);
+        socket.broadcast.emit('gameStarted');
     })
+
+    if(playing){
+        socket.emit('playerList', players);
+    }
 
     socket.on('restart', () => {
         playing = false;
@@ -90,12 +97,13 @@ io.on('connection', (socket) => { //Evertything with socket
     socket.on('songSensitivity', (sense) => { //Get song sense from musicplayer
         if(playing){
             socket.broadcast.emit('updateSensitivity', sense);     
-            console.log('sensitivity updated');       
+            // console.log('sensitivity updated');       
         }
     });
 
     socket.on('playersLeft', ()=>{
-        socket.broadcast.emit('numPlayers', playerCount);
+        // console.log('server: players left')
+        socket.emit('numPlayers', playerCount);
     });
 });
 
@@ -117,6 +125,7 @@ function checkUsername(thisUsername)
     }
     return false;
 }
+
 
 //MUSIC FROM HERE ---------------------------------------------------------------------------------
 // var audio;

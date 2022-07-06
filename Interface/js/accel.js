@@ -30,6 +30,7 @@ var updateMag = document.getElementById("updateMag");
 var dqFlag = false;
 
 
+
 function updateReadings() {
     let acl = new LinearAccelerationSensor({ frequency: 60 });
     acl.addEventListener("reading", () => {
@@ -43,18 +44,7 @@ function updateReadings() {
       );
   
       normOutput.innerHTML = sensorAccelerationMagnitude.toFixed(2);
-  
-      // console.log("Acceleration along the Y-axis " + acl.y);
-      // console.log("Acceleration along the Z-axis " + acl.z);
-  
-      // alert(
-      //   "Acceleration along the X-axis " +
-      //     acl.x +
-      //     ", Y-axis: " +
-      //     acl.y +
-      //     ", Z-axis: " +
-      //     acl.z
-      // );
+
     });
     acl.start();
     return sensorAccelerationMagnitude;
@@ -69,29 +59,33 @@ function updateReadings() {
       document.body.style.background = "red";
       dqFlag = true;
   
-  
+
       // tell server that player is disqualifyed
       socket.emit("disqualifyPlayer", sessionStorage.getItem("userName"));
-  
       //alert(sessionStorage.getItem("userName") + " was disqualified");
-  
       //on server:
       //sort board
       //grey them out on the scoreboard
-    } else if (acc_magnitude >= upper_threshold * 0.9) {
+      return;
+    } else if (acc_magnitude >= (upper_threshold * 2) / 3) {
       //alert user that they are close to threshold by making their screen orange
       updateState.innerHTML = "Close";
       document.body.style.background = "orange";
-    } else if (acc_magnitude >= upper_threshold * 0.75) {
-      updateState.innerHTML = "Approaching";
+      return;
+    } else if (acc_magnitude >= (upper_threshold * 1) / 6) {
+      updateState.innerHTML = "Far";
       //alert user that they are approaching the threshold by making their screen yellow
       document.body.style.background = "yellow";
+      return;
+
     } else {
       //ie: if acc_magnitude<upper_threshold*0.75 && acc_magnitude>lower_threshold
       //make their screen green
       updateState.innerHTML = "Safe " + acc_magnitude.toFixed(2);
-  
+
       document.body.style.background = "green";
+      return;
+
     }
   }
   
@@ -113,14 +107,19 @@ function updateReadings() {
   
               acc_magnitude = Math.sqrt(
                 event.acceleration.x * event.acceleration.x +
+
                 event.acceleration.y * event.acceleration.y +
                 event.acceleration.z * event.acceleration.z
               );
   
               //process magnitude
-  
-              normOutput.innerHTML = Math.sqrt( (event.acceleration.x * event.acceleration.x) + (event.acceleration.y * event.acceleration.y) +
-                (event.acceleration.z * event.acceleration.z)).toFixed(2);
+
+              normOutput.innerHTML = Math.sqrt(
+                event.acceleration.x * event.acceleration.x +
+                  event.acceleration.y * event.acceleration.y +
+                  event.acceleration.z * event.acceleration.z
+              ).toFixed(2);
+
               alert_disqualify(acc_magnitude);
             });
           }
@@ -144,12 +143,17 @@ function updateReadings() {
     }
   }
   
-  setInterval(getAccel(), 500);
-  
+
+  if (sessionStorage.getItem("Playing")) {
+    console.log("running");
+    setInterval(getAccel(), 500);
+  }
+
   DeviceMotionEvent.requestPermission().then((response) => {
     if (response == "granted") {
       console.log("accelerometer permission granted");
       // Do stuff here
     }
+
   });
-  
+

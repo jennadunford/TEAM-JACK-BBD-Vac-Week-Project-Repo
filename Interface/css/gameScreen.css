@@ -43,8 +43,5 @@ h3 {
 
 .leaderBoard {
   list-style-type: none;
-  font-size: 60px;
-  display: grid;
-  grid-template-columns: 15vw 15vw;
-  padding: 2px;
+  font-size: 40px;
 }

@@ -29,34 +29,6 @@ var updateMag = document.getElementById("updateMag");
 
 var dqFlag = false;
 
-// $("#readyButton").click(function () {
-//   console.log("ready button pressed");
-//   if (userName.value == "" || joinCode.value == "") {
-//     alert("Please fill in all fields");
-//   } else {
-//     if (!userReady) {
-//       userReady = true;
-//       readyState.innerHTML = "Ready!";
-//       readyButton.innerHTML = "Not Ready";
-//       output = userName.value;
-//       uName.innerHTML = output;
-//       output = joinCode.value;
-//       jCode.innerHTML = output;
-//       socket.emit("User", userName.value);
-//       socket.emit("joinCode", joinCode.value);
-//       sessionStorage.setItem("userName", userName.value);
-//     } else {
-//       userReady = false;
-//       uName.innerHTML = "";
-//       jCode.innerHTML = "";
-//       userName.value = "";
-//       joinCode.value = "";
-//       readyState.innerHTML = "Not ready";
-//       readyButton.innerHTML = "Ready";
-//     }
-//   }
-// });
-
 function ready() {
   console.log("ready button pressed");
   if (userName.value == "" || joinCode.value == "") {
@@ -65,56 +37,17 @@ function ready() {
     if (!userReady) {
       userReady = true;
       readyState.innerHTML = "Ready!";
-      readyButton.innerHTML = "Not Ready";
+      //readyButton.innerHTML = "Not Ready";
       output = userName.value;
       uName.innerHTML = output;
       output = joinCode.value;
       jCode.innerHTML = output;
-      socket.emit("User", userName.value);
-      socket.emit("joinCode", joinCode.value);
+      socket.emit("userJoin", userName.value, joinCode.value);
+      //socket.emit("joinCode", joinCode.value);
       sessionStorage.setItem("userName", userName.value);
-    } else {
-      userReady = false;
-      uName.innerHTML = "";
-      jCode.innerHTML = "";
-      userName.value = "";
-      joinCode.value = "";
-      readyState.innerHTML = "Not ready";
-      readyButton.innerHTML = "Ready";
     }
   }
 }
-
-// function alertFunc() {
-//   let acl = new Accelerometer({ frequency: 60 });
-//   acl.addEventListener("reading", () => {
-//     console.log("Acceleration along the X-axis " + acl.x);
-//     console.log("Acceleration along the Y-axis " + acl.y);
-//     console.log("Acceleration along the Z-axis " + acl.z);
-
-//     alert(
-//       "Acceleration along the X-axis " +
-//         acl.x +
-//         ", Y-axis: " +
-//         acl.y +
-//         ", Z-axis: " +
-//         acl.z
-//     );
-//   });
-//   acl.start();
-// }
-
-//setInterval(alertFunc(), 10000); //for some reason, still constant, unstoppable updates...
-
-socket.on("usernameTaken", (message) => {
-  alert(message)
-  console.log("Client: username taken")
-  userReady = false;
-  jCode.innerHTML = "";
-  joinCode.value = "";
-  readyState.innerHTML = "Not ready";
-  readyButton.innerHTML = "Ready";
-});
 
 socket.on("invalidCode", () => {
   alert("Client: invalid code");
@@ -129,6 +62,16 @@ socket.on("invalidCode", () => {
 socket.on("validCode", () => {
   alert("Client: Code was accepted");
   console.log("Client: Code was accepted");
+});
+
+socket.on("takenName", (msg) => {
+  alert(msg);
+  userReady = false;
+  jCode.innerHTML = "";
+  joinCode.value = "";
+  readyState.innerHTML = "Not ready";
+  readyButton.innerHTML = "Ready";
+  console.log("accepted username");
 });
 
 socket.on("updateSensitivity", (songSensitivity) => {
@@ -153,22 +96,26 @@ function addPlayer(userName) {
   document.getElementById("playerList").appendChild(node);
 }
 
-socket.on('gameStarted', (players) =>{
-    //will start users' accelerometer
-    console.log('start game')
-    window.location.href = "./playerScreen.html";
+socket.on("gameStarted", () => {
+  //will start users' accelerometer
+  console.log("start game");
+  sessionStorage.setItem("Playing", true);
+  window.location.href = "./playerScreen.html";
+  //start accelerometer
+});
 
+socket.on("playerList", (players) => {
+  //Add playerlist
+  for (let i = 0; i < players.length; i++) {
+    addPlayer(players[i].id);
+  }
+});
 
-    for(let i = 0;i < players.length; i++){
-      sessionStorage.setItem(i + 1,players[i].id);
-    }
-    //start accelerometer
-})
-
-socket.on('restartGame', () =>{
-    alert('Game was restarted by host')
-    window.location.href = "./controller.html";
-})
+socket.on("restartGame", () => {
+  sessionStorage.clear();
+  alert("Game was restarted by host");
+  window.location.href = "./controller.html";
+});
 
 function updateReadings() {
   let acl = new LinearAccelerationSensor({ frequency: 60 });
@@ -183,18 +130,6 @@ function updateReadings() {
     );
 
     normOutput.innerHTML = sensorAccelerationMagnitude.toFixed(2);
-
-    // console.log("Acceleration along the Y-axis " + acl.y);
-    // console.log("Acceleration along the Z-axis " + acl.z);
-
-    // alert(
-    //   "Acceleration along the X-axis " +
-    //     acl.x +
-    //     ", Y-axis: " +
-    //     acl.y +
-    //     ", Z-axis: " +
-    //     acl.z
-    // );
   });
   acl.start();
   return sensorAccelerationMagnitude;
@@ -209,29 +144,29 @@ function alert_disqualify(acc_magnitude) {
     document.body.style.background = "red";
     dqFlag = true;
 
-
     // tell server that player is disqualifyed
     socket.emit("disqualifyPlayer", sessionStorage.getItem("userName"));
-
     //alert(sessionStorage.getItem("userName") + " was disqualified");
-
     //on server:
     //sort board
     //grey them out on the scoreboard
-  } else if (acc_magnitude >= upper_threshold * 0.9) {
+    return;
+  } else if (acc_magnitude >= (upper_threshold * 2) / 3) {
     //alert user that they are close to threshold by making their screen orange
     updateState.innerHTML = "Close";
     document.body.style.background = "orange";
-  } else if (acc_magnitude >= upper_threshold * 0.75) {
-    updateState.innerHTML = "Approaching";
+    return;
+  } else if (acc_magnitude >= (upper_threshold * 1) / 6) {
+    updateState.innerHTML = "Far";
     //alert user that they are approaching the threshold by making their screen yellow
     document.body.style.background = "yellow";
+    return;
   } else {
     //ie: if acc_magnitude<upper_threshold*0.75 && acc_magnitude>lower_threshold
     //make their screen green
     updateState.innerHTML = "Safe " + acc_magnitude.toFixed(2);
-
     document.body.style.background = "green";
+    return;
   }
 }
 
@@ -253,14 +188,17 @@ function getAccel() {
 
             acc_magnitude = Math.sqrt(
               event.acceleration.x * event.acceleration.x +
-              event.acceleration.y * event.acceleration.y +
-              event.acceleration.z * event.acceleration.z
+                event.acceleration.y * event.acceleration.y +
+                event.acceleration.z * event.acceleration.z
             );
 
             //process magnitude
 
-            normOutput.innerHTML = Math.sqrt( (event.acceleration.x * event.acceleration.x) + (event.acceleration.y * event.acceleration.y) +
-              (event.acceleration.z * event.acceleration.z)).toFixed(2);
+            normOutput.innerHTML = Math.sqrt(
+              event.acceleration.x * event.acceleration.x +
+                event.acceleration.y * event.acceleration.y +
+                event.acceleration.z * event.acceleration.z
+            ).toFixed(2);
             alert_disqualify(acc_magnitude);
           });
         }
@@ -284,7 +222,10 @@ function getAccel() {
   }
 }
 
-setInterval(getAccel(), 500);
+if (sessionStorage.getItem("Playing")) {
+  console.log("running");
+  setInterval(getAccel(), 500);
+}
 
 DeviceMotionEvent.requestPermission().then((response) => {
   if (response == "granted") {
@@ -293,22 +234,13 @@ DeviceMotionEvent.requestPermission().then((response) => {
   }
 });
 
-function changeToBlue() {
-  document.body.style.background = "blue";
-}
-
-function changeToPink() {
-  document.body.style.background = "pink";
-}
-
-function changeToRed() {
-  document.body.style.background = "red";
-}
-
 setInterval(function () {
   updateMag.innerHTML = acc_magnitude.toFixed(2);
   console.log(acc_magnitude);
   normOutput.innerHTML = acc_magnitude.toFixed(2);
 }, 100);
 
-
+//must visually indicate that the player was eliminated
+socket.on("disqualifyPlayer", (userName) => {
+  strikeThrough(userName);
+});
