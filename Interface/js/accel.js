@@ -184,7 +184,8 @@ function updateReadings() {
   setInterval(() => {
     // acc_magnitude = document.getElementById("customAcc").value;
     acc_magnitude = getAccel();
-    // console.log("M:" + acc_magnitude);
+    socket.emit('controllerLog', 'in interval: ' + acc_mag);
+    console.log("M:" + acc_magnitude);
     // console.log("T:" + upper_threshold);
     if(dqFlag){
       document.body.style.background = "red";
