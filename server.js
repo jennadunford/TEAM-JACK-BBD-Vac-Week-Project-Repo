@@ -62,7 +62,7 @@ io.on('connection', (socket) => { //Evertything with socket
         var playerIndex = findPlayer(userName)
         if (!(playerIndex==-1)){
             gamestate.leaderboard[playerIndex].playing=false
-            sortLeaderboard(gamestate.leaderboard);
+            // sortLeaderboard(gamestate.leaderboard);
             socket.broadcast.emit('updateGameState', gamestate);
             
         }
@@ -187,7 +187,7 @@ function handlePlayerRequest(player){
         resetRound();
         if(gamestate.rounds > maxRounds){
             gamestate.gameover = true;
-            sortLeaderboard(gamestate.leaderboard)
+            // sortLeaderboard(gamestate.leaderboard)
             //broadcast gameover
         }
     }else{
@@ -204,7 +204,7 @@ function handlePlayerRequest(player){
                 resetRound();
                 //front should display scoreboard
             }
-            sortLeaderboard(gamestate.leaderboard)
+            // sortLeaderboard(gamestate.leaderboard)
         }
     }
 
