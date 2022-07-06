@@ -215,13 +215,14 @@ function getAccel() {
 
             acc_magnitude = Math.sqrt(
               event.acceleration.x * event.acceleration.x +
-                event.acceleration.y * event.acceleration.y +
-                event.acceleration.z * event.acceleration.z
+              event.acceleration.y * event.acceleration.y +
+              event.acceleration.z * event.acceleration.z
             );
 
             //process magnitude
 
-            normOutput.innerHTML = acc_magnitude.toFixed(2);
+            normOutput.innerHTML = Math.sqrt( (event.acceleration.x * event.acceleration.x) + (event.acceleration.y * event.acceleration.y) +
+              (event.acceleration.z * event.acceleration.z)).toFixed(2);
             alert_disqualify(acc_magnitude);
           });
         }
