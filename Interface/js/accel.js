@@ -1,22 +1,21 @@
 
-// function updateReadings() {
-//     let acl = new LinearAccelerationSensor({ frequency: 60 });
-//     acl.addEventListener("reading", () => {
-//       //console.log("Acceleration along the X-axis " + acl.x);
-//       xOutput.innerHTML = acl.x.toFixed(2);
-//       yOutput.innerHTML = acl.y.toFixed(2);
-//       zOutput.innerHTML = acl.z.toFixed(2);
+function updateReadings() {
+    let acl = new LinearAccelerationSensor({ frequency: 60 });
+    acl.addEventListener("reading", () => {
+      //console.log("Acceleration along the X-axis " + acl.x);
+      xOutput.innerHTML = acl.x.toFixed(2);
+      yOutput.innerHTML = acl.y.toFixed(2);
+      zOutput.innerHTML = acl.z.toFixed(2);
   
 //       sensorAccelerationMagnitude = Math.sqrt(
 //         acl.x * acl.x + acl.y * acl.y + acl.z * acl.z
 //       );
   
-//       normOutput.innerHTML = sensorAccelerationMagnitude.toFixed(2);
-
-//     });
-//     acl.start();
-//     return sensorAccelerationMagnitude;
-//   }
+      normOutput.innerHTML = sensorAccelerationMagnitude.toFixed(2);
+    });
+    acl.start();
+    return sensorAccelerationMagnitude;
+  }
   
 function alert_disqualify(acc_magnitude) 
 {
