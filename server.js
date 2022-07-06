@@ -53,8 +53,6 @@ io.on('connection', (socket) => { //Evertything with socket
 
     socket.on('generateCode', () => {
         code = genCode(4);
-        socket.broadcast.emit('gameCode', code);
-    })
         socket.emit('gameCode', code);
     })
     
