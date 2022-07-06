@@ -26,8 +26,8 @@ var lower_threshold = 0;
 var upper_threshold = 10;
 var hard_cap = 50;
 
-var updateState = document.getElementById("updateState");
-var updateMag = document.getElementById("updateMag");
+// var updateState = document.getElementById("updateState");
+// var updateMag = document.getElementById("updateMag");
 
 var dqFlag = false;
 let custAcc = 0;
@@ -134,7 +134,7 @@ function updateReadings() {
               xOutput.innerHTML = event.acceleration.x.toFixed(2);
               yOutput.innerHTML = event.acceleration.y.toFixed(2);
               zOutput.innerHTML = event.acceleration.z.toFixed(2);
-              updateState.innerHTML = "Started motion sensing";
+              // updateState.innerHTML = "Started motion sensing";
   
               acc_magnitude = Math.sqrt(
                 event.acceleration.x * event.acceleration.x +
