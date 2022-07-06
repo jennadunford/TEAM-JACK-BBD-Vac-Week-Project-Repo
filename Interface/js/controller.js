@@ -159,14 +159,14 @@ function alert_disqualify()
   lacl = new LinearAccelerationSensor({frequency: 60});
   lacl.addEventListener('reading', () => {
     acc_magnitude = Math.sqrt(lacl.x*lacl.x + lacl.y*lacl.y + lacl.z*lacl.z)
-    if (acc_magnitude>=upper_threshold || acc_magnitude<=lower_threshold || acc_magnitude > hard_cap){
+    if (acc_magnitude>=upper_threshold || acc_magnitude > hard_cap){
       // disqualify the player:
       // tell player that player is disqualified by making their screen red
       document.body.style.background = "red";
 
       // tell server that player is disqualifyed
       socket.emit("disqualifyPlayer", sessionStorage.getItem("userName"));
-      alert(sessionStorage.getItem("userName") + " was disqualified");
+    //   alert(sessionStorage.getItem("userName") + " was disqualified");
       //on server:
       //sort board
       //grey them out on the scoreboard

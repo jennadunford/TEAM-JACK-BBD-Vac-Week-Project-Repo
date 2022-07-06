@@ -66,6 +66,7 @@ io.on('connection', (socket) => { //Evertything with socket
             
         }
         socket.disconnect(true);
+        console.log(userName + ' disqualified');
         //set playing to false
         //update game state
     })
