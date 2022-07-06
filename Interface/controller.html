@@ -18,13 +18,16 @@
     <title>JS JOUST</title>
   </head>
   <body>
-    <h1>JS JOUST</h1>
+    <h1>JACKSCRIPT JOUST</h1>
     <div>
       <label for="joinCode">Enter the join code:</label>
       <input type="text" id="joinCode" name="joinCode" /><br /><br />
       <label for="userName">Enter your username:</label>
       <input type="text" id="userName" name="userName" /><br /><br />
       <button id="readyButton">Ready</button>
+      <button id="accelPermsButton" class="permissions" onclick="getAccel()">
+        <h4>Get Accelerometer Permissions</h4>
+      </button>
       <p>Current state:</p>
       <div id="state">Not ready</div>
     </div>
@@ -42,11 +45,14 @@
       <h2 id="yRead"></h2>
       <h2>Z Axis Reading:</h2>
       <h2 id="zRead"></h2>
+      <h2>Normalized value:</h2>
+      <h2 id="norm"></h2>
     </div>
   </body>
   <script
     type="text/javascript"
     src="https://code.jquery.com/jquery-1.7.1.min.js"
   ></script>
+  <script src="/socket.io/socket.io.js"></script>
   <script type="text/JavaScript" src="js/controller.js"></script>
 </html>

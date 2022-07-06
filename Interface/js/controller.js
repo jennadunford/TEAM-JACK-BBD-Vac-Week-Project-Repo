@@ -1,3 +1,5 @@
+//const socket = new io("http://localhost:9000", {});
+const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
 var readyButton = document.getElementById("readyButton");
 var readyState = document.getElementById("state");
 var joinCode = document.querySelector("#joinCode");
@@ -6,6 +8,13 @@ var uName = document.getElementById("uName");
 var jCode = document.getElementById("jCode");
 var userReady = false;
 var output;
+var xOutput = document.getElementById("xRead");
+var yOutput = document.getElementById("yRead");
+var zOutput = document.getElementById("zRead");
+var normOutput = document.getElementById("norm")
+
+var acc_magnitude=0;
+let lacl = new LinearAccelerationSensor({frequency: 60});
 
 $("#readyButton").click(function () {
   if (userName.value == "" || joinCode.value == "") {
@@ -19,6 +28,9 @@ $("#readyButton").click(function () {
       uName.innerHTML = output;
       output = joinCode.value;
       jCode.innerHTML = output;
+      socket.emit('User', userName.value);
+      socket.emit('joinCode', joinCode.value);
+      sessionStorage.setItem('userName', userName.value)
     } else {
       userReady = false;
       uName.innerHTML = "";
@@ -30,3 +42,107 @@ $("#readyButton").click(function () {
     }
   }
 });
+
+// function alertFunc() {
+//   let acl = new Accelerometer({ frequency: 60 });
+//   acl.addEventListener("reading", () => {
+//     console.log("Acceleration along the X-axis " + acl.x);
+//     console.log("Acceleration along the Y-axis " + acl.y);
+//     console.log("Acceleration along the Z-axis " + acl.z);
+
+//     alert(
+//       "Acceleration along the X-axis " +
+//         acl.x +
+//         ", Y-axis: " +
+//         acl.y +
+//         ", Z-axis: " +
+//         acl.z
+//     );
+//   });
+//   acl.start();
+// }
+
+//setInterval(alertFunc(), 10000); //for some reason, still constant, unstoppable updates...
+
+socket.on('invalidCode', () => {
+  alert('Client: invalid code')
+  console.log('Client: invalid code');
+  userReady = false;
+  jCode.innerHTML = "";
+  joinCode.value = "";
+  readyState.innerHTML = "Not ready";
+  readyButton.innerHTML = "Ready";
+});
+
+socket.on('validCode', () => {
+  alert('Client: Code was accepted')
+  console.log('Client: Code was accepted');
+});
+
+function updateReadings() {
+  let acl = new LinearAccelerationSensor({ frequency: 60 });
+  acl.addEventListener("reading", () => {
+    //console.log("Acceleration along the X-axis " + acl.x);
+    xOutput.innerHTML = acl.x.toFixed(2);
+    yOutput.innerHTML = acl.y.toFixed(2);
+    zOutput.innerHTML = acl.z.toFixed(2);
+
+    normOutput.innerHTML = Math.sqrt((acl.x*acl.x) + (acl.y*acl.y) + (acl.z*acl.z)).toFixed(2)
+
+    // console.log("Acceleration along the Y-axis " + acl.y);
+    // console.log("Acceleration along the Z-axis " + acl.z);
+
+    // alert(
+    //   "Acceleration along the X-axis " +
+    //     acl.x +
+    //     ", Y-axis: " +
+    //     acl.y +
+    //     ", Z-axis: " +
+    //     acl.z
+    // );
+  });
+  acl.start();
+}
+
+function alert_disqualify()
+{ 
+  lacl = new LinearAccelerationSensor({frequency: 60});
+  lacl.addEventListener('reading', () => {
+    acc_magnitude = sqrt(lacl.x*lacl.x + lacl.y*lacl.y + lacl.z*lacl.z)
+    if (acc_magnitude>=upper_threshold || acc_magnitude<=lower_threshold){
+      // disqualify the player:
+        // tell player that player is disqualified by making their screen red
+      document.body.style.background = "red";
+
+      // tell server that player is disqualifyed
+      socket.emit('disqualifyPlayer', sessionStorage.getItem('userName'));
+          //on server:
+          //sort board
+          //grey them out on the scoreboard
+    } else if (acc_magnitude>=upper_threshold*0.9){
+      //alert user that they are close to threshold by making their screen orange
+      document.body.style.background = "orange";
+    }else if (acc_magnitude>=upper_threshold*0.75){
+      //alert user that they are approaching the threshold by making their screen yellow
+      document.body.style.background = "yellow";
+    }else {//ie: if acc_magnitude<upper_threshold*0.75 && acc_magnitude>lower_threshold
+      //make their screen green
+      document.body.style.background = "green";
+    }
+    // alert("Acceleration along the X-axis " + acl.x + ", Y-axis: " + acl.y + ", Z-axis: " + acl.z);
+    
+  });
+  acl.start();
+}
+
+setInterval(updateReadings(), 500);
+
+function getAccel()
+{
+  DeviceMotionEvent.requestPermission().then(response => {
+    if (response == 'granted') {
+        console.log("accelerometer permission granted");
+        // Do stuff here
+    }
+  });
+}
