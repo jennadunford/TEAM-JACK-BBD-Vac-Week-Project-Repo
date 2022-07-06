@@ -94,6 +94,7 @@ io.on('connection', (socket) => { //Evertything with socket
                 //game should stop
                 console.log(players);
                 socket.broadcast.emit('gameOver', players);
+                playing = false;
             }else{
                 socket.broadcast.emit('playerOut', userName);
             }

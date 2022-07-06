@@ -23,7 +23,10 @@ socket.on("playerOut", (userName) => {
   // alert(userName + " is out");
   //strikeThrough(userName);
   showRemovedPlayer(userName);
+  strikeThrough(userName);
 });
+
+
 
 function strikeThrough(userName) {
   let nodes = Array.from($("#playerList").children("li"));
@@ -31,11 +34,12 @@ function strikeThrough(userName) {
     const element = nodes[count];
     console.log(nodes[count].innerHTML);
     if (element.innerHTML == userName) {
-      element.innerHTML.strike();
+      element.innerHTML = element.innerHTML.strike();
       break;
     }
   }
 }
+
 $("#addPlayer").click(function () {
   if (userName.value == "") {
     alert("Please enter a username");
