@@ -116,11 +116,12 @@ $("#playButton").click(function () {
   if (audio.paused) {
     audio.play();
     speedCheck.classList.remove("hidden");
-
+    moveBox.classList.remove("hidden");
     playButton.innerHTML = "Pause";
   } else {
     audio.pause();
     speedCheck.classList.add("hidden");
+    moveBox.classList.add("hidden");
     playButton.innerHTML = "Play";
   }
 });
@@ -129,6 +130,7 @@ function switchSong(songID) {
   change = true;
   audio.pause();
   speedCheck.classList.add("hidden");
+  moveBox.classList.remove("hidden");
   playButton.innerHTML = "Play";
   switch (songID) {
     case "song1":

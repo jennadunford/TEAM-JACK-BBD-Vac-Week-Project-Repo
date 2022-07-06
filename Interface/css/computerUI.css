@@ -87,7 +87,7 @@ input:hover {
   cursor: pointer;
 }
 
-.QRCode{
+.QRCode {
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -99,12 +99,17 @@ input:hover {
   border-radius: 25%;
 }
 
-#submit, #ready{
+#submit,
+#ready {
   width: 30%;
   font-size: 50px;
 }
 
-.gameButtons{
+.gameButtons {
   margin-top: 5px;
   margin-bottom: 5px;
+}
+
+.h4 {
+  font-size: 40px;
 }

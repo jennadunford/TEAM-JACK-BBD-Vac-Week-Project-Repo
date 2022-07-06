@@ -20,32 +20,38 @@
   <body>
     <div class="main">
       <h1>JACKSCRIPT JOUST</h1>
-      <h2>Generate Your 4 Character Join Code!</h2>
-      <button id="generateButton">Generate Game Code!</button>
-    </div>
-    <div class="codeBox" id="joinCode">----</div>
-    <div class="dropdown">
-      <button
-        class="btn btn-secondary dropdown-toggle"
-        type="button"
-        id="dropdownMenuButton"
-        data-toggle="dropdown"
-        aria-haspopup="true"
-        aria-expanded="false"
-        data-toggle="dropdown"
-      >
-        Select Song
-      </button>
-      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <a class="dropdown-item" id="song1">Ride of the Valkyries</a>
-        <a class="dropdown-item" id="song2">Brandenburg Concerto No. 11</a>
-        <a class="dropdown-item" id="song3">Mario Kart Coconut Mall</a>
-        <a class="dropdown-item" id="song4">Best song you've ever heard</a>
-        <a class="dropdown-item" id="song5">The Fields of Ard Skellig</a>
+      <h4 id="howMove" class="hidden">YOU SHOULD BE MOVING SLOWLY</h4>
+      <div class="codeAndSongSelect">
+        <div>
+          <h2>Generate Your 4 Character Join Code!</h2>
+          <button id="generateButton">Generate Game Code!</button>
+        </div>
+
+        <div class="codeBox" id="joinCode">----</div>
+        <div class="dropdown">
+          <button
+            class="btn btn-secondary dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+            data-toggle="dropdown"
+          >
+            Select Song
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" id="song1">Ride of the Valkyries</a>
+            <a class="dropdown-item" id="song2">Brandenburg Concerto No. 11</a>
+            <a class="dropdown-item" id="song3">Mario Kart Coconut Mall</a>
+            <a class="dropdown-item" id="song4">Best song you've ever heard</a>
+            <a class="dropdown-item" id="song5">The Fields of Ard Skellig</a>
+          </div>
+        </div>
+        <div><h2>SONG SELECTED:</h2></div>
+        <div><h2 id="showSong">...</h2></div>
       </div>
     </div>
-    <div><h2>SONG SELECTED:</h2></div>
-    <div><h2 id="showSong">...</h2></div>
     <div class="playerListHolder">
       <h4>PLAYER LIST</h4>
       <ul id="playerList"></ul>
@@ -61,7 +67,6 @@
     </div>
     <!-- <button onclick="showRemovedPlayer()">Show Lose Message</button> -->
     <div id="loseMessage" class="hide loseMessage">HAS LOST THE GAME</div>
-    <div id="howMove" class="hidden"></div>
     <div id="musicState" class="hidden"></div>
     <div id="playButton" class="hidden"></div>
   </body>
