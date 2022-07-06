@@ -15,6 +15,8 @@ var normOutput = document.getElementById("norm")
 
 var acc_magnitude=0;
 let lacl = new LinearAccelerationSensor({frequency: 60});
+var lower_threshold = 0;
+var upper_threshold = 30;
 
 $("#readyButton").click(function () {
   if (userName.value == "" || joinCode.value == "") {
@@ -79,6 +81,11 @@ socket.on('validCode', () => {
   console.log('Client: Code was accepted');
 });
 
+socket.on('updateSensitivity', (songSensitivity) =>{
+    upper_threshold = songSensitivity;
+    // TODO: check that song sensitivity makes sense for thresholds
+})
+
 function updateReadings() {
   let acl = new LinearAccelerationSensor({ frequency: 60 });
   acl.addEventListener("reading", () => {
@@ -116,13 +123,14 @@ function alert_disqualify()
 
       // tell server that player is disqualifyed
       socket.emit('disqualifyPlayer', sessionStorage.getItem('userName'));
+      console.log(sessionStorage.getItem('userName') + ' was disqualified');
           //on server:
           //sort board
           //grey them out on the scoreboard
-    } else if (acc_magnitude>=upper_threshold*0.9){
+    } else if (acc_magnitude>=upper_threshold * 0.9){
       //alert user that they are close to threshold by making their screen orange
       document.body.style.background = "orange";
-    }else if (acc_magnitude>=upper_threshold*0.75){
+    }else if (acc_magnitude>=upper_threshold * 0.75){
       //alert user that they are approaching the threshold by making their screen yellow
       document.body.style.background = "yellow";
     }else {//ie: if acc_magnitude<upper_threshold*0.75 && acc_magnitude>lower_threshold
