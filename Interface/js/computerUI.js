@@ -7,18 +7,21 @@ var musicnames = ["Ride Of The Valkyries", "Brandenburg Concerto No.11", "Coconu
 var songSpeed = 1;
 var joinCodeDisplay = document.getElementById("joinCode");
 $("#generateButton").click(function () {
-  console.log('asked for code')
+  console.log("asked for code");
   socket.emit("generateCode");
 });
 
-
 socket.on("gameCode", (code) => {
-  console.log('generated code on computer: ' + code);
+  console.log("generated code on computer: " + code);
   joinCodeDisplay.innerHTML = code;
 });
 
 //must visually indicate that the player was eliminated
-socket.on("disqualifyPlayer", (userName) =>{
+socket.on("disqualifyPlayer", (userName) => {
+  strikeThrough(userName);
+});
+
+function strikeThrough(userName) {
   let nodes = Array.from($("#playerList").children("li"));
   for (let count = 0; count < nodes.length; count++) {
     const element = nodes[count];
@@ -28,8 +31,7 @@ socket.on("disqualifyPlayer", (userName) =>{
       break;
     }
   }
-});
-
+}
 $("#addPlayer").click(function () {
   if (userName.value == "") {
     alert("Please enter a username");
@@ -37,8 +39,6 @@ $("#addPlayer").click(function () {
     addPlayer(userName.value);
   }
 });
-
-
 
 function addPlayer(userName) {
   const node = document.createElement("li");
@@ -115,11 +115,12 @@ $("#playButton").click(function () {
   if (audio.paused) {
     audio.play();
     speedCheck.classList.remove("hidden");
-
+    moveBox.classList.remove("hidden");
     playButton.innerHTML = "Pause";
   } else {
     audio.pause();
     speedCheck.classList.add("hidden");
+    moveBox.classList.add("hidden");
     playButton.innerHTML = "Play";
   }
 });
@@ -128,6 +129,7 @@ function switchSong(songID) {
   change = true;
   audio.pause();
   speedCheck.classList.add("hidden");
+  moveBox.classList.remove("hidden");
   playButton.innerHTML = "Play";
   switch (songID) {
     case "song1":
@@ -219,8 +221,7 @@ function showRemovedPlayer(userName) {
   $("#loseMessage").fadeOut(900);
 }
 
-
-function checkTimeLeft(){
+function checkTimeLeft() {
   setInterval(() => {
     if(audio.duration - audio.currentTime < 2/songSpeed){
       console.log('asking for players');
@@ -228,4 +229,3 @@ function checkTimeLeft(){
     }
   }, 800); //0.8 second checks slightly faster than the fastest playback speed
 }
-

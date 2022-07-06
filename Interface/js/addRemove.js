@@ -35,6 +35,6 @@ function showCrown() {
 }
 
 //Add playerlist
-for(let i = 1; i < sessionStorage.length; i++){
-  addPlayer(sessionStorage.getItem(i))
+for (let i = 1; i < sessionStorage.length; i++) {
+  addPlayer(sessionStorage.getItem(i));
 }
