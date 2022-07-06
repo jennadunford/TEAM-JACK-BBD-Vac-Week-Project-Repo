@@ -51,7 +51,6 @@ io.on('connection', (socket) => { //Evertything with socket
     })
 
     socket.on('generateCode', () => {
-        console.log('generating code')
         code = genCode(4);
         socket.emit('gameCode', code);
     })
