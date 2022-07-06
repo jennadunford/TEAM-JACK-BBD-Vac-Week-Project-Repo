@@ -175,7 +175,7 @@ function alert_disqualify(acc_magnitude) {
     // tell server that player is disqualifyed
     socket.emit("disqualifyPlayer", sessionStorage.getItem("userName"));
 
-    //   alert(sessionStorage.getItem("userName") + " was disqualified");
+    //alert(sessionStorage.getItem("userName") + " was disqualified");
 
     //on server:
     //sort board
@@ -193,7 +193,7 @@ function alert_disqualify(acc_magnitude) {
     //make their screen green
     updateState.innerHTML = "Safe " + acc_magnitude.toFixed(2);
 
-   document.body.style.background = "green";
+    document.body.style.background = "green";
   }
 }
 
@@ -269,6 +269,7 @@ function changeToRed() {
 setInterval(function () {
   updateMag.innerHTML = acc_magnitude.toFixed(2);
   console.log(acc_magnitude);
+  normOutput.innerHTML = acc_magnitude.toFixed(2);
 }, 100);
 
 
