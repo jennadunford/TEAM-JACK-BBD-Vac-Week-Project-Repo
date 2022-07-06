@@ -20,6 +20,7 @@ socket.on("gameCode", (code) => {
 
 //must visually indicate that the player was eliminated
 socket.on("disqualifyPlayer", (userName) => {
+  
   strikeThrough(userName);
 });
 
@@ -29,6 +30,7 @@ function strikeThrough(userName) {
     const element = nodes[count];
     console.log(nodes[count].innerHTML);
     if (element.innerHTML == userName) {
+      console.log('attempting to strike')
       element.innerHTML = element.innerHTML.strike();
       break;
     }
