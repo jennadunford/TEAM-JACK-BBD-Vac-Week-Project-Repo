@@ -210,15 +210,15 @@ function getAccel() {
             zOutput.innerHTML = event.acceleration.z.toFixed(2);
             
 
-            sensorAccelerationMagnitude = Math.sqrt(
+            acc_magnitude = Math.sqrt(
               event.acceleration.x * event.acceleration.x +
                 event.acceleration.y * event.acceleration.y +
                 event.acceleration.z * event.acceleration.z)
 
                 //process magnitude
                 
-            alert_disqualify(sensorAccelerationMagnitude);
-            normOutput.innerHTML = sensorAccelerationMagnitude.toFixed(4)
+            normOutput.innerHTML = acc_magnitude.toFixed(2)
+            alert_disqualify(acc_magnitude);
           });
         }
       })
@@ -226,6 +226,7 @@ function getAccel() {
   } else  {
     // alert_disqualify(updateReadings())
     // non iOS 13+
+    updateReadings()
     console.log('alter_disqualify')
     lacl = new LinearAccelerationSensor({frequency: 60});
     lacl.addEventListener('reading', () => {
