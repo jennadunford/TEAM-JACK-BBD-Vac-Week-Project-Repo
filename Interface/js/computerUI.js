@@ -29,7 +29,7 @@ function strikeThrough(userName) {
     const element = nodes[count];
     console.log(nodes[count].innerHTML);
     if (element.innerHTML == userName) {
-      element.innerHTML.strike();
+      element.innerHTML = element.innerHTML.strike();
       break;
     }
   }
