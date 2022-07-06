@@ -17,6 +17,7 @@ var acc_magnitude=0;
 let lacl = new LinearAccelerationSensor({frequency: 60});
 var lower_threshold = 0;
 var upper_threshold = 30;
+var hard_cap = 50;
 
 $("#readyButton").click(function () {
   if (userName.value == "" || joinCode.value == "") {
@@ -82,7 +83,14 @@ socket.on('validCode', () => {
 });
 
 socket.on('updateSensitivity', (songSensitivity) =>{
-    upper_threshold = songSensitivity;
+    if(songSensitivity < 0){
+        upper_threshold = 0;
+    } else if(songSensitivity < 10){
+        upper_threshold = 10;
+    } else if(songSensitivity < 20){
+        upper_threshold = 20;
+    }
+    
     // TODO: check that song sensitivity makes sense for thresholds
 })
 
@@ -116,7 +124,7 @@ function alert_disqualify()
   lacl = new LinearAccelerationSensor({frequency: 60});
   lacl.addEventListener('reading', () => {
     acc_magnitude = sqrt(lacl.x*lacl.x + lacl.y*lacl.y + lacl.z*lacl.z)
-    if (acc_magnitude>=upper_threshold || acc_magnitude<=lower_threshold){
+    if (acc_magnitude>=upper_threshold || acc_magnitude<=lower_threshold || acc_magnitude > hard_cap){
       // disqualify the player:
         // tell player that player is disqualified by making their screen red
       document.body.style.background = "red";
