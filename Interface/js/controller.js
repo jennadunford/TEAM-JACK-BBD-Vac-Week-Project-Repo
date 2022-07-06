@@ -1,4 +1,4 @@
-//const socket = new io("http://localhost:9000", {});
+// const socket = new io("http://localhost:9000", {});
 const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
 var readyButton = document.getElementById("readyButton");
 var readyState = document.getElementById("state");
@@ -13,10 +13,44 @@ var yOutput = document.getElementById("yRead");
 var zOutput = document.getElementById("zRead");
 var normOutput = document.getElementById("norm");
 
+var sensorAccelerationMagnitude = 0;
+
 var acc_magnitude = 0;
 let lacl = new LinearAccelerationSensor({ frequency: 60 });
+var lower_threshold = 0;
+var upper_threshold = 30;
+var hard_cap = 50;
 
-$("#readyButton").click(function () {
+// $("#readyButton").click(function () {
+//   console.log("ready button pressed");
+//   if (userName.value == "" || joinCode.value == "") {
+//     alert("Please fill in all fields");
+//   } else {
+//     if (!userReady) {
+//       userReady = true;
+//       readyState.innerHTML = "Ready!";
+//       readyButton.innerHTML = "Not Ready";
+//       output = userName.value;
+//       uName.innerHTML = output;
+//       output = joinCode.value;
+//       jCode.innerHTML = output;
+//       socket.emit("User", userName.value);
+//       socket.emit("joinCode", joinCode.value);
+//       sessionStorage.setItem("userName", userName.value);
+//     } else {
+//       userReady = false;
+//       uName.innerHTML = "";
+//       jCode.innerHTML = "";
+//       userName.value = "";
+//       joinCode.value = "";
+//       readyState.innerHTML = "Not ready";
+//       readyButton.innerHTML = "Ready";
+//     }
+//   }
+// });
+
+function ready() {
+  console.log("ready button pressed");
   if (userName.value == "" || joinCode.value == "") {
     alert("Please fill in all fields");
   } else {
@@ -41,7 +75,7 @@ $("#readyButton").click(function () {
       readyButton.innerHTML = "Ready";
     }
   }
-});
+}
 
 // function alertFunc() {
 //   let acl = new Accelerometer({ frequency: 60 });
@@ -79,6 +113,21 @@ socket.on("validCode", () => {
   console.log("Client: Code was accepted");
 });
 
+socket.on("updateSensitivity", (songSensitivity) => {
+  if (songSensitivity == 0.2) {
+    // slow
+    upper_threshold = 0;
+  } else if (songSensitivity == 1) {
+    // normal
+    upper_threshold = 10;
+  } else if (songSensitivity == 1.2) {
+    // fast
+    upper_threshold = 20;
+  }
+
+  // TODO: check that song sensitivity makes sense for thresholds
+});
+
 function updateReadings() {
   let acl = new LinearAccelerationSensor({ frequency: 60 });
   acl.addEventListener("reading", () => {
@@ -107,16 +156,22 @@ function updateReadings() {
 }
 
 function alert_disqualify() {
+  console.log("alter_disqualify");
   lacl = new LinearAccelerationSensor({ frequency: 60 });
   lacl.addEventListener("reading", () => {
-    acc_magnitude = sqrt(lacl.x * lacl.x + lacl.y * lacl.y + lacl.z * lacl.z);
-    if (acc_magnitude >= upper_threshold || acc_magnitude <= lower_threshold) {
+    acc_magnitude = Math.sqrt(
+      lacl.x * lacl.x + lacl.y * lacl.y + lacl.z * lacl.z
+    );
+    if (acc_magnitude >= upper_threshold || acc_magnitude > hard_cap) {
       // disqualify the player:
       // tell player that player is disqualified by making their screen red
       document.body.style.background = "red";
 
       // tell server that player is disqualifyed
       socket.emit("disqualifyPlayer", sessionStorage.getItem("userName"));
+
+      //   alert(sessionStorage.getItem("userName") + " was disqualified");
+
       //on server:
       //sort board
       //grey them out on the scoreboard
@@ -133,19 +188,50 @@ function alert_disqualify() {
     }
     // alert("Acceleration along the X-axis " + acl.x + ", Y-axis: " + acl.y + ", Z-axis: " + acl.z);
   });
-  acl.start();
+  lacl.start();
 }
 
-setInterval(updateReadings(), 500);
+//setInterval(updateReadings(), 500);
+setInterval(alert_disqualify(), 500);
 
 function getAccel() {
-  DeviceMotionEvent.requestPermission().then((response) => {
-    if (response == "granted") {
-      console.log("accelerometer permission granted");
-      // Do stuff here
-    }
-  });
+  console.log("permissions button pressed");
+  if (typeof DeviceMotionEvent.requestPermission === "function") {
+    DeviceMotionEvent.requestPermission()
+      .then((response) => {
+        if (response == "granted") {
+          window.addEventListener("devicemotion", (event) => {
+            // do something with event
+            xOutput.innerHTML = event.acceleration.x.toFixed(2);
+            yOutput.innerHTML = event.acceleration.y.toFixed(2);
+            zOutput.innerHTML = event.acceleration.z.toFixed(2);
+
+            sensorAccelerationMagnitude = Math.sqrt(
+              event.acceleration.x * event.acceleration.x +
+                event.acceleration.y * event.acceleration.y +
+                event.acceleration.z * event.acceleration.z
+            );
+
+            normOutput.innerHTML = sensorAccelerationMagnitude.toFixed(2);
+          });
+        }
+      })
+      .catch(console.error);
+  } else {
+    updateReadings();
+    // non iOS 13+
+  }
+  //alert_disqualify()
 }
+
+setInterval(getAccel(), 500);
+
+DeviceMotionEvent.requestPermission().then((response) => {
+  if (response == "granted") {
+    console.log("accelerometer permission granted");
+    // Do stuff here
+  }
+});
 
 function changeToBlue() {
   document.body.style.background = "blue";

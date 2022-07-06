@@ -16,26 +16,26 @@ let code = genCode(4);
 
 let players = [];
 let playerCount = 0;
+let playing = false;
 
 io.on('connection', (socket) => { //Evertything with socket
     console.log('Client connected');
     socket.on('User', (user) => {
         players[playerCount++] = {
-            id: user,
-            playing: true,
-            score: 0,
-            acceleration: 0
+            "id": user,
+            "playing": true,
+            "score": 0
         }
         
         console.log(players);
-        if(playerCount == 1){
+        // if(playerCount == 1){
             
-        }
+        // }
         console.log(players[playerCount-1].id)
     });
 
     socket.on('joinCode', (clientCode) => {
-        if(clientCode !== code){
+        if(clientCode.toUpperCase() !== code){
             console.log('User tried to join with an invalid code');
             socket.emit('invalidCode', 'Please use the correct join code');
         }else{
@@ -46,22 +46,38 @@ io.on('connection', (socket) => { //Evertything with socket
     });
 
     socket.on('ready', () => {
+        playing = true;
         startGame();
+        console.log('start game')
     })
 
-    socket.broadcast.emit('gameCode', code);
+    socket.on('generateCode', () => {
+        code = genCode(4);
+        socket.emit('gameCode', code);
+    })
+    
 
-    socket.on('disqualifyPlayer', (userName)=>{
+    socket.on('disqualifyPlayer', (userName)=>{ //Disable the player's playing attribute
         //find player
         var playerIndex = findPlayer(userName)
         if (!(playerIndex==-1)){
             gamestate.leaderboard[playerIndex].playing=false
-            sortLeaderboard(gamestate.leaderboard);
+            // sortLeaderboard(gamestate.leaderboard);
             socket.broadcast.emit('updateGameState', gamestate);
+            
         }
+        socket.disconnect(true);
+        console.log(userName + ' disqualified');
         //set playing to false
         //update game state
     })
+
+    socket.on('songSensitivity', (sense) => { //Get song sense from musicplayer
+        if(playing){
+            socket.broadcast.emit('updateSensitivity', sense);     
+            console.log('sensor updated');       
+        }
+    });
 });
 
 app.use(express.static(path.join(__dirname, 'Interface')));
@@ -97,7 +113,7 @@ var gamestate = {
 // returns index of player that was sent into the function and returns -1 for a player that is sent in with invalid ID
 function findPlayer(player){
     //return indexx of player in gamestate.playerlist
-    for (let k=0;k<=gamestate.leaderboard.length;k++){
+    for (let k=0;k<gamestate.leaderboard.length;k++){
         if (player==gamestate.leaderboard[k].id){
             return k;
         }
@@ -171,7 +187,7 @@ function handlePlayerRequest(player){
         resetRound();
         if(gamestate.rounds > maxRounds){
             gamestate.gameover = true;
-            sortLeaderboard(gamestate.leaderboard)
+            // sortLeaderboard(gamestate.leaderboard)
             //broadcast gameover
         }
     }else{
@@ -188,7 +204,7 @@ function handlePlayerRequest(player){
                 resetRound();
                 //front should display scoreboard
             }
-            sortLeaderboard(gamestate.leaderboard)
+            // sortLeaderboard(gamestate.leaderboard)
         }
     }
 

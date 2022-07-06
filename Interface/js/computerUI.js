@@ -1,5 +1,5 @@
 // var userName = document.querySelector("#userName");
-//const socket = new io("http://localhost:9000", {});
+// const socket = new io("http://localhost:9000", {});
 // console.log("computer ui");
 const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
 
@@ -12,7 +12,7 @@ $("#generateButton").click(function () {
 
 // });
 
-socket.on("codeGenerated", (code) => {
+socket.on("gameCode", (code) => {
   joinCodeDisplay.innerHTML = code;
 });
 
@@ -34,7 +34,10 @@ function addPlayer(userName) {
 $("#startButton").click(function () {
   $("#startGamePressed").fadeIn(500);
   $("#startGamePressed").fadeOut(500);
-  socket.emit("startGame");
+  socket.emit("ready");
+  audio.play();
+  changeSpeeds();
+  // window.location.href = "./gameScreen.html";
 });
 
 socket.on("userJoined", (user) => {
@@ -55,3 +58,104 @@ function removePlayer(userName) {
     }
   }
 }
+
+// from music.js below
+
+var audio = new Audio("Music Files/RideOfTheValkyries.mp3");
+
+const speedCheck = document.getElementById("musicState");
+var showSong = document.getElementById("showSong");
+
+var change = false;
+
+const playButton = document.getElementById("playButton");
+const moveBox = document.getElementById("howMove");
+
+changeSpeeds();
+
+audio.pause();
+$("#playButton").click(function () {
+  if (audio.paused) {
+    audio.play();
+    speedCheck.classList.remove("hidden");
+
+    playButton.innerHTML = "Pause";
+  } else {
+    audio.pause();
+    speedCheck.classList.add("hidden");
+    playButton.innerHTML = "Play";
+  }
+});
+
+function switchSong(songID) {
+  change = true;
+  audio.pause();
+  speedCheck.classList.add("hidden");
+  playButton.innerHTML = "Play";
+  switch (songID) {
+    case "song1":
+      audio = new Audio("Music Files/RideOfTheValkyries.mp3");
+      showSong.innerHTML = "Ride of the Valkyries";
+      audio.pause();
+      break;
+    case "song2":
+      audio = new Audio("Music Files/BrandenburgConcertoNo11.mp3");
+      showSong.innerHTML = "Brandenburg Concerto No. 11";
+      audio.pause();
+      break;
+    case "song3":
+      audio = new Audio("Music Files/CoconutMallMarioKart.mp3");
+      showSong.innerHTML = "Mario Kart Coconut Mall";
+      audio.pause();
+      break;
+    case "song4":
+      audio = new Audio("Music Files/NeverGonnaGiveYouUp.mp3");
+      showSong.innerHTML = "The Best Song You've Ever Heard";
+      audio.pause();
+      break;
+    case "song5":
+      audio = new Audio("Music Files/TheFieldsofArdSkellig.mp3");
+      showSong.innerHTML = "The Fields of Ard Skellig";
+      audio.pause();
+      break;
+  }
+}
+
+$(".dropdown-menu a").on("click", function () {
+  var getID = $(this).attr("id");
+  switchSong(getID);
+});
+
+function changeSpeeds() {
+  setInterval(() => {
+    var num = Math.floor(Math.random() * 3) + 1;
+    //console.log("Random number generated: " + num);
+    switch (num) {
+      case 1:
+        var songSpeed = 1;
+        audio.playbackRate = songSpeed;
+        speedCheck.innerHTML = "Playing at normal speed";
+        moveBox.innerHTML = "AT REGULAR SPEED!";
+        socket.emit('songSensitivity', songSpeed);
+        break;
+      case 2:
+        var songSpeed = 1.2;
+        audio.playbackRate = songSpeed;
+        speedCheck.innerHTML = "Playing 1.2 times faster";
+        moveBox.innerHTML = "FAST!";
+        socket.emit('songSensitivity', songSpeed);
+        break;
+      case 3:
+        var songSpeed = 0.8;
+        audio.playbackRate = songSpeed;
+        speedCheck.innerHTML = "Playing 0.8 times slower";
+        moveBox.innerHTML = "SLOWLY!";
+        socket.emit('songSensitivity', songSpeed);
+        break;
+    }
+  }, 5000); //5 seconds
+}
+
+$("#reload").click(function () {
+  location.reload();
+});
