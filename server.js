@@ -16,21 +16,21 @@ let code = genCode(4);
 
 let players = [];
 let playerCount = 0;
+let playing = false;
 
 io.on('connection', (socket) => { //Evertything with socket
     console.log('Client connected');
     socket.on('User', (user) => {
         players[playerCount++] = {
-            id: user,
-            playing: true,
-            score: 0,
-            acceleration: 0
+            "id": user,
+            "playing": true,
+            "score": 0
         }
         
         console.log(players);
-        if(playerCount == 1){
+        // if(playerCount == 1){
             
-        }
+        // }
         console.log(players[playerCount-1].id)
     });
 
@@ -46,6 +46,7 @@ io.on('connection', (socket) => { //Evertything with socket
     });
 
     socket.on('ready', () => {
+        playing = true;
         startGame();
         console.log('start game')
     })
@@ -72,8 +73,10 @@ io.on('connection', (socket) => { //Evertything with socket
     })
 
     socket.on('songSensitivity', (sense) => { //Get song sense from musicplayer
-        socket.broadcast.emit('updateSensitivity', sense);
-        console.log('sensor updated');
+        if(playing){
+            socket.broadcast.emit('updateSensitivity', sense);     
+            console.log('sensor updated');       
+        }
     });
 });
 
@@ -110,7 +113,7 @@ var gamestate = {
 // returns index of player that was sent into the function and returns -1 for a player that is sent in with invalid ID
 function findPlayer(player){
     //return indexx of player in gamestate.playerlist
-    for (let k=0;k<=gamestate.leaderboard.length;k++){
+    for (let k=0;k<gamestate.leaderboard.length;k++){
         if (player==gamestate.leaderboard[k].id){
             return k;
         }
