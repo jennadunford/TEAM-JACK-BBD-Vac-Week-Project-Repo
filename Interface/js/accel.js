@@ -1,3 +1,4 @@
+
 // // const socket = new io("http://localhost:9000", {});
 // // const socket = new io("https://jack-joust.herokuapp.com/", {});
 
@@ -9,6 +10,7 @@
 // // var uName = document.getElementById("uName");
 // // var jCode = document.getElementById("jCode");
 // // var userReady = false;
+
 // var output;
 // var xOutput = document.getElementById("xRead");
 // var yOutput = document.getElementById("yRead");
@@ -30,6 +32,7 @@
 // // var updateMag = document.getElementById("updateMag");
 
 // var dqFlag = false;
+
 let custAcc = 0;
 
 socket.on("updateSensitivity", (songSensitivity) => {
@@ -64,6 +67,14 @@ socket.on("restartGame", () => {
   window.location.href = "./controller.html";
 });
 
+
+socket.on("playerOut", (userName) => {
+  // alert(userName + " is out");
+  //strikeThrough(userName);
+  showRemovedPlayer(userName);
+  strikeThrough(userName);
+});
+
 socket.on('Won', (winner) => {
   console.log('Won');
   if(sessionStorage.getItem('userName') === winner){
@@ -72,19 +83,31 @@ socket.on('Won', (winner) => {
   }
 })
 
+function strikeThrough(userName) {
+  let nodes = Array.from($("#playerList").children("li"));
+  for (let count = 0; count < nodes.length; count++) {
+    const element = nodes[count];
+    console.log(nodes[count].innerHTML);
+    if (element.innerHTML == userName) {
+      element.innerHTML = element.innerHTML.strike();
+      break;
+    }
+  }
+}
+
 function updateReadings() {
   let acl = new LinearAccelerationSensor({ frequency: 60 });
   acl.addEventListener("reading", () => {
     //console.log("Acceleration along the X-axis " + acl.x);
-    xOutput.innerHTML = acl.x.toFixed(2);
-    yOutput.innerHTML = acl.y.toFixed(2);
-    zOutput.innerHTML = acl.z.toFixed(2);
+    // xOutput.innerHTML = acl.x.toFixed(2);
+    // yOutput.innerHTML = acl.y.toFixed(2);
+    // zOutput.innerHTML = acl.z.toFixed(2);
 
     sensorAccelerationMagnitude = Math.sqrt(
             acl.x * acl.x + acl.y * acl.y + acl.z * acl.z
     );
 
-    normOutput.innerHTML = sensorAccelerationMagnitude.toFixed(2);
+    // normOutput.innerHTML = sensorAccelerationMagnitude.toFixed(2);
   });
   acl.start();
   return sensorAccelerationMagnitude;

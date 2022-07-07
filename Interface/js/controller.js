@@ -9,11 +9,11 @@ var userName = document.querySelector("#userName");
 var uName = document.getElementById("uName");
 var jCode = document.getElementById("jCode");
 var userReady = false;
-var output;
-var xOutput = document.getElementById("xRead");
-var yOutput = document.getElementById("yRead");
-var zOutput = document.getElementById("zRead");
-var normOutput = document.getElementById("norm");
+// var output;
+// var xOutput = document.getElementById("xRead");
+// var yOutput = document.getElementById("yRead");
+// var zOutput = document.getElementById("zRead");
+// var normOutput = document.getElementById("norm");
 
 var sensorAccelerationMagnitude = 0;
 
@@ -207,6 +207,9 @@ socket.on("disqualifyPlayer", (userName) => {
 //     if (typeof DeviceMotionEvent.requestPermission === "function") {
 //         DeviceMotionEvent.requestPermission()
 //           .then((response) => {
+
+//             window.location.href = "playerScreen.html"
+
 //             if (response == "granted") {
 //               window.addEventListener("devicemotion", (event) => {
 //                 // do something with event
@@ -231,8 +234,10 @@ socket.on("disqualifyPlayer", (userName) => {
 //                 ).toFixed(2);
                 
 //                 // return (acc_magnitude);
+
                 
 //                 window.location.href = "playerScreen.html"
+
 //                 alert_disqualify(acc_magnitude);
 //               });
 //             }
