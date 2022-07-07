@@ -60,15 +60,14 @@ h4 {
   font-size: 20px;
   background-color: rgb(222, 66, 120);
   border-radius: 8px;
-  width: 30%;
+  width: 50%;
   margin: 0 auto;
-  margin-top: -20%;
-  margin-left: 70%;
-  font-size: 20px;
 }
 
 #playerList {
   list-style-type: none;
+  font-size: 23px;
+  text-align: center;
 }
 
 .loseMessage {
@@ -82,14 +81,48 @@ h4 {
   margin-top: -25%;
 }
 
+.winMessage {
+  background-color: rgb(22, 164, 22);
+  border-radius: 8px;
+  display: block;
+  width: 80%;
+  margin: 0 auto;
+  font-size: 80px;
+  position: relative;
+  margin-top: -25%;
+}
+
 .hide {
   display: none;
 }
 
-.gameButtons {
-  margin-top: 25%;
+.pageContent {
+  list-style-type: none;
+  display: flex;
+  flex-direction: row;
+  padding: 2px;
+
+  width: 99%;
+  margin: 0 auto;
 }
 
-.codeAndSongSelect {
-  margin-left: -65%;
+.pageBox {
+  /* padding: 5px; */
+  width: 80%;
+}
+
+@media only screen and (max-width: 1020px) {
+  .pageContent {
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    padding: 2px;
+
+    width: 98%;
+    margin: 0 auto;
+  }
+}
+
+.howMove {
+  font-size: 70px;
 }
