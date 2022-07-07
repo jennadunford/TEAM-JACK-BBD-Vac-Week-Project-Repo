@@ -201,3 +201,10 @@ setInterval(() => {
 //   }
 
 // });
+
+//must visually indicate that the player was eliminated
+socket.on("disqualifyPlayer", (userName) => {
+  socket.emit("controllerLog", "controller disqualifyPlayer");
+  console.log("controller: strike");
+  strikeThrough(userName);
+});
