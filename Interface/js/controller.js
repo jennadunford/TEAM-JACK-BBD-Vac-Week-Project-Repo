@@ -207,7 +207,6 @@ function getAccel() {
     if (typeof DeviceMotionEvent.requestPermission === "function") {
         DeviceMotionEvent.requestPermission()
           .then((response) => {
-            window.location.href = "playerScreen.html"
             if (response == "granted") {
               window.addEventListener("devicemotion", (event) => {
                 // do something with event
@@ -232,6 +231,8 @@ function getAccel() {
                 ).toFixed(2);
                 
                 // return (acc_magnitude);
+                
+                window.location.href = "playerScreen.html"
                 alert_disqualify(acc_magnitude);
               });
             }
