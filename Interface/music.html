@@ -10,47 +10,47 @@
       integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
       crossorigin="anonymous"
     />
-    <link rel="stylesheet" href="css/phoneUI.css" />
-    <link rel="stylesheet" href="css/playerScreen.css" />
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css?family=Bangers"
     />
-    <title>LET'S PLAY!</title>
+    <link rel="stylesheet" href="css/MusicStylesheet.css" />
+    <title>Music Control</title>
   </head>
   <body>
-    <h1>JACKSCRIPT JOUST</h1>
-    <div class="screenPlayerListBox">
-      <h2>PLAYERS</h2>
-      <ul id="playerList"></ul>
+    <h1>JACKSCRIPT JOUST MUSIC PLAYER</h1>
+    <h2 id="showSong">Ride of the Valkyries</h2>
+    <div class="dropdown">
+      <button
+        class="btn btn-secondary dropdown-toggle"
+        type="button"
+        id="dropdownMenuButton"
+        data-toggle="dropdown"
+        aria-haspopup="true"
+        aria-expanded="false"
+        data-toggle="dropdown"
+      >
+        Select Song
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" id="song1">Ride of the Valkyries</a>
+        <a class="dropdown-item" id="song2">Brandenburg Concerto No. 11</a>
+        <a class="dropdown-item" id="song3">Mario Kart Coconut Mall</a>
+        <a class="dropdown-item" id="song4">Best song you've ever heard</a>
+        <a class="dropdown-item" id="song5">The Fields of Ard Skellig</a>
+      </div>
     </div>
-
-
-    <!-- <div>
-      <input type="text" id="customAcc" value="0"></div><br>
-      <button type="submit" onclick="setAcc()">Update magnitude</button>
-    </div> -->
-    <div class="hidden">
-
-      <h2>Realtime Outputs</h2>
-      <h2>X Axis Reading:</h2>
-      <h2 id="xRead"></h2>
-      <h2>Y Axis Reading:</h2>
-      <h2 id="yRead"></h2>
-      <h2>Z Axis Reading:</h2>
-      <h2 id="zRead"></h2>
-      <h2>Normalized value:</h2>
-      <h2 id="norm"></h2>
-    </div>
-
-    <div>
-      <img class="winImage hidden" id="winImage" src="Images/crown.png" />
-    </div>
+    <h2>Current state:</h2>
+    <h2 class="hidden" id="musicState"></h2>
+    <button id="playButton">
+      <span>Play</span>
+    </button>
+    <button id="reload">
+      <span>Reload Page</span>
+    </button>
+    <h3>YOU SHOULD BE MOVING</h3>
+    <h3 id="howMove"></h3>
   </body>
-  <script
-    type="text/javascript"
-    src="https://code.jquery.com/jquery-1.7.1.min.js"
-  ></script>
   <script
     src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
     integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -70,10 +70,5 @@
     type="text/javascript"
     src="https://code.jquery.com/jquery-1.7.1.min.js"
   ></script>
-  <script src="/socket.io/socket.io.js"></script>
-
-  <script type="text/javascript" src="js/controller.js"></script>
-  <script type="text/javascript" src="js/accel.js"></script>
-  <script type="text/javascript" src="js/addRemove.js"></script>
-
+  <script type="text/javascript" src="js/music.js"></script>
 </html>
