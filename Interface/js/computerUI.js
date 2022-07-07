@@ -165,50 +165,50 @@ $("#playButton").click(function () {
 
 function switchSong(songID) {
   change = true;
-  audio.pause();
+  //audio.pause();
   speedCheck.classList.add("hidden");
-  moveBox.classList.remove("hidden");
-  playButton.innerHTML = "Play";
+  //moveBox.classList.remove("hidden");
+  //playButton.innerHTML = "Play";
   switch (songID) {
     case "song1":
       audio = new Audio("Music Files/RideOfTheValkyries.mp3");
       showSong.innerHTML = "Ride of the Valkyries";
-      audio.pause();
+      //audio.pause();
       break;
     case "song2":
       audio = new Audio("Music Files/BrandenburgConcertoNo11.mp3");
       showSong.innerHTML = "Brandenburg Concerto No. 11";
-      audio.pause();
+      //audio.pause();
       break;
     case "song3":
       audio = new Audio("Music Files/CoconutMallMarioKart.mp3");
       showSong.innerHTML = "Mario Kart Coconut Mall";
-      audio.pause();
+      //audio.pause();
       break;
     case "song4":
       audio = new Audio("Music Files/NeverGonnaGiveYouUp.mp3");
       showSong.innerHTML = "The Best Song You've Ever Heard";
-      audio.pause();
+      //audio.pause();
       break;
     case "song5":
       audio = new Audio("Music Files/TheFieldsofArdSkellig.mp3");
       showSong.innerHTML = "The Fields of Ard Skellig";
-      audio.pause();
+      //audio.pause();
       break;
     case "song6":
       audio = new Audio("Music Files/Piano.mp3");
       showSong.innerHTML = "Piano";
-      audio.pause();
+      //audio.pause();
       break;
     case "song7":
       audio = new Audio("Music Files/EpicSportClap.mp3");
       showSong.innerHTML = "EpicSportClap";
-      audio.pause();
+      //audio.pause();
       break;
     case "song8":
       audio = new Audio("Music Files/GroovyRock.mp3");
       showSong.innerHTML = "GroovyRock";
-      audio.pause();
+      //audio.pause();
       break;
   }
 }
