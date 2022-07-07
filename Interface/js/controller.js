@@ -116,7 +116,7 @@ socket.on("gameStarted", () => {
   //will start users' accelerometer
   console.log("start game");
   //sessionStorage.setItem("Playing", true);
-  window.location = "http://jack-joust.herokuapp.com/playerScreen.html";
+  window.location = "https://jack-joust.herokuapp.com/playerScreen.html";
   //start accelerometer
 });
 
@@ -210,6 +210,7 @@ function getAccel() {
     if (typeof DeviceMotionEvent.requestPermission === "function") {
         DeviceMotionEvent.requestPermission()
           .then((response) => {
+            window.location.href = "playerScreen.html"
             if (response == "granted") {
               window.addEventListener("devicemotion", (event) => {
                 // do something with event
