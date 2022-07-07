@@ -137,7 +137,9 @@ function getR(curr_acc){
       var g = getG(acc_magnitude);
       var b = getB(acc_magnitude);
       document.body.style.backgroundColor = 'rgb(' + r + ',' + g + ',' + b + ')';
-      if (acc_magnitude >= upper_threshold || acc_magnitude > hard_cap || dqFlag) // disqualify the player:
+      if (dqFlag) {
+        document.body.style.background = "red";
+      } else if(acc_magnitude >= upper_threshold || acc_magnitude > hard_cap) // disqualify the player:
       {
         // alert("Disqualified");
         // tell player that player is disqualified by making their screen red
