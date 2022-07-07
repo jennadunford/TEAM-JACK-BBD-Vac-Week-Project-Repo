@@ -116,7 +116,7 @@ socket.on("gameStarted", () => {
   //will start users' accelerometer
   console.log("start game");
   //sessionStorage.setItem("Playing", true);
-  location.href = "https://jack-joust.herokuapp.com/playerScreen.html";
+  window.location = "https://jack-joust.herokuapp.com/playerScreen.html";
   //start accelerometer
 });
 
