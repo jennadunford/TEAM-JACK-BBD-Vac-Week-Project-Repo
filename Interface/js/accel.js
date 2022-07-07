@@ -4,15 +4,12 @@ socket.on("updateSensitivity", (songSensitivity) => {
   //Get song sense from server
   if (songSensitivity == 0.8) {
     // slow
-    // console.log("lower");
     upper_threshold = 8;
   } else if (songSensitivity == 1) {
     // normal
-    // console.log("normal");
     upper_threshold = 20;
   } else if (songSensitivity == 1.2) {
     // fast
-    // console.log("fast");
     upper_threshold = 30;
   }
 });
@@ -105,23 +102,19 @@ function alert_disqualify(acc_magnitude) {
   } else if (acc_magnitude >= (upper_threshold * 2) / 3) {
     //alert user that they are close to threshold by making their screen orange
     updateState.innerHTML = "Close";
-    // document.body.style.background = "orange";
     return;
   } else if (acc_magnitude >= (upper_threshold * 1) / 6) {
     updateState.innerHTML = "Far";
     //alert user that they are approaching the threshold by making their screen yellow
-    // document.body.style.background = "yellow";
     return;
   } else {
     //ie: if acc_magnitude<upper_threshold*0.75 && acc_magnitude>lower_threshold
     //make their screen green
     updateState.innerHTML = "Safe " + acc_magnitude.toFixed(2);
-    // document.body.style.background = "green";
     return;
   }
 }
 //setInterval(updateReadings(), 500);
-// setInterval(alert_disqualify(), 500);
 
 function getAccel() {
   //   //console.log("permissions button pressed");
@@ -134,7 +127,6 @@ function getAccel() {
             xOutput.innerHTML = event.acceleration.x.toFixed(2);
             yOutput.innerHTML = event.acceleration.y.toFixed(2);
             zOutput.innerHTML = event.acceleration.z.toFixed(2);
-            // updateState.innerHTML = "Started motion sensing";
 
             acc_magnitude = Math.sqrt(
               Math.abs(
@@ -154,16 +146,13 @@ function getAccel() {
               )
             ).toFixed(2);
 
-            // return (acc_magnitude);
             alert_disqualify(acc_magnitude);
           });
         }
       })
       .catch(console.error);
-    //return (acc_magnitude);
     alert_disqualify(acc_magnitude);
   } else {
-    // alert_disqualify(updateReadings())
     // non iOS 13+
     updateReadings();
     console.log("alter_disqualify");
