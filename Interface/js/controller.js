@@ -49,6 +49,7 @@ function ready() {
       sessionStorage.setItem("userName", userName.value);
     }
   }
+  getAccel();
 }
 
 socket.on("invalidCode", () => {
