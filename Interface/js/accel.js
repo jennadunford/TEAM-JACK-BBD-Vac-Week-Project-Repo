@@ -64,6 +64,14 @@ socket.on("restartGame", () => {
   window.location.href = "./controller.html";
 });
 
+socket.on('Won', (winner) => {
+  console.log('Won');
+  if(sessionStorage.getItem('userName') === winner){
+    alert('Winner Winner JackScript Dinner');
+    $("#winImage").fadeIn(1000);
+  }
+})
+
 function updateReadings() {
   let acl = new LinearAccelerationSensor({ frequency: 60 });
   acl.addEventListener("reading", () => {
