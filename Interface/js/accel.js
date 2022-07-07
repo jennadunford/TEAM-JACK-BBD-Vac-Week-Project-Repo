@@ -1,7 +1,7 @@
 // const socket = new io("http://localhost:9000", {});
-// const socket = new io("https://jack-joust.herokuapp.com/", {});
+const socket = new io("https://jack-joust.herokuapp.com/", {});
 
-const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
+// const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
 // var readyButton = document.getElementById("readyButton");
 // var readyState = document.getElementById("state");
 // var joinCode = document.querySelector("#joinCode");
