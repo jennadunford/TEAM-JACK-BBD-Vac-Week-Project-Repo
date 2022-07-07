@@ -94,6 +94,7 @@ $("#restartButton").click(function () {
   audio.pause();
   //Clear player list needs to be added
   document.getElementById("playerList").innerHTML = "";
+  document.getElementById("winMessage").style.display = "none";
 });
 
 socket.on("userJoined", (user) => {
