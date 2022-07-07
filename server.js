@@ -32,7 +32,7 @@ io.on('connection', (socket) => { //Evertything with socket
             players[playerCount++] = {
                 "id": user,
                 "playing": true,
-                "score": 0
+                "socketId": socket.id
             }
 
             socket.emit('validCode', 'Joined');
@@ -82,6 +82,7 @@ io.on('connection', (socket) => { //Evertything with socket
     socket.on('generateCode', () => {
         code = genCode(4);
         socket.emit('gameCode', code);
+        //io.emit('test', 'This is a test');
     })
     
     socket.on('disqualifyPlayer', (userName)=>{ //Disable the player's playing attribute
@@ -94,6 +95,8 @@ io.on('connection', (socket) => { //Evertything with socket
                 //game should stop
                 console.log(players);
                 socket.broadcast.emit('gameOver', players);
+                let winSocket = players[0].id;
+                io.emit('Won', winSocket);
                 playing = false;
             }else{
                 socket.broadcast.emit('playerOut', userName);

@@ -59,6 +59,14 @@ socket.on("restartGame", () => { //Game stoped by host
   window.location.href = "./controller.html";
 });
 
+socket.on('Won', (winner) => {
+  console.log('Won');
+  if(sessionStorage.getItem('userName') === winner){
+    alert('Winner Winner JackScript Dinner');
+    $("#winImage").fadeIn(1000);
+  }
+})
+
 function updateReadings() {
     let acl = new LinearAccelerationSensor({ frequency: 60 });
     acl.addEventListener("reading", () => {
@@ -180,8 +188,8 @@ function updateReadings() {
   // }
 
   setInterval(() => {
-    // acc_magnitude = document.getElementById("customAcc").value;
-    acc_magnitude = getAccel();
+    acc_magnitude = document.getElementById("customAcc").value;
+    //acc_magnitude = getAccel();
     // console.log("M:" + acc_magnitude);
     // console.log("T:" + upper_threshold);
     if(dqFlag){
