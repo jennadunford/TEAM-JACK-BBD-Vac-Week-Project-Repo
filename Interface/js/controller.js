@@ -1,3 +1,5 @@
+// const socket = new io("http://localhost:9000", {});
+// const socket = new io("https://jack-joust.herokuapp.com/", {});
 
 const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
 var readyButton = document.getElementById("readyButton");
@@ -37,11 +39,13 @@ function ready() {
     if (!userReady) {
       userReady = true;
       readyState.innerHTML = "Ready!";
+      //readyButton.innerHTML = "Not Ready";
       output = userName.value;
       uName.innerHTML = output;
       output = joinCode.value;
       jCode.innerHTML = output;
       socket.emit("userJoin", userName.value, joinCode.value);
+      //socket.emit("joinCode", joinCode.value);
       sessionStorage.setItem("userName", userName.value);
     }
   }
@@ -95,6 +99,7 @@ function addPlayer(userName) {
 socket.on("gameStarted", () => {
   //will start users' accelerometer
   console.log("start game");
+  //sessionStorage.setItem("Playing", true);
   window.location = "https://damp-gorge-23211.herokuapp.com/playerScreen.html";
   //start accelerometer
 });
