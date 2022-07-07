@@ -202,61 +202,61 @@ socket.on("disqualifyPlayer", (userName) => {
 //setInterval(updateReadings(), 500);
 // setInterval(alert_disqualify(), 500);
 
-function getAccel() {
-    //console.log("permissions button pressed");
-    if (typeof DeviceMotionEvent.requestPermission === "function") {
-        DeviceMotionEvent.requestPermission()
-          .then((response) => {
-            if (response == "granted") {
-              window.addEventListener("devicemotion", (event) => {
-                // do something with event
-                xOutput.innerHTML = event.acceleration.x.toFixed(2);
-                yOutput.innerHTML = event.acceleration.y.toFixed(2);
-                zOutput.innerHTML = event.acceleration.z.toFixed(2);
-                // updateState.innerHTML = "Started motion sensing";
+// function getAccel() {
+//     //console.log("permissions button pressed");
+//     if (typeof DeviceMotionEvent.requestPermission === "function") {
+//         DeviceMotionEvent.requestPermission()
+//           .then((response) => {
+//             if (response == "granted") {
+//               window.addEventListener("devicemotion", (event) => {
+//                 // do something with event
+//                 xOutput.innerHTML = event.acceleration.x.toFixed(2);
+//                 yOutput.innerHTML = event.acceleration.y.toFixed(2);
+//                 zOutput.innerHTML = event.acceleration.z.toFixed(2);
+//                 // updateState.innerHTML = "Started motion sensing";
     
-                acc_magnitude = Math.sqrt(Math.abs(
-                  event.acceleration.x * event.acceleration.x +
+//                 acc_magnitude = Math.sqrt(Math.abs(
+//                   event.acceleration.x * event.acceleration.x +
   
-                  event.acceleration.y * event.acceleration.y +
-                  event.acceleration.z * event.acceleration.z)
-                );
+//                   event.acceleration.y * event.acceleration.y +
+//                   event.acceleration.z * event.acceleration.z)
+//                 );
     
-                //process magnitude
+//                 //process magnitude
   
-                normOutput.innerHTML = Math.sqrt(Math.abs(
-                  event.acceleration.x * event.acceleration.x +
-                    event.acceleration.y * event.acceleration.y +
-                    event.acceleration.z * event.acceleration.z)
-                ).toFixed(2);
+//                 normOutput.innerHTML = Math.sqrt(Math.abs(
+//                   event.acceleration.x * event.acceleration.x +
+//                     event.acceleration.y * event.acceleration.y +
+//                     event.acceleration.z * event.acceleration.z)
+//                 ).toFixed(2);
                 
-                // return (acc_magnitude);
+//                 // return (acc_magnitude);
                 
-                window.location.href = "playerScreen.html"
-                alert_disqualify(acc_magnitude);
-              });
-            }
-          })
-          .catch(console.error);
-          //return (acc_magnitude);
-        alert_disqualify(acc_magnitude);
-      } else {
-        // alert_disqualify(updateReadings())
-        // non iOS 13+
-        updateReadings();
-        console.log("alter_disqualify");
-        lacl = new LinearAccelerationSensor({ frequency: 60 });
-        lacl.addEventListener("reading", () => {
-          acc_magnitude = Math.sqrt(Math.abs(
-            lacl.x * lacl.x + lacl.y * lacl.y + lacl.z * lacl.z
-          ));
-          // alert("Acceleration along the X-axis " + acl.x + ", Y-axis: " + acl.y + ", Z-axis: " + acl.z);
-          //return (acc_magnitude);
-          alert_disqualify(acc_magnitude);
-        });
-        lacl.start();
-      }
-}
+//                 window.location.href = "playerScreen.html"
+//                 alert_disqualify(acc_magnitude);
+//               });
+//             }
+//           })
+//           .catch(console.error);
+//           //return (acc_magnitude);
+//         alert_disqualify(acc_magnitude);
+//       } else {
+//         // alert_disqualify(updateReadings())
+//         // non iOS 13+
+//         updateReadings();
+//         console.log("alter_disqualify");
+//         lacl = new LinearAccelerationSensor({ frequency: 60 });
+//         lacl.addEventListener("reading", () => {
+//           acc_magnitude = Math.sqrt(Math.abs(
+//             lacl.x * lacl.x + lacl.y * lacl.y + lacl.z * lacl.z
+//           ));
+//           // alert("Acceleration along the X-axis " + acl.x + ", Y-axis: " + acl.y + ", Z-axis: " + acl.z);
+//           //return (acc_magnitude);
+//           alert_disqualify(acc_magnitude);
+//         });
+//         lacl.start();
+//       }
+// }
 
 // if (sessionStorage.getItem("Playing")) {
 //   console.log("running");
