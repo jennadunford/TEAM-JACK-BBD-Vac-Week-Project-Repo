@@ -1,8 +1,8 @@
 var userName = document.querySelector("#userName");
 // const socket = new io("http://localhost:9000", {});
 // console.log("computer ui");
-//const socket = new io("https://jack-joust.herokuapp.com/", {});
-const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
+const socket = new io("https://jack-joust.herokuapp.com/", {});
+// const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
 var musicfiles = [
   "Music Files/RideOfTheValkyries.mp3",
   "Music Files/BrandenburgConcertoNo11.mp3",
