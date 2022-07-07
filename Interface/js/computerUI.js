@@ -94,6 +94,7 @@ $("#restartButton").click(function () {
   audio.pause();
   //Clear player list needs to be added
   document.getElementById("playerList").innerHTML = "";
+  document.getElementById("winMessage").style.display = "none";
 });
 
 socket.on("userJoined", (user) => {
@@ -115,8 +116,8 @@ socket.on("numPlayers", (numPlayers) => {
 socket.on("gameOver", (players) => {
   showWinner(players[0].id);
   audio.pause();
-  // var loseBanner = document.getElementById("loseMessage");
-  // loseBanner.classList.add("hidden");
+  var loseBanner = document.getElementById("loseMessage");
+  loseBanner.style.display = "none";
 });
 
 $("#removePlayer").click(function () {
