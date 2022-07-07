@@ -37,15 +37,15 @@ socket.on("updateSensitivity", (songSensitivity) => {
   if (songSensitivity == 0.8) {
     // slow
     // console.log("lower");
-    upper_threshold = 1;
+    upper_threshold = 3;
   } else if (songSensitivity == 1) {
     // normal
     // console.log("normal");
-    upper_threshold = 10;
+    upper_threshold = 15;
   } else if (songSensitivity == 1.2) {
     // fast
     // console.log("fast");
-    upper_threshold = 20;
+    upper_threshold = 25;
   }
 });
 
@@ -203,7 +203,7 @@ setInterval(() => {
 // });
 
 //must visually indicate that the player was eliminated
-socket.on("disqualifyPlayer", (userName) => {
+socket.on("playerOut", (userName) => {
   socket.emit("controllerLog", "controller disqualifyPlayer");
   console.log("controller: strike");
   strikeThrough(userName);

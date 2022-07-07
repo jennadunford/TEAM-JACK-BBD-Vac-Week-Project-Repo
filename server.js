@@ -93,11 +93,11 @@ io.on('connection', (socket) => { //Evertything with socket
             if(playerCount == 1){
                 //game should stop
                 console.log(players);
-                socket.broadcast.emit('playerOut', userName);
+                // socket.broadcast.emit('playerOut', userName);
                 socket.broadcast.emit('gameOver', players);
                 playing = false;
             }else{
-                socket.broadcast.emit('playerOut', userName);
+                io.emit('playerOut', userName);
             }
             
             console.log(userName + ' disqualified');
