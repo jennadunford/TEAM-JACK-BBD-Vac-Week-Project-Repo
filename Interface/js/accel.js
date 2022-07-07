@@ -1,38 +1,3 @@
-
-// // const socket = new io("http://localhost:9000", {});
-// // const socket = new io("https://jack-joust.herokuapp.com/", {});
-
-// // const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
-// // var readyButton = document.getElementById("readyButton");
-// // var readyState = document.getElementById("state");
-// // var joinCode = document.querySelector("#joinCode");
-// // var userName = document.querySelector("#userName");
-// // var uName = document.getElementById("uName");
-// // var jCode = document.getElementById("jCode");
-// // var userReady = false;
-
-// var output;
-// var xOutput = document.getElementById("xRead");
-// var yOutput = document.getElementById("yRead");
-// var zOutput = document.getElementById("zRead");
-// var normOutput = document.getElementById("norm");
-
-// var sensorAccelerationMagnitude = 0;
-
-// var iOSSensorAccelerationMagnitude = 0;
-// var iOSAccMagnitude = 0;
-
-// var acc_magnitude = 0;
-// let lacl = new LinearAccelerationSensor({ frequency: 60 });
-// var lower_threshold = 0;
-// var upper_threshold = 10;
-// var hard_cap = 50;
-
-// // var updateState = document.getElementById("updateState");
-// // var updateMag = document.getElementById("updateMag");
-
-// var dqFlag = false;
-
 let custAcc = 0;
 
 socket.on("updateSensitivity", (songSensitivity) => {
@@ -67,21 +32,18 @@ socket.on("restartGame", () => {
   window.location.href = "./controller.html";
 });
 
-
 socket.on("playerOut", (userName) => {
-  // alert(userName + " is out");
-  //strikeThrough(userName);
   showRemovedPlayer(userName);
   strikeThrough(userName);
 });
 
-socket.on('Won', (winner) => {
-  console.log('Won');
-  if(sessionStorage.getItem('userName') === winner){
-    alert('Winner Winner JackScript Dinner');
+socket.on("Won", (winner) => {
+  console.log("Won");
+  if (sessionStorage.getItem("userName") === winner) {
+    alert("Winner Winner JackScript Dinner");
     $("#winImage").fadeIn(1000);
   }
-})
+});
 
 function strikeThrough(userName) {
   let nodes = Array.from($("#playerList").children("li"));
@@ -98,80 +60,66 @@ function strikeThrough(userName) {
 function updateReadings() {
   let acl = new LinearAccelerationSensor({ frequency: 60 });
   acl.addEventListener("reading", () => {
-    //console.log("Acceleration along the X-axis " + acl.x);
-    // xOutput.innerHTML = acl.x.toFixed(2);
-    // yOutput.innerHTML = acl.y.toFixed(2);
-    // zOutput.innerHTML = acl.z.toFixed(2);
-
     sensorAccelerationMagnitude = Math.sqrt(
-            acl.x * acl.x + acl.y * acl.y + acl.z * acl.z
+      acl.x * acl.x + acl.y * acl.y + acl.z * acl.z
     );
-
-    // normOutput.innerHTML = sensorAccelerationMagnitude.toFixed(2);
   });
   acl.start();
   return sensorAccelerationMagnitude;
 }
 
-function getR(curr_acc){
-    return Math.min(255, 1530/upper_threshold * curr_acc);
+function getR(curr_acc) {
+  return Math.min(255, (1530 / upper_threshold) * curr_acc);
+}
+
+function getG(curr_acc) {
+  if (curr_acc <= (2 / 3) * upper_threshold) {
+    return 255;
+  } else if (curr_acc >= upper_threshold) {
+    return 0;
+  } else {
+    return (-765 / upper_threshold) * curr_acc + 765;
   }
-  
-  function getG(curr_acc){
-    if (curr_acc<=2/3 * upper_threshold){
-      return 255;
-    } else if (curr_acc>=upper_threshold){
-      return 0;
-    } else {
-      return (-765/upper_threshold * curr_acc + 765);
-    }
+}
+
+function getB(curr_acc) {
+  return 0;
+}
+
+function alert_disqualify(acc_magnitude) {
+  var r = getR(acc_magnitude);
+  var g = getG(acc_magnitude);
+  var b = getB(acc_magnitude);
+  document.body.style.backgroundColor = "rgb(" + r + "," + g + "," + b + ")";
+  if (dqFlag) {
+    document.body.style.background = "red";
+  } else if (acc_magnitude >= upper_threshold || acc_magnitude > hard_cap) {
+    dqFlag = true;
+
+    // tell server that player is disqualifyed
+    socket.emit("disqualifyPlayer", sessionStorage.getItem("userName"));
+    //on server:
+    //sort board
+    //grey them out on the scoreboard
+    return;
+  } else if (acc_magnitude >= (upper_threshold * 2) / 3) {
+    //alert user that they are close to threshold by making their screen orange
+    updateState.innerHTML = "Close";
+    // document.body.style.background = "orange";
+    return;
+  } else if (acc_magnitude >= (upper_threshold * 1) / 6) {
+    updateState.innerHTML = "Far";
+    //alert user that they are approaching the threshold by making their screen yellow
+    // document.body.style.background = "yellow";
+    return;
+  } else {
+    //ie: if acc_magnitude<upper_threshold*0.75 && acc_magnitude>lower_threshold
+    //make their screen green
+    updateState.innerHTML = "Safe " + acc_magnitude.toFixed(2);
+    // document.body.style.background = "green";
+    return;
   }
-  
-  function getB(curr_acc){
-    return 0;  
-  }
-  
-  function alert_disqualify(acc_magnitude) 
-  {
-      var r = getR(acc_magnitude);
-      var g = getG(acc_magnitude);
-      var b = getB(acc_magnitude);
-      document.body.style.backgroundColor = 'rgb(' + r + ',' + g + ',' + b + ')';
-      if (dqFlag) {
-        document.body.style.background = "red";
-      } else if(acc_magnitude >= upper_threshold || acc_magnitude > hard_cap) // disqualify the player:
-      {
-        // alert("Disqualified");
-        // tell player that player is disqualified by making their screen red
-        // document.body.style.background = "red";
-        dqFlag = true;
-    
-        // tell server that player is disqualifyed
-        socket.emit("disqualifyPlayer", sessionStorage.getItem("userName"));
-        //on server:
-        //sort board
-        //grey them out on the scoreboard
-        return;
-      } else if (acc_magnitude >= (upper_threshold * 2) / 3) 
-      {
-        //alert user that they are close to threshold by making their screen orange
-        updateState.innerHTML = "Close";
-        // document.body.style.background = "orange";
-        return;
-      } else if (acc_magnitude >= (upper_threshold * 1) / 6) 
-      {
-        updateState.innerHTML = "Far";
-        //alert user that they are approaching the threshold by making their screen yellow
-        // document.body.style.background = "yellow";
-        return;
-      } else {
-        //ie: if acc_magnitude<upper_threshold*0.75 && acc_magnitude>lower_threshold
-        //make their screen green
-        updateState.innerHTML = "Safe " + acc_magnitude.toFixed(2);
-        // document.body.style.background = "green";
-        return;
-      }
-  }
+}
 //setInterval(updateReadings(), 500);
 // setInterval(alert_disqualify(), 500);
 
@@ -224,30 +172,16 @@ function getAccel() {
       acc_magnitude = Math.sqrt(
         Math.abs(lacl.x * lacl.x + lacl.y * lacl.y + lacl.z * lacl.z)
       );
-      // alert("Acceleration along the X-axis " + acl.x + ", Y-axis: " + acl.y + ", Z-axis: " + acl.z);
-      //return (acc_magnitude);
+
       alert_disqualify(acc_magnitude);
     });
     lacl.start();
   }
 }
 
-// function setAcc(){
-//   custAcc = document.getElementById("customAcc").value;
-//   console.log("Acc set to " + custAcc);
-// }
-
 setInterval(() => {
   getAccel();
 }, 500);
-
-// DeviceMotionEvent.requestPermission().then((response) => {
-//   if (response == "granted") {
-//     console.log("accelerometer permission granted");
-//     // Do stuff here
-//   }
-
-// });
 
 //must visually indicate that the player was eliminated
 socket.on("playerOut", (userName) => {
