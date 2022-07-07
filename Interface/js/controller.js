@@ -285,3 +285,10 @@ socket.on("disqualifyPlayer", (userName) => {
 // socket.on("disqualifyPlayer", (userName) => {
 //   strikeThrough(userName);
 // });
+socket.on('Won', (winner) => {
+  console.log('Won');
+  if(sessionStorage.getItem('userName') === winner){
+    alert('Winner Winner JackScript Dinner');
+    $("#winImage").fadeIn(1000);
+  }
+})
