@@ -9,11 +9,11 @@ var userName = document.querySelector("#userName");
 var uName = document.getElementById("uName");
 var jCode = document.getElementById("jCode");
 var userReady = false;
-var output;
-var xOutput = document.getElementById("xRead");
-var yOutput = document.getElementById("yRead");
-var zOutput = document.getElementById("zRead");
-var normOutput = document.getElementById("norm");
+// var output;
+// var xOutput = document.getElementById("xRead");
+// var yOutput = document.getElementById("yRead");
+// var zOutput = document.getElementById("zRead");
+// var normOutput = document.getElementById("norm");
 
 var sensorAccelerationMagnitude = 0;
 
