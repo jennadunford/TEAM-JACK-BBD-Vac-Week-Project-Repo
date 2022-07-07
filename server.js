@@ -99,7 +99,7 @@ io.on('connection', (socket) => { //Evertything with socket
                 io.emit('Won', winSocket);
                 playing = false;
             }else{
-                socket.broadcast.emit('playerOut', userName);
+                io.emit('playerOut', userName);
             }
             
             console.log(userName + ' disqualified');
