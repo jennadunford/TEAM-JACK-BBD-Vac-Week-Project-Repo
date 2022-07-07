@@ -36,3 +36,8 @@ button.permissions {
 .hidden {
   display: none;
 }
+
+img.winImage {
+  width: 70%;
+  transition: 0.2s;
+}
