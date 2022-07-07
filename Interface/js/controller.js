@@ -1,7 +1,7 @@
 // const socket = new io("http://localhost:9000", {});
-const socket = new io("https://jack-joust.herokuapp.com/", {});
+// const socket = new io("https://jack-joust.herokuapp.com/", {});
 
-// const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
+const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
 var readyButton = document.getElementById("readyButton");
 var readyState = document.getElementById("state");
 var joinCode = document.querySelector("#joinCode");
@@ -207,7 +207,9 @@ socket.on("disqualifyPlayer", (userName) => {
 //     if (typeof DeviceMotionEvent.requestPermission === "function") {
 //         DeviceMotionEvent.requestPermission()
 //           .then((response) => {
+
 //             window.location.href = "playerScreen.html"
+
 //             if (response == "granted") {
 //               window.addEventListener("devicemotion", (event) => {
 //                 // do something with event
@@ -232,6 +234,10 @@ socket.on("disqualifyPlayer", (userName) => {
 //                 ).toFixed(2);
                 
 //                 // return (acc_magnitude);
+
+                
+//                 window.location.href = "playerScreen.html"
+
 //                 alert_disqualify(acc_magnitude);
 //               });
 //             }

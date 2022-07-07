@@ -126,3 +126,7 @@ h4 {
 .howMove {
   font-size: 70px;
 }
+
+.winMessage {
+  margin-top: 5%;
+}
