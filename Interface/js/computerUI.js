@@ -1,10 +1,28 @@
-// var userName = document.querySelector("#userName");
-const socket = new io("http://localhost:9000", {});
+var userName = document.querySelector("#userName");
+// const socket = new io("http://localhost:9000", {});
 // console.log("computer ui");
-
+const socket = new io("https://jack-joust.herokuapp.com/", {});
 // const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
-var musicfiles = ["Music Files/RideOfTheValkyries.mp3", "Music Files/BrandenburgConcertoNo11.mp3", "Music Files/CoconutMallMarioKart.mp3", "Music Files/NeverGonnaGiveYouUp.mp3", "Music Files/TheFieldsofArdSkellig.mp3", "Music Files/EpicSportClap.mp3", "Music Files/GroovyRock.mp3", "Music Files/Piano.mp3"]
-var musicnames = ["Ride Of The Valkyries", "Brandenburg Concerto No.11", "Coconut Mall Mario Kart", "Never Gonna Give You Up", "The Fields of Ard Skellig", "Epic Sport Clap", "Groovy Rock", "Piano"]
+var musicfiles = [
+  "Music Files/RideOfTheValkyries.mp3",
+  "Music Files/BrandenburgConcertoNo11.mp3",
+  "Music Files/CoconutMallMarioKart.mp3",
+  "Music Files/NeverGonnaGiveYouUp.mp3",
+  "Music Files/TheFieldsofArdSkellig.mp3",
+  "Music Files/EpicSportClap.mp3",
+  "Music Files/GroovyRock.mp3",
+  "Music Files/Piano.mp3",
+];
+var musicnames = [
+  "Ride Of The Valkyries",
+  "Brandenburg Concerto No.11",
+  "Coconut Mall Mario Kart",
+  "Never Gonna Give You Up",
+  "The Fields of Ard Skellig",
+  "Epic Sport Clap",
+  "Groovy Rock",
+  "Piano",
+];
 var songSpeed = 1;
 
 var joinCodeDisplay = document.getElementById("joinCode");
@@ -19,14 +37,18 @@ socket.on("gameCode", (code) => {
 });
 
 //must visually indicate that the player was eliminated
+// socket.on("strikePlayer", (userName) => {
+//   console.log('comp: strike');
+//   strikeThrough(userName);
+//   //TODO: merge with playerOut
+// })
+
 socket.on("playerOut", (userName) => {
   // alert(userName + " is out");
   //strikeThrough(userName);
   showRemovedPlayer(userName);
   strikeThrough(userName);
 });
-
-
 
 function strikeThrough(userName) {
   let nodes = Array.from($("#playerList").children("li"));
@@ -62,6 +84,7 @@ $("#startButton").click(function () {
   audio.play();
   changeSpeeds();
   checkTimeLeft();
+  moveBox.classList.remove("hidden");
   // window.location.href = "./gameScreen.html";
 });
 
@@ -78,10 +101,10 @@ socket.on("userJoined", (user) => {
   addPlayer(user);
 });
 
-socket.on('numPlayers', (numPlayers) =>{
+socket.on("numPlayers", (numPlayers) => {
   // console.log('host: players left');
-  if(numPlayers != 1){
-    randomIndex = Math.floor(Math.random() * musicfiles.length)
+  if (numPlayers != 1) {
+    randomIndex = Math.floor(Math.random() * musicfiles.length);
     randomElement = musicfiles[randomIndex];
     audio = new Audio(randomElement);
     showSong.innerHTML = musicnames[randomIndex];
@@ -89,9 +112,11 @@ socket.on('numPlayers', (numPlayers) =>{
   }
 });
 
-socket.on('gameOver', (players) => {
+socket.on("gameOver", (players) => {
   showWinner(players[0].id);
   audio.pause();
+  var loseBanner = document.getElementById("loseMessage");
+  loseBanner.classList.add("hidden");
 });
 
 $("#removePlayer").click(function () {
@@ -234,7 +259,7 @@ function showRemovedPlayer(userName) {
   $("#loseMessage").fadeOut(2000);
 }
 
-function showWinner(userName){
+function showWinner(userName) {
   var winMessage = document.getElementById("winMessage");
   winMessage.style.display = "block";
   winMessage.innerHTML = userName + " WON THE GAME";
@@ -243,9 +268,9 @@ function showWinner(userName){
 
 function checkTimeLeft() {
   setInterval(() => {
-    if(audio.duration - audio.currentTime < 2/songSpeed){
-      console.log('asking for players');
-      socket.emit('playersLeft');
+    if (audio.duration - audio.currentTime < 2 / songSpeed) {
+      console.log("asking for players");
+      socket.emit("playersLeft");
     }
   }, 800); //0.8 second checks slightly faster than the fastest playback speed
 }

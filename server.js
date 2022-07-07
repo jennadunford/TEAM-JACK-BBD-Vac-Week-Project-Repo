@@ -94,6 +94,7 @@ io.on('connection', (socket) => { //Evertything with socket
             if(playerCount == 1){
                 //game should stop
                 console.log(players);
+                socket.broadcast.emit('playerOut', userName);
                 socket.broadcast.emit('gameOver', players);
                 let winSocket = players[0].id;
                 io.emit('Won', winSocket);
@@ -103,6 +104,9 @@ io.on('connection', (socket) => { //Evertything with socket
             }
             
             console.log(userName + ' disqualified');
+            // socket.broadcast.emit('strikePlayer', (userName));
+            // socket.local.emit('strikePlayer', (userName));
+            // io.emit('strikePlayer', (userName));
         }else{
             console.log("Player not found");
         }
@@ -118,6 +122,10 @@ io.on('connection', (socket) => { //Evertything with socket
     socket.on('playersLeft', ()=>{
         // console.log('server: players left')
         socket.emit('numPlayers', playerCount);
+    });
+
+    socket.on('controllerLog', (msg)=>{
+        console.log('From controller: ' + msg);
     });
 });
 

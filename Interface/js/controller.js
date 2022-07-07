@@ -1,4 +1,6 @@
-const socket = new io("http://localhost:9000", {});
+// const socket = new io("http://localhost:9000", {});
+const socket = new io("https://jack-joust.herokuapp.com/", {});
+
 // const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
 var readyButton = document.getElementById("readyButton");
 var readyState = document.getElementById("state");
@@ -89,6 +91,19 @@ socket.on("takenName", (msg) => {
 //   // TODO: check that song sensitivity makes sense for thresholds
 // });
 
+function strikeThrough(userName) {
+  socket.emit("controllerLog: " + "strike");
+  let nodes = Array.from($("#playerList").children("li"));
+  for (let count = 0; count < nodes.length; count++) {
+    const element = nodes[count];
+    console.log(nodes[count].innerHTML);
+    if (element.innerHTML == userName) {
+      element.innerHTML = element.innerHTML.strike();
+      break;
+    }
+  }
+}
+
 function addPlayer(userName) {
   const node = document.createElement("li");
   const textnode = document.createTextNode(userName);
@@ -100,7 +115,7 @@ socket.on("gameStarted", () => {
   //will start users' accelerometer
   console.log("start game");
   //sessionStorage.setItem("Playing", true);
-  window.location.href = "./playerScreen.html";
+  window.location = "https://jack-joust.herokuapp.com/playerScreen.html";
   //start accelerometer
 });
 
@@ -116,6 +131,20 @@ socket.on("gameStarted", () => {
 //   alert("Game was restarted by host");
 //   window.location.href = "./controller.html";
 // });
+
+//must visually indicate that the player was eliminated
+socket.on("strikePlayer", (userName) => {
+  socket.emit("controllerLog", "controller strike " + userName);
+  console.log("controller: strike");
+  this.strikeThrough(userName);
+});
+
+//must visually indicate that the player was eliminated
+socket.on("disqualifyPlayer", (userName) => {
+  socket.emit("controllerLog", "controller disqualifyPlayer");
+  console.log("controller: strike");
+  strikeThrough(userName);
+});
 
 // function updateReadings() {
 //   let acl = new LinearAccelerationSensor({ frequency: 60 });
@@ -136,7 +165,7 @@ socket.on("gameStarted", () => {
 // }
 
 // function alert_disqualify(acc_magnitude) {
-//   if (acc_magnitude >= upper_threshold || acc_magnitude > hard_cap || dqFlag) {
+//   if ((acc_magnitude >= upper_threshold || acc_magnitude > hard_cap) && !dqFlag) {
 //     // disqualify the player:
 //     // alert("Disqualified");
 //     // tell player that player is disqualified by making their screen red
@@ -144,7 +173,7 @@ socket.on("gameStarted", () => {
 //     document.body.style.background = "red";
 //     dqFlag = true;
 
-//     // tell server that player is disqualifyed
+// //     // tell server that player is disqualifyed
 //     socket.emit("disqualifyPlayer", sessionStorage.getItem("userName"));
 //     //alert(sessionStorage.getItem("userName") + " was disqualified");
 //     //on server:
@@ -173,54 +202,60 @@ socket.on("gameStarted", () => {
 //setInterval(updateReadings(), 500);
 // setInterval(alert_disqualify(), 500);
 
-// function getAccel() {
-//   console.log("permissions button pressed");
-//   if (typeof DeviceMotionEvent.requestPermission === "function") {
-//     DeviceMotionEvent.requestPermission()
-//       .then((response) => {
-//         if (response == "granted") {
-//           window.addEventListener("devicemotion", (event) => {
-//             // do something with event
-//             xOutput.innerHTML = event.acceleration.x.toFixed(2);
-//             yOutput.innerHTML = event.acceleration.y.toFixed(2);
-//             zOutput.innerHTML = event.acceleration.z.toFixed(2);
-//             updateState.innerHTML = "Started motion sensing";
-
-//             acc_magnitude = Math.sqrt(
-//               event.acceleration.x * event.acceleration.x +
-//                 event.acceleration.y * event.acceleration.y +
-//                 event.acceleration.z * event.acceleration.z
-//             );
-
-//             //process magnitude
-
-//             normOutput.innerHTML = Math.sqrt(
-//               event.acceleration.x * event.acceleration.x +
-//                 event.acceleration.y * event.acceleration.y +
-//                 event.acceleration.z * event.acceleration.z
-//             ).toFixed(2);
-//             alert_disqualify(acc_magnitude);
-//           });
-//         }
-//       })
-//       .catch(console.error);
-//     alert_disqualify(acc_magnitude);
-//   } else {
-//     // alert_disqualify(updateReadings())
-//     // non iOS 13+
-//     updateReadings();
-//     console.log("alter_disqualify");
-//     lacl = new LinearAccelerationSensor({ frequency: 60 });
-//     lacl.addEventListener("reading", () => {
-//       acc_magnitude = Math.sqrt(
-//         lacl.x * lacl.x + lacl.y * lacl.y + lacl.z * lacl.z
-//       );
-//       // alert("Acceleration along the X-axis " + acl.x + ", Y-axis: " + acl.y + ", Z-axis: " + acl.z);
-//       alert_disqualify(acc_magnitude);
-//     });
-//     lacl.start();
-//   }
-// }
+function getAccel() {
+    //console.log("permissions button pressed");
+    if (typeof DeviceMotionEvent.requestPermission === "function") {
+        DeviceMotionEvent.requestPermission()
+          .then((response) => {
+            window.location.href = "playerScreen.html"
+            if (response == "granted") {
+              window.addEventListener("devicemotion", (event) => {
+                // do something with event
+                xOutput.innerHTML = event.acceleration.x.toFixed(2);
+                yOutput.innerHTML = event.acceleration.y.toFixed(2);
+                zOutput.innerHTML = event.acceleration.z.toFixed(2);
+                // updateState.innerHTML = "Started motion sensing";
+    
+                acc_magnitude = Math.sqrt(Math.abs(
+                  event.acceleration.x * event.acceleration.x +
+  
+                  event.acceleration.y * event.acceleration.y +
+                  event.acceleration.z * event.acceleration.z)
+                );
+    
+                //process magnitude
+  
+                normOutput.innerHTML = Math.sqrt(Math.abs(
+                  event.acceleration.x * event.acceleration.x +
+                    event.acceleration.y * event.acceleration.y +
+                    event.acceleration.z * event.acceleration.z)
+                ).toFixed(2);
+                
+                // return (acc_magnitude);
+                alert_disqualify(acc_magnitude);
+              });
+            }
+          })
+          .catch(console.error);
+          //return (acc_magnitude);
+        alert_disqualify(acc_magnitude);
+      } else {
+        // alert_disqualify(updateReadings())
+        // non iOS 13+
+        updateReadings();
+        console.log("alter_disqualify");
+        lacl = new LinearAccelerationSensor({ frequency: 60 });
+        lacl.addEventListener("reading", () => {
+          acc_magnitude = Math.sqrt(Math.abs(
+            lacl.x * lacl.x + lacl.y * lacl.y + lacl.z * lacl.z
+          ));
+          // alert("Acceleration along the X-axis " + acl.x + ", Y-axis: " + acl.y + ", Z-axis: " + acl.z);
+          //return (acc_magnitude);
+          alert_disqualify(acc_magnitude);
+        });
+        lacl.start();
+      }
+}
 
 // if (sessionStorage.getItem("Playing")) {
 //   console.log("running");
