@@ -95,6 +95,7 @@ $("#restartButton").click(function () {
   //Clear player list needs to be added
   document.getElementById("playerList").innerHTML = "";
   document.getElementById("winMessage").style.display = "none";
+  document.getElementById("loseMessage").style.display = "none";
 });
 
 socket.on("userJoined", (user) => {
