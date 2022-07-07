@@ -80,6 +80,8 @@ io.on('connection', (socket) => { //Evertything with socket
     })
 
     socket.on('generateCode', () => {
+        players = [];
+        playerCount = 0;
         code = genCode(4);
         socket.emit('gameCode', code);
     })
