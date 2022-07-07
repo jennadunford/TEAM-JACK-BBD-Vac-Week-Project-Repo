@@ -16,14 +16,36 @@ function updateReadings() {
     acl.start();
     return sensorAccelerationMagnitude;
   }
-  
+
+function getR(curr_acc){
+  return Math.min(255, 1530/upper_threshold * curr_acc);
+}
+
+function getG(curr_acc){
+  if (curr_acc<=2/3 * upper_threshold){
+    return 255;
+  } else if (curr_acc>=upper_threshold){
+    return 0;
+  } else {
+    return (-765/upper_threshold * curr_acc + 765);
+  }
+}
+
+function getB(curr_acc){
+  return 0;  
+}
+
 function alert_disqualify(acc_magnitude) 
 {
+    var r = getR(acc_magnitude);
+    var g = getG(acc_magnitude);
+    var b = getB(acc_magnitude);
+    document.body.style.backgroundColor = 'rgb(' + r + ',' + g + ',' + b + ')';
     if (acc_magnitude >= upper_threshold || acc_magnitude > hard_cap || dqFlag) // disqualify the player:
     {
       // alert("Disqualified");
       // tell player that player is disqualified by making their screen red
-      document.body.style.background = "red";
+      // document.body.style.background = "red";
       dqFlag = true;
   
       // tell server that player is disqualifyed
@@ -36,19 +58,19 @@ function alert_disqualify(acc_magnitude)
     {
       //alert user that they are close to threshold by making their screen orange
       updateState.innerHTML = "Close";
-      document.body.style.background = "orange";
+      // document.body.style.background = "orange";
       return;
     } else if (acc_magnitude >= (upper_threshold * 1) / 6) 
     {
       updateState.innerHTML = "Far";
       //alert user that they are approaching the threshold by making their screen yellow
-      document.body.style.background = "yellow";
+      // document.body.style.background = "yellow";
       return;
     } else {
       //ie: if acc_magnitude<upper_threshold*0.75 && acc_magnitude>lower_threshold
       //make their screen green
       updateState.innerHTML = "Safe " + acc_magnitude.toFixed(2);
-      document.body.style.background = "green";
+      // document.body.style.background = "green";
       return;
     }
 }
