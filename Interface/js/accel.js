@@ -64,6 +64,33 @@ socket.on("restartGame", () => {
   window.location.href = "./controller.html";
 });
 
+socket.on("playerOut", (userName) => {
+  // alert(userName + " is out");
+  //strikeThrough(userName);
+  showRemovedPlayer(userName);
+  strikeThrough(userName);
+});
+
+socket.on('Won', (winner) => {
+  console.log('Won');
+  if(sessionStorage.getItem('userName') === winner){
+    alert('Winner Winner JackScript Dinner');
+    $("#winImage").fadeIn(1000);
+  }
+})
+
+function strikeThrough(userName) {
+  let nodes = Array.from($("#playerList").children("li"));
+  for (let count = 0; count < nodes.length; count++) {
+    const element = nodes[count];
+    console.log(nodes[count].innerHTML);
+    if (element.innerHTML == userName) {
+      element.innerHTML = element.innerHTML.strike();
+      break;
+    }
+  }
+}
+
 function updateReadings() {
   let acl = new LinearAccelerationSensor({ frequency: 60 });
   acl.addEventListener("reading", () => {

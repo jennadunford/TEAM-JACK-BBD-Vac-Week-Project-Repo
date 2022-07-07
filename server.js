@@ -95,6 +95,8 @@ io.on('connection', (socket) => { //Evertything with socket
                 console.log(players);
                 socket.broadcast.emit('playerOut', userName);
                 socket.broadcast.emit('gameOver', players);
+                let winSocket = players[0].id;
+                io.emit('Won', winSocket);
                 playing = false;
             }else{
                 socket.broadcast.emit('playerOut', userName);
