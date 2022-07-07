@@ -37,15 +37,15 @@ socket.on("updateSensitivity", (songSensitivity) => {
   if (songSensitivity == 0.8) {
     // slow
     // console.log("lower");
-    upper_threshold = 3;
+    upper_threshold = 8;
   } else if (songSensitivity == 1) {
     // normal
     // console.log("normal");
-    upper_threshold = 15;
+    upper_threshold = 23;
   } else if (songSensitivity == 1.2) {
     // fast
     // console.log("fast");
-    upper_threshold = 25;
+    upper_threshold = 33;
   }
 });
 
