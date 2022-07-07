@@ -136,6 +136,7 @@ function getAccel() {
 if (typeof DeviceMotionEvent.requestPermission === "function") {
     DeviceMotionEvent.requestPermission()
         .then((response) => {
+            window.location.href = "playerScreen.html"
         if (response == "granted") {
             window.addEventListener("devicemotion", (event) => {
             // do something with event
