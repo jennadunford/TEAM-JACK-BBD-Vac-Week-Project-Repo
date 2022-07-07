@@ -1,35 +1,38 @@
-// const socket = new io("http://localhost:9000", {});
-const socket = new io("https://jack-joust.herokuapp.com/", {});
 
-// const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
-// var readyButton = document.getElementById("readyButton");
-// var readyState = document.getElementById("state");
-// var joinCode = document.querySelector("#joinCode");
-// var userName = document.querySelector("#userName");
-// var uName = document.getElementById("uName");
-// var jCode = document.getElementById("jCode");
-// var userReady = false;
+// // const socket = new io("http://localhost:9000", {});
+// // const socket = new io("https://jack-joust.herokuapp.com/", {});
+
+// // const socket = new io("https://damp-gorge-23211.herokuapp.com/", {});
+// // var readyButton = document.getElementById("readyButton");
+// // var readyState = document.getElementById("state");
+// // var joinCode = document.querySelector("#joinCode");
+// // var userName = document.querySelector("#userName");
+// // var uName = document.getElementById("uName");
+// // var jCode = document.getElementById("jCode");
+// // var userReady = false;
+
 // var output;
 // var xOutput = document.getElementById("xRead");
 // var yOutput = document.getElementById("yRead");
 // var zOutput = document.getElementById("zRead");
 // var normOutput = document.getElementById("norm");
 
-var sensorAccelerationMagnitude = 0;
+// var sensorAccelerationMagnitude = 0;
 
-var iOSSensorAccelerationMagnitude = 0;
-var iOSAccMagnitude = 0;
+// var iOSSensorAccelerationMagnitude = 0;
+// var iOSAccMagnitude = 0;
 
-var acc_magnitude = 0;
-let lacl = new LinearAccelerationSensor({ frequency: 60 });
-var lower_threshold = 0;
-var upper_threshold = 10;
-var hard_cap = 50;
+// var acc_magnitude = 0;
+// let lacl = new LinearAccelerationSensor({ frequency: 60 });
+// var lower_threshold = 0;
+// var upper_threshold = 10;
+// var hard_cap = 50;
 
-// var updateState = document.getElementById("updateState");
-// var updateMag = document.getElementById("updateMag");
+// // var updateState = document.getElementById("updateState");
+// // var updateMag = document.getElementById("updateMag");
 
-var dqFlag = false;
+// var dqFlag = false;
+
 let custAcc = 0;
 
 socket.on("updateSensitivity", (songSensitivity) => {
@@ -63,6 +66,7 @@ socket.on("restartGame", () => {
   alert("Game was stoped by host");
   window.location.href = "./controller.html";
 });
+
 
 socket.on("playerOut", (userName) => {
   // alert(userName + " is out");
@@ -99,9 +103,9 @@ function updateReadings() {
     // yOutput.innerHTML = acl.y.toFixed(2);
     // zOutput.innerHTML = acl.z.toFixed(2);
 
-    //       sensorAccelerationMagnitude = Math.sqrt(
-    //         acl.x * acl.x + acl.y * acl.y + acl.z * acl.z
-    //       );
+    sensorAccelerationMagnitude = Math.sqrt(
+            acl.x * acl.x + acl.y * acl.y + acl.z * acl.z
+    );
 
     // normOutput.innerHTML = sensorAccelerationMagnitude.toFixed(2);
   });
@@ -230,7 +234,7 @@ setInterval(() => {
 // });
 
 //must visually indicate that the player was eliminated
-socket.on("disqualifyPlayer", (userName) => {
+socket.on("playerOut", (userName) => {
   socket.emit("controllerLog", "controller disqualifyPlayer");
   console.log("controller: strike");
   strikeThrough(userName);
