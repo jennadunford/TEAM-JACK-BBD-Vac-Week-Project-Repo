@@ -91,19 +91,18 @@ socket.on("takenName", (msg) => {
 //   // TODO: check that song sensitivity makes sense for thresholds
 // });
 
-
 function strikeThrough(userName) {
-    socket.emit('controllerLog: '+ 'strike')
-    let nodes = Array.from($("#playerList").children("li"));
-    for (let count = 0; count < nodes.length; count++) {
-      const element = nodes[count];
-      console.log(nodes[count].innerHTML);
-      if (element.innerHTML == userName) {
-        element.innerHTML = element.innerHTML.strike();
-        break;
-      }
+  socket.emit("controllerLog: " + "strike");
+  let nodes = Array.from($("#playerList").children("li"));
+  for (let count = 0; count < nodes.length; count++) {
+    const element = nodes[count];
+    console.log(nodes[count].innerHTML);
+    if (element.innerHTML == userName) {
+      element.innerHTML = element.innerHTML.strike();
+      break;
     }
   }
+}
 
 function addPlayer(userName) {
   const node = document.createElement("li");
@@ -135,19 +134,17 @@ socket.on("gameStarted", () => {
 
 //must visually indicate that the player was eliminated
 socket.on("strikePlayer", (userName) => {
-    socket.emit('controllerLog', 'controller strike ' + userName);
-    console.log('controller: strike')
-    this.strikeThrough(userName);
+  socket.emit("controllerLog", "controller strike " + userName);
+  console.log("controller: strike");
+  this.strikeThrough(userName);
 });
 
 //must visually indicate that the player was eliminated
 socket.on("disqualifyPlayer", (userName) => {
-    socket.emit('controllerLog', 'controller disqualifyPlayer');
-    console.log('controller: strike')
+  socket.emit("controllerLog", "controller disqualifyPlayer");
+  console.log("controller: strike");
   strikeThrough(userName);
 });
-
-
 
 // function updateReadings() {
 //   let acl = new LinearAccelerationSensor({ frequency: 60 });
@@ -277,7 +274,6 @@ function getAccel() {
 //   console.log(acc_magnitude);
 //   normOutput.innerHTML = acc_magnitude.toFixed(2);
 // }, 100);
-
 
 // //must visually indicate that the player was eliminated
 // socket.on("disqualifyPlayer", (userName) => {
