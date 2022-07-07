@@ -40,15 +40,15 @@ socket.on("updateSensitivity", (songSensitivity) => {
   if (songSensitivity == 0.8) {
     // slow
     // console.log("lower");
-    upper_threshold = 3;
+    upper_threshold = 8;
   } else if (songSensitivity == 1) {
     // normal
     // console.log("normal");
-    upper_threshold = 15;
+    upper_threshold = 20;
   } else if (songSensitivity == 1.2) {
     // fast
     // console.log("fast");
-    upper_threshold = 25;
+    upper_threshold = 30;
   }
 });
 
@@ -113,49 +113,63 @@ function updateReadings() {
   return sensorAccelerationMagnitude;
 }
 
-function alert_disqualify(acc_magnitude) {
-  // acc_magnitude = document.getElementById("customAcc").value;
-  // socket.emit('controllerLog', 'test: ' + acc_magnitude);
-  // console.log("before:" + acc_magnitude);
-  // acc_magnitude = getAccel();
-  // socket.emit('controllerLog', 'after' + acc_magnitude);
-  // console.log("after" + acc_magnitude);
-  // console.log("T:" + upper_threshold);
-  if (dqFlag) {
-    document.body.style.background = "red";
-  } else if (acc_magnitude >= upper_threshold || acc_magnitude > hard_cap) {
-    // disqualify the player:
-    // alert("Disqualified");
-    // tell player that player is disqualified by making their screen red
-    document.body.style.background = "red";
-    dqFlag = true;
-
-    // tell server that player is disqualifyed
-    socket.emit("disqualifyPlayer", sessionStorage.getItem("userName"));
-    //on server:
-    //sort board
-    //grey them out on the scoreboard
-    return;
-  } else if (acc_magnitude >= (upper_threshold * 2) / 3) {
-    //alert user that they are close to threshold by making their screen orange
-    //updateState.innerHTML = "Close";
-    document.body.style.background = "orange";
-    return;
-  } else if (acc_magnitude >= (upper_threshold * 1) / 6) {
-    //updateState.innerHTML = "Far";
-    //alert user that they are approaching the threshold by making their screen yellow
-    document.body.style.background = "yellow";
-    return;
-  } else {
-    //ie: if acc_magnitude<upper_threshold*0.75 && acc_magnitude>lower_threshold
-    //make their screen green
-    //updateState.innerHTML = "Safe " + acc_magnitude.toFixed(2);
-
-    document.body.style.background = "green";
-    return;
+function getR(curr_acc){
+    return Math.min(255, 1530/upper_threshold * curr_acc);
   }
-}
-
+  
+  function getG(curr_acc){
+    if (curr_acc<=2/3 * upper_threshold){
+      return 255;
+    } else if (curr_acc>=upper_threshold){
+      return 0;
+    } else {
+      return (-765/upper_threshold * curr_acc + 765);
+    }
+  }
+  
+  function getB(curr_acc){
+    return 0;  
+  }
+  
+  function alert_disqualify(acc_magnitude) 
+  {
+      var r = getR(acc_magnitude);
+      var g = getG(acc_magnitude);
+      var b = getB(acc_magnitude);
+      document.body.style.backgroundColor = 'rgb(' + r + ',' + g + ',' + b + ')';
+      if (acc_magnitude >= upper_threshold || acc_magnitude > hard_cap || dqFlag) // disqualify the player:
+      {
+        // alert("Disqualified");
+        // tell player that player is disqualified by making their screen red
+        // document.body.style.background = "red";
+        dqFlag = true;
+    
+        // tell server that player is disqualifyed
+        socket.emit("disqualifyPlayer", sessionStorage.getItem("userName"));
+        //on server:
+        //sort board
+        //grey them out on the scoreboard
+        return;
+      } else if (acc_magnitude >= (upper_threshold * 2) / 3) 
+      {
+        //alert user that they are close to threshold by making their screen orange
+        updateState.innerHTML = "Close";
+        // document.body.style.background = "orange";
+        return;
+      } else if (acc_magnitude >= (upper_threshold * 1) / 6) 
+      {
+        updateState.innerHTML = "Far";
+        //alert user that they are approaching the threshold by making their screen yellow
+        // document.body.style.background = "yellow";
+        return;
+      } else {
+        //ie: if acc_magnitude<upper_threshold*0.75 && acc_magnitude>lower_threshold
+        //make their screen green
+        updateState.innerHTML = "Safe " + acc_magnitude.toFixed(2);
+        // document.body.style.background = "green";
+        return;
+      }
+  }
 //setInterval(updateReadings(), 500);
 // setInterval(alert_disqualify(), 500);
 
