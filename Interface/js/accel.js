@@ -80,9 +80,9 @@ function updateReadings() {
     yOutput.innerHTML = acl.y.toFixed(2);
     zOutput.innerHTML = acl.z.toFixed(2);
 
-    //       sensorAccelerationMagnitude = Math.sqrt(
-    //         acl.x * acl.x + acl.y * acl.y + acl.z * acl.z
-    //       );
+    sensorAccelerationMagnitude = Math.sqrt(
+            acl.x * acl.x + acl.y * acl.y + acl.z * acl.z
+    );
 
     normOutput.innerHTML = sensorAccelerationMagnitude.toFixed(2);
   });
